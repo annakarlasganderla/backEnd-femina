@@ -1,8 +1,7 @@
-package main.java.com.femina.produto.Model;
+package java.com.femina.produto.Model;
 
-import main.java.com.femina.produto.Model.Contatos;
-import main.java.com.femina.produto.Model.Endereco;
-
+import java.com.femina.produto.Model.Contatos;
+import java.com.femina.produto.Model.Endereco;
 import java.util.ArrayList;
 import java.util.List;
 
