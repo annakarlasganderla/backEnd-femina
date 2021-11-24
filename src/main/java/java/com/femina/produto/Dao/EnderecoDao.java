@@ -15,24 +15,24 @@ public class EnderecoDao {
     }
 
     public void criaTabelaEndereco(Endereco endereco)  {
-       try{
-           String sql = "CREATE TABLE IF NOT EXISTS endereco" +
-                   "idEndereco INT PRIMARY KEY AUTO_INCREMENT," +
-                   "pais VARCHAR(50) NOT NULL," +
-                   "estado VARCHAR(50) NOT NULL" +
-                   "cidade VARCHAR(50) NOT NULL" +
-                   "rua VARCHAR(50) NOT NULL" +
-                   "cep VARCHAR(50) NOT NULL" +
-                   "numCasa INT NOT NULL;";
+        try{
+            String sql = "CREATE TABLE IF NOT EXISTS endereco (" +
+                    "idEndereco INT PRIMARY KEY AUTO_INCREMENT," +
+                    "pais VARCHAR(50) NOT NULL," +
+                    "estado VARCHAR(50) NOT NULL," +
+                    "cidade VARCHAR(50) NOT NULL," +
+                    "rua VARCHAR(50) NOT NULL," +
+                    "cep VARCHAR(50) NOT NULL," +
+                    "numCasa INT NOT NULL);";
 
-           PreparedStatement stmt = conection.prepareStatement(sql);
+            PreparedStatement stmt = conection.prepareStatement(sql);
 
-           stmt.execute();
-           stmt.close();
+            stmt.execute();
+            stmt.close();
 
-       } catch (SQLException e) {
-           throw new RuntimeException(e);
-       }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void cadastraEndereco(Endereco endereco) {
@@ -95,7 +95,7 @@ public class EnderecoDao {
     }
 
     public Endereco selectEnderecoById(int id) {
-        String sql = "SELECT * FROM endereco WHERW idEndereco = ?";
+        String sql = "SELECT * FROM endereco WHERE idEndereco = ?";
         try {
             PreparedStatement stmt = conection.prepareStatement(sql);
             stmt.setInt(1, id);
@@ -133,6 +133,7 @@ public class EnderecoDao {
             stmt.setString(4, endereco.getRua());
             stmt.setString(5,endereco.getCep());
             stmt.setInt(6, endereco.getNumCasa());
+            stmt.setInt(7, endereco.getIdEndereco());
 
             stmt.execute();
 
@@ -149,9 +150,11 @@ public class EnderecoDao {
             PreparedStatement stmt = conection.prepareStatement(sql);
 
             stmt.setInt(1,endereco.getIdEndereco());
+
+            stmt.execute();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
 }
