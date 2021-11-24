@@ -1,114 +1,116 @@
-package main.java.com.femina.produto.Dao;
+package Dao;
 
-import main.java.com.femina.produto.Model.Cor;
-import main.java.com.femina.produto.Model.ModelosDosProdutos;
-
-import java.io.*;
+import Factory.ConectionFactory;
+import Model.ModelosDosProdutos;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ModeloDao {
 
-    public void cadastraModelo(List<ModelosDosProdutos> modelo) throws IOException {
+    private Connection connection;
+
+    public ModeloDao(){
+        this.connection = new ConectionFactory().getConection();
+    }
+
+    public void criarTabelaModelo() {
+        String sql = "CREATE TABLE IF NOT EXISTS modelo ("+
+        "id_modelo INT PRIMARY KEY AUTO_INCREMENT,"+
+        "nome VARCHAR(50) NOT NULL"+
+        ");";
+
         try {
-            File arquivo = new File("modeloDosProdutos.txt");
+            PreparedStatement stmt = connection.prepareStatement(sql);
 
-            if(arquivo.isFile() ==  false){
-                arquivo.createNewFile();
-            }
+            stmt.execute();
+            stmt.close();
 
-            FileWriter fileWriter = new FileWriter(arquivo, true);
-            PrintWriter printWriter = new PrintWriter(fileWriter);
-
-            for(int i = 0;i < modelo.size();i++) {
-                if(modelo.get(i).getId() != Long.valueOf(i)+1) {
-                    modelo.get(i).setId(Long.valueOf(i) + 1);
-                    printWriter.println(modelo.get(i));
-                }
-            }
-
-            printWriter.flush();
-            printWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (SQLException e){
+            throw new RuntimeException(e);
         }
     }
 
-    public List<ModelosDosProdutos> mostraModelo() throws IOException {  // retorna uma lista
+    public void cadastrarModelo(ModelosDosProdutos modelo){
+        String sql = "INSERT INTO modelo (nome) VALUES (?)";
 
-        FileReader fileReader = new FileReader("modeloDosProdutos.txt");
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-        List<String> transformToString = new ArrayList<>();
+            stmt.setString(1, modelo.getNomeTipo());
+            stmt.execute();
 
-        List<ModelosDosProdutos> listaDeModelos = new ArrayList<>();
+            ResultSet resultSet = stmt.getGeneratedKeys();
 
-        String linha = " ";
-
-        while((linha = bufferedReader.readLine()) != null) {
-            if (linha != null) {
-                transformToString.add(linha);
+            while (resultSet.next()){
+                modelo.setId(resultSet.getInt(1));
             }
+        } catch (SQLException e){
+            throw new RuntimeException(e);
         }
-
-        fileReader.close();
-        bufferedReader.close();
-
-        for (String i: transformToString) {
-            String[] model = i.split(";");
-
-            ModelosDosProdutos models = new ModelosDosProdutos();
-
-            models.setId(Long.valueOf(model[0]));
-            models.setNomeTipo(model[1]);
-            models.setIdProduto(Long.valueOf(model[2]));
-
-            listaDeModelos.add(models);
-        }
-        return listaDeModelos;
     }
 
-    public void editaModelo(List<ModelosDosProdutos> modelosDosProdutos) throws IOException {
-        FileWriter fileWriter = new FileWriter("modeloDosProdutos.txt",false);
-        PrintWriter printWriter = new PrintWriter(fileWriter);
+    public List<ModelosDosProdutos> listarModelos(){
+        String sql = "SELECT * FROM modelo";
 
-        for (int listModelos = 0; listModelos < modelosDosProdutos.size(); listModelos++) {
-            printWriter.println(modelosDosProdutos.get(listModelos));
-        }
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            ResultSet resultSet = stmt.executeQuery();
 
-        printWriter.flush();
-        printWriter.close();
-        fileWriter.close();
-    }
+            List<ModelosDosProdutos> listaModelos = new ArrayList<>();
 
-    public void deletaModelo(List<ModelosDosProdutos> modelosDosProdutos) throws IOException {
-        FileWriter fileWriter = new FileWriter("modeloDosProdutos.txt",false);
-        PrintWriter printWriter = new PrintWriter(fileWriter);
+            while (resultSet.next()){
+                ModelosDosProdutos modelo = new ModelosDosProdutos();
 
-        for (int l = 0; l < modelosDosProdutos.size();l++) {
-            if(modelosDosProdutos.get(l).getIdProduto() != 1){
-                modelosDosProdutos.get(l).setIdProduto(modelosDosProdutos.get(l).getIdProduto()-1);
+                modelo.setId(resultSet.getInt("id_modelo"));
+                modelo.setNomeTipo(resultSet.getString("nome"));
+
+                listaModelos.add(modelo);
             }
-            modelosDosProdutos.get(l).setId(Long.valueOf(l)+1);
-            printWriter.println(modelosDosProdutos.get(l));
-        }
 
-        printWriter.flush();
-        printWriter.close();
-        fileWriter.close();
+            return listaModelos;
+
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
     }
 
-    public List<ModelosDosProdutos> listarId(Long idProd) throws IOException {
-        List<ModelosDosProdutos> modelsProd = new ArrayList<>();
-        List<ModelosDosProdutos> models = mostraModelo();
+    public ModelosDosProdutos selecionaModeloById(int id){
+        String sql = "SELECT * FROM modelo WHERE id_modelo = ?";
 
-        for (int i = 0;i < models.size();i++){
-            if (models.get(i).getIdProduto() == idProd){
-                modelsProd.add(models.get(i));
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, id);
+
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()){
+                ModelosDosProdutos modelo = new ModelosDosProdutos();
+
+                modelo.setId(resultSet.getInt("id_modelo"));
+                modelo.setNomeTipo(resultSet.getString("nome"));
+
+                return modelo;
             }
+
+        } catch (SQLException e){
+            throw new RuntimeException(e);
         }
 
-        return modelsProd;
+        return null;
     }
 
+    public void deletarModelo(ModelosDosProdutos modelo){
+        String sql = "DELETE FROM modelo WHERE id_modelo = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, modelo.getId());
+
+            stmt.execute();
+
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
 }

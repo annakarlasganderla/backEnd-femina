@@ -1,38 +1,38 @@
-package main.java.com.femina.produto.Controller;
+package Controller;
 
-import main.java.com.femina.produto.Dao.CorDao;
-import main.java.com.femina.produto.Dao.ModeloDao;
-import main.java.com.femina.produto.Model.ModelosDosProdutos;
-
-import java.io.*;
+import Dao.ModeloDao;
+import Model.ModelosDosProdutos;
 import java.util.List;
 
 public class ModeloController {
 
-    public void cadastraModelo(List<ModelosDosProdutos> modelo) throws IOException {
-        ModeloDao modeloDao = new ModeloDao();
-        modeloDao.cadastraModelo(modelo);
+    public ModeloController() {
+        this.criarTabela();
     }
 
-    public List<ModelosDosProdutos> mostraModelos() throws IOException {
+    public void criarTabela(){
         ModeloDao modeloDao = new ModeloDao();
-        List<ModelosDosProdutos> listaDeModelos = modeloDao.mostraModelo();
-        return listaDeModelos;
+        modeloDao.criarTabelaModelo();
     }
 
-    public void editaModelo(List<ModelosDosProdutos> modelosDosProdutos) throws IOException {
+    public void cadastrarModelo(ModelosDosProdutos modelo) {
         ModeloDao modeloDao = new ModeloDao();
-        modeloDao.editaModelo(modelosDosProdutos);
+        modeloDao.cadastrarModelo(modelo);
     }
 
-    public void deletaModelo(List<ModelosDosProdutos> modelosDosProdutos) throws IOException {
+    public List<ModelosDosProdutos> listarModelos(){
         ModeloDao modeloDao = new ModeloDao();
-        modeloDao.deletaModelo(modelosDosProdutos);
+        return modeloDao.listarModelos();
     }
 
-    public List<ModelosDosProdutos> listarModelosPeloIdProd(Long idProd) throws IOException {
+    public ModelosDosProdutos selecionaModeloById(int id){
         ModeloDao modeloDao = new ModeloDao();
-        return modeloDao.listarId(idProd);
+        return modeloDao.selecionaModeloById(id);
+    }
+
+    public void deletarModelo(ModelosDosProdutos modelo){
+        ModeloDao modeloDao = new ModeloDao();
+        modeloDao.deletarModelo(modelo);
     }
 
 }

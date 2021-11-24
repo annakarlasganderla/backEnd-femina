@@ -1,9 +1,6 @@
-package main.java.com.femina.produto.View;
+package java.com.femina.produto.View;
 
-
-import main.java.com.femina.produto.Controller.ModeloController;
 import main.java.com.femina.produto.Controller.TamanhoController;
-import main.java.com.femina.produto.Model.ModelosDosProdutos;
 import main.java.com.femina.produto.Model.Tamanho;
 
 import java.io.IOException;

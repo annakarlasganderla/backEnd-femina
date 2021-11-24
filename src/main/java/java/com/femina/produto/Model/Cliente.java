@@ -1,11 +1,8 @@
 package java.com.femina.produto.Model;
 
-import main.java.com.femina.produto.Model.Contatos;
-import main.java.com.femina.produto.Model.Endereco;
-
 public class Cliente {
 
-    private long id;
+    private long id_cliente;
     private String nome,senha;
     private int idade;
 
@@ -15,7 +12,7 @@ public class Cliente {
     public Cliente() {}
 
     public Cliente(long id, String nome, String senha, int idade, Endereco endereco) {
-        this.id = id;
+        this.id_cliente = id;
         this.nome = nome;
         this.senha = senha;
         this.idade = idade;
@@ -23,11 +20,11 @@ public class Cliente {
     }
 
     public long getId() {
-        return id;
+        return id_cliente;
     }
 
     public void setId(long id) {
-        this.id = id;
+        this.id_cliente = id;
     }
 
     public String getNome() {
@@ -70,19 +67,9 @@ public class Cliente {
         this.endereco = endereco;
     }
 
-    public String toMostra() {
-        return  "Cliente: " +
-                "Id - " + id + "\n" +
-                "Nome - " + nome + "\n" +
-                "Idade - " + idade +
-                "\n" + contatos.toMostra() +
-                "\n" + endereco.toMostra() +
-                "\n";
-    }
-
     @Override
     public String toString() {
-        return  "" + id + ';' +
+        return  "" + id_cliente + ';' +
                 nome + ';' +
                 idade + ';' +
                 senha + ';' +

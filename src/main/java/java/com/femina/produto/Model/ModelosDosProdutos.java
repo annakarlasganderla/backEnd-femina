@@ -1,25 +1,24 @@
-package main.java.com.femina.produto.Model;
+package Model;
 
 public class ModelosDosProdutos {
 
-    private long id;
+    private int id_modelo;
     private String nomeTipo;
-    private long idProduto;
 
-    public ModelosDosProdutos(long id, String nomeTipo) {
-        this.id = id;
+    public ModelosDosProdutos(int id, String nomeTipo) {
+        this.id_modelo = id;
         this.nomeTipo = nomeTipo;
     }
 
     public ModelosDosProdutos() {
     }
 
-    public long getId() {
-        return id;
+    public int getId() {
+        return id_modelo;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setId(int id) {
+        this.id_modelo = id;
     }
 
     public String getNomeTipo() {
@@ -30,25 +29,8 @@ public class ModelosDosProdutos {
         this.nomeTipo = nomeTipo;
     }
 
-    public long getIdProduto() {
-        return idProduto;
-    }
-
-    public void setIdProduto(long idProduto) {
-        this.idProduto = idProduto;
-    }
-
-    public String toMostra() {
-        return  "Modelo Produto: \n" +
-                "Id - " + id + "; " +
-                "Nome - " + nomeTipo +
-                "\n";
-    }
-
     @Override
     public String toString() {
-        return "" + id + ';' +
-                nomeTipo + ';' +
-                idProduto;
+        return "MODELO: " + nomeTipo;
     }
 }
