@@ -121,7 +121,37 @@ public class EnderecoDao {
         return null;
     }
 
+    public void editarEndereco(Endereco endereco) {
+        String sql = "UPDATE endereco SET pais = ?, estado = ?, cidade = ?, rua = ?, cep = ?, numCasa = ? WHERE idEndereco = ?";
 
+        try {
+            PreparedStatement stmt = conection.prepareStatement(sql);
 
+            stmt.setString(1, endereco.getPais());
+            stmt.setString(2,endereco.getEstado());
+            stmt.setString(3, endereco.getCidade());
+            stmt.setString(4, endereco.getRua());
+            stmt.setString(5,endereco.getCep());
+            stmt.setInt(6, endereco.getNumCasa());
+
+            stmt.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deletaEndereco(Endereco endereco) {
+
+        String sql = "DELETE FROM endereco WHERE idEndereco = ?";
+
+        try {
+            PreparedStatement stmt = conection.prepareStatement(sql);
+
+            stmt.setInt(1,endereco.getIdEndereco());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
