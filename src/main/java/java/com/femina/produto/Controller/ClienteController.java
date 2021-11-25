@@ -11,20 +11,4 @@ public class ClienteController {
         cd.cadastrarCliente(cliente);
     }
 
-//    public List<Cliente> listarClientes(){
-//        ClienteDao cd = new ClienteDao();
-//        List<Cliente> ldc = cd.listarCliente();
-//        return ldc;
-//    }
-//
-//    public void editarCliente(Cliente ldc){
-//        ClienteDao cd = new ClienteDao();
-//        cd.editarCliente(ldc);
-//    }
-//
-//    public void deletarCliente(Cliente ldc){
-//        ClienteDao cd = new ClienteDao();
-//        cd.deletarCliente(ldc);
-//    }
-
 }
