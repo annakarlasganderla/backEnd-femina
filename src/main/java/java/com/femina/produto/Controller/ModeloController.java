@@ -1,6 +1,5 @@
-package main.java.com.femina.produto.Controller;
+package java.com.femina.produto.Controller;
 
-import main.java.com.femina.produto.Dao.CorDao;
 import main.java.com.femina.produto.Dao.ModeloDao;
 import main.java.com.femina.produto.Model.ModelosDosProdutos;
 
