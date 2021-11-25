@@ -1,89 +1,113 @@
-//package main.java.com.femina.produto.View;
-//
-//import main.java.com.femina.produto.Controller.ModeloController;
-//import main.java.com.femina.produto.Model.ModelosDosProdutos;
-//
-//import java.io.IOException;
-//import java.util.ArrayList;
-//import java.util.List;
-//import java.util.Locale;
-//import java.util.Scanner;
-//
-//public class ModeloView {
-//
-//    Scanner leitor = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
-//
-//    public ModelosDosProdutos cadastrarModelos(Long idProd) throws IOException {
-//
-//        ModeloController modeloController = new ModeloController();
-//        ModelosDosProdutos modelosDosProdutos = new ModelosDosProdutos();
-//
-//        System.out.println("Digite o nome do modelo: ");
-//        modelosDosProdutos.setNomeTipo(leitor.next());
-//
-//        modelosDosProdutos.setIdProduto(idProd);
-//
-//        List<ModelosDosProdutos> listModelos = modeloController.mostraModelos();
-//        listModelos.add(modelosDosProdutos);
-//
-//        modeloController.cadastraModelo(listModelos);
-//
-//        return modelosDosProdutos;
-//    }
-//
-//    public void mostrarModelos(List<ModelosDosProdutos> modelosDosProdutos)  throws IOException {
-//
-//       ModeloController modeloController = new ModeloController();
-//
-//       List<ModelosDosProdutos> listaModelos = modeloController.mostraModelos();
-//
-//       for(int i = 0; i < listaModelos.size();i++) {
-//           System.out.println((i+1) + " - " + listaModelos.get(i).toMostra());
-//       }
-//
-//    }
-//
-//    public void editaModelo(Long idProd) throws IOException {
-//
-//        ModeloController modeloController = new ModeloController();
-//
-//        List<ModelosDosProdutos> listaDeModelos = modeloController.listarModelosPeloIdProd(idProd);
-//
-//        List<ModelosDosProdutos> listModelosTotal = modeloController.mostraModelos();
-//
-//        for (int i = 0; i < listaDeModelos.size();i++) {
-//            System.out.println((i+1) + " - " + listaDeModelos.get(i).toMostra());
-//        }
-//
-//        System.out.println("Escolha qual modelo você quer editar: ");
-//        int opModelo = leitor.nextInt();
-//
-//        System.out.println("Digite o novo nome do modelo:");
-//        listModelosTotal.get((int)listaDeModelos.get(opModelo-1).getId()-1).setNomeTipo(leitor.next());
-//
-//        modeloController.editaModelo(listModelosTotal);
-//    }
-//
-//    public void deletaModelo (Long idProd) throws IOException {
-//
-//        ModeloController modeloController = new ModeloController();
-//
-//        List<ModelosDosProdutos> modelosDosProdutos = modeloController.mostraModelos();
-//        List<ModelosDosProdutos> novalist = new ArrayList<>();
-//
-//        for(int i = 0;i < modelosDosProdutos.size();i++) {
-//            if (modelosDosProdutos.get(i).getIdProduto() != idProd) {
-//                novalist.add(modelosDosProdutos.get(i));
-//            }
-//        }
-//
-//        modeloController.deletaModelo(novalist);
-//
-//    }
-//
-//    public List<ModelosDosProdutos> listarModelosDoProduto(Long idProd) throws IOException {
-//        ModeloController modeloController = new ModeloController();
-//        return modeloController.listarModelosPeloIdProd(idProd);
-//    }
-//
-//}
+package View;
+
+import Controller.ModeloController;
+import Model.ModelosDosProdutos;
+import java.util.List;
+import java.util.Locale;
+import java.util.Scanner;
+
+public class ModeloView {
+
+    Scanner leitor = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
+
+    public void cadastrarModelos() {
+
+        ModeloController modeloController = new ModeloController();
+        ModelosDosProdutos modelosDosProdutos = new ModelosDosProdutos();
+
+        System.out.println("Digite o nome do modelo: ");
+        modelosDosProdutos.setNomeTipo(leitor.next());
+
+        modeloController.cadastrarModelo(modelosDosProdutos);
+
+        System.out.println("Deseja continuar cadastrando?");
+        System.out.println("1-SIM;                 2-NÃO;");
+
+        switch (leitor.nextInt()){
+            case 1:
+                this.cadastrarModelos();
+            break;
+            case 2:
+                System.out.println("Voltando pro menu!");
+            break;
+            default:
+                System.out.println("Opção inválida!");
+        }
+
+    }
+
+    public List<ModelosDosProdutos> listarModelos() {
+
+       ModeloController modeloController = new ModeloController();
+
+       List<ModelosDosProdutos> listaModelos = modeloController.listarModelos();
+       if(listaModelos.isEmpty()){
+           System.out.println("Nenhum Modelo cadastrado!");
+           System.out.println("Deseja Cadastrar?");
+           System.out.println("1-Sim;     2-Não;");
+           switch (leitor.nextInt()){
+               case 1:
+                   this.cadastrarModelos();
+                   break;
+               case 2:
+                   System.out.println("Voltando pro menu!");
+                   break;
+               default:
+                   System.out.println("Opção inválida!");
+           }
+       } else {
+           System.out.println("MODELOS: ");
+           for (int i = 0; i < listaModelos.size(); i++) {
+               System.out.println("   " + (i + 1) + " - " + listaModelos.get(i).toString());
+           }
+       }
+
+       return listaModelos;
+    }
+
+    public ModelosDosProdutos selecionaModeloById(){
+
+        ModeloController modeloController = new ModeloController();
+
+        List<ModelosDosProdutos> listaModelos = this.listarModelos();
+
+        if(listaModelos.isEmpty()){
+            this.cadastrarModelos();
+        }
+
+        System.out.println("Escolha o Modelo: ");
+
+        ModelosDosProdutos modelo = modeloController.selecionaModeloById(listaModelos.get(leitor.nextInt()-1).getId());
+
+        System.out.println("-------------------------------");
+        System.out.println("Modelo Selecionado: ");
+        System.out.println(modelo.toString());
+        System.out.println("-------------------------------");
+
+        return modelo;
+    }
+
+    public void deletaModelo (ModelosDosProdutos modelo) {
+
+        ModeloController modeloController = new ModeloController();
+
+        System.out.println("Tem certeza que deseja deletar o modelo?");
+        System.out.println("1-Sim;                            2-Não;");
+
+        switch (leitor.nextInt()){
+            case 1:
+                modeloController.deletarModelo(modelo);
+                break;
+            case 2:
+                System.out.println("Operação cancelada");
+                break;
+            default:
+                System.out.println("Opção invalida");
+        }
+
+        modeloController.deletarModelo(modelo);
+
+    }
+
+
+}

@@ -1,16 +1,16 @@
-package Controller;
-import Dao.ContatoDao;
-import Model.Contatos;
+package java.com.femina.produto.Controller;
+
+import java.com.femina.produto.Model.Contatos;
+import java.io.IOException;
+
 
 import java.util.List;
 
 public class ContatoController {
 
     public void criaTabela(){
-
         ContatoDao contDao = new ContatoDao();
         contDao.criaTabela();
-
     }
 
     public void cadastraContato(Contatos cont){
