@@ -1,7 +1,9 @@
 package Controller;
 
-import Dao.ModeloDao;
+
 import Model.ModelosDosProdutos;
+
+import java.com.femina.produto.Dao.ModeloDao;
 import java.util.List;
 
 public class ModeloController {

@@ -2,7 +2,7 @@ package java.com.femina.produto.Model;
 
 public class Cliente {
 
-    private long id_cliente;
+    private int id_cliente;
     private String nome,senha;
     private int idade;
 
@@ -11,7 +11,7 @@ public class Cliente {
 
     public Cliente() {}
 
-    public Cliente(long id, String nome, String senha, int idade, Endereco endereco) {
+    public Cliente(int id, String nome, String senha, int idade, Endereco endereco) {
         this.id_cliente = id;
         this.nome = nome;
         this.senha = senha;
@@ -19,11 +19,11 @@ public class Cliente {
         this.endereco = endereco;
     }
 
-    public long getId() {
+    public int getId() {
         return id_cliente;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id_cliente = id;
     }
 

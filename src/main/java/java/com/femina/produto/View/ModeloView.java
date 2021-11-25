@@ -1,4 +1,4 @@
-package View;
+package java.com.femina.produto.View;
 
 import Controller.ModeloController;
 import Model.ModelosDosProdutos;
