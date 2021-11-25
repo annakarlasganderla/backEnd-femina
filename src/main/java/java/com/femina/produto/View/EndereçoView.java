@@ -10,7 +10,7 @@ public class EndereçoView {
     Scanner leitor = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
     EnderecoController enderecoController = new EnderecoController();
 
-    public void cadastraEndereco() {
+    public Endereco cadastraEndereco() {
         Endereco endereco = new Endereco();
         System.out.println("Informe o país: ");
         endereco.setPais(leitor.next());
@@ -32,6 +32,7 @@ public class EndereçoView {
 
         enderecoController.criaTabelaEndereco(endereco);
         enderecoController.cadastraProduto(endereco);
+        return endereco;
     }
 
     public void mostrarEnderecos() {
