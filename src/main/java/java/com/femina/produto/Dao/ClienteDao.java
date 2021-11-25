@@ -18,7 +18,7 @@ public class ClienteDao {
         "id_cliente INT PRIMARY KEY AUTO_INCREMENT,"+
         "nome VARCHAR(40) NOT NULL," +
         "idade INTEGER(11),"+
-        "senha VARCHAR(32),"+
+        "senha VARCHAR(32) NOT NULL,"+
         "id_contatos INT,"+
         "id_endereco INT,"+
         "CONSTRAINT fk_id_contatos FOREIGN KEY (id_contatos) REFERENCE contatos(id_contatos),"+
@@ -36,7 +36,23 @@ public class ClienteDao {
     }
 
     public void cadastrarCliente(Cliente cliente){
+        String sql = "INSERT INTO cliente "+
+        "(nome, idade, senha, id_contatos, id_endereco) "+
+        "VALUES (?,?,?,?,?)";
 
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+            stmt.setString(1,cliente.getNome());
+            stmt.setInt(2,cliente.getIdade());
+            stmt.setString(3,cliente.getSenha());
+            stmt.setInt(4, cliente.getContatos().getId());
+
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

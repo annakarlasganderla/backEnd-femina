@@ -2,7 +2,7 @@ package java.com.femina.produto.Model;
 
 public class Contatos {
 
-    private long id;
+    private int id;
     private String tel,email;
 
     public Contatos(String tel, String email) {
@@ -13,11 +13,11 @@ public class Contatos {
     public Contatos() {
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

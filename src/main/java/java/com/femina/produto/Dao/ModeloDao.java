@@ -1,7 +1,8 @@
 package Dao;
 
-import Factory.ConectionFactory;
 import Model.ModelosDosProdutos;
+
+import java.com.femina.produto.Factory.ConectionFactory;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

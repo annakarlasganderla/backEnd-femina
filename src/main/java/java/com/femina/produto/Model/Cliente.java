@@ -69,11 +69,10 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return  "" + id_cliente + ';' +
-                nome + ';' +
-                idade + ';' +
-                senha + ';' +
-                contatos.getId() + ';' +
-                endereco.getIdEndereco();
+        return  "CLIENTE: " +
+                nome + " - " +
+                idade + "\n" +
+                "   " + contatos.toString() + "\n" +
+                "   " + endereco.toString();
     }
 }
