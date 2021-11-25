@@ -1,123 +1,116 @@
-//package main.java.com.femina.produto.Dao;
-//
-//import main.java.com.femina.produto.Model.Cor;
-//import main.java.com.femina.produto.Model.Endereco;
-//import main.java.com.femina.produto.Model.Marca;
-//
-//import java.io.*;
-//import java.util.*;
-//
-//public class CorDao {
-//
-//    public void cadastraCor(List<Cor> cor) {
-//        try {
-//            File arquivo = new File("cor.txt");
-//
-//            if(arquivo.isFile() ==  false){
-//                arquivo.createNewFile();
-//            }
-//
-//            FileWriter fileWriter = new FileWriter(arquivo, true);
-//            PrintWriter printWriter = new PrintWriter(fileWriter);
-//
-//            for(int i = 0;i < cor.size();i++) {
-//                if(cor.get(i).getId() != Long.valueOf(i)+1) {
-//                    cor.get(i).setId(Long.valueOf(i) + 1);
-//                    printWriter.println(cor.get(i));
-//                }
-//            }
-//
-//            printWriter.flush();
-//            printWriter.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    public List<Cor> mostraCor() throws IOException {
-//        FileReader fileReader = new FileReader("cor.txt");
-//        BufferedReader bufferedReader = new BufferedReader(fileReader);
-//
-//        List<String> tranformToString = new ArrayList<>();
-//
-//        List<Cor> listaCores = new ArrayList<>();
-//
-//        String linha = " ";
-//
-//        while ((linha = bufferedReader.readLine()) != null) {
-//            if (linha != null) {
-//                tranformToString.add(linha);
-//            }
-//        }
-//        fileReader.close();
-//        bufferedReader.close();
-//
-//        for (String i: tranformToString) {
-//            String[] cs = i.split(";");
-//
-//            Cor cores = new Cor();
-//
-//            cores.setId(Long.valueOf(cs[0]));
-//            cores.setNome(cs[1]);
-//            cores.setHexadecimal(cs[2]);
-//            cores.setIdProduto(Long.valueOf(cs[3]));
-//
-//            listaCores.add(cores);
-//        }
-//
-//        return listaCores;
-//    }
-//
-//    public void editaCores(List<Cor> cores) {
-//        try {
-//
-//            FileWriter fileWriter = new FileWriter("cor.txt", false);
-//            PrintWriter printWriter = new PrintWriter(fileWriter);
-//
-//            for (int list = 0; list < cores.size(); list++) {
-//                printWriter.println(cores.get(list));
-//            }
-//
-//            printWriter.flush();
-//            printWriter.close();
-//            fileWriter.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    public void delCor (List <Cor> cores) throws IOException {
-//
-//        FileWriter arquivoTxt = new FileWriter("cor.txt",false);
-//        PrintWriter gravaArq = new PrintWriter(arquivoTxt);
-//
-//        for (int l = 0; l < cores.size();l++) {
-//            if(cores.get(l).getIdProduto() != 1){
-//                cores.get(l).setIdProduto(cores.get(l).getIdProduto()-1);
-//            }
-//            cores.get(l).setId(Long.valueOf(l)+1);
-//            gravaArq.println(cores.get(l));
-//        }
-//
-//        gravaArq.flush();
-//        gravaArq.close();
-//        arquivoTxt.close();
-//
-//    }
-//
-//    public List<Cor> listarId(Long idProd) throws IOException {
-//
-//        List<Cor> coresProd = new ArrayList<>();
-//        List<Cor> cores = mostraCor();
-//
-//        for (int i = 0;i < cores.size();i++){
-//            if (cores.get(i).getIdProduto() == idProd){
-//                coresProd.add(cores.get(i));
-//            }
-//        }
-//
-//        return coresProd;
-//
-//    }
-//
-//}
+package java.com.femina.produto.Dao;
+
+import java.com.femina.produto.Factory.ConectionFactory;
+import java.com.femina.produto.Model.Cor;
+import java.io.*;
+import java.sql.*;
+import java.util.*;
+
+public class CorDao {
+
+    private Connection conection ;
+
+    public CorDao(){
+        this.conection = new ConectionFactory().getConection();
+    }
+    public void criaTabelaCor(Cor cor)throws IOException, SQLException{
+        String sql =  "CREATE TABLE IF NOT EXISTS cores (" +
+                "id INT PRIMARY KEY AUTO_INCREMENT," +
+                "nome VARCHAR(50) NOT NULL," +
+                "hexadecimal DECIMAL(10,2) );";
+
+        PreparedStatement stmt = conection.prepareStatement(sql);
+
+        stmt.execute();
+        stmt.close();
+    }
+    public void cadastraCor(Cor cores) throws SQLException{
+        String sql = "INSERT INTO cores" +
+                " (nome, hexadecimal) " +
+                "VALUES (?,?)";
+
+        PreparedStatement stmt = conection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+        stmt.setString(1, cores.getNome());
+        stmt.setString(2, cores.getHexadecimal());
+
+        stmt.execute();
+
+        ResultSet resultSet = stmt.getGeneratedKeys();
+
+        while (resultSet.next()) {
+            cores.setId(resultSet.getInt(1));
+        }
+    }
+    public List<Cor>listarCores() throws SQLException{
+        String sql = "SELECT * FROM cores";
+
+        PreparedStatement stmt = conection.prepareStatement(sql);
+        ResultSet resultSet = stmt.executeQuery();
+
+        List<Cor> listaDeCores = new ArrayList<>();
+
+        while(resultSet.next()) {
+            Cor cor = new Cor();
+
+            cor.setId(resultSet.getInt("id"));
+            cor.setNome(resultSet.getString("nome"));
+            cor.setHexadecimal((resultSet.getString("Hexadecimal")));
+            listaDeCores.add(cor);
+        }
+        return listaDeCores;
+    }
+    public  Cor selectCorById(int id) {
+        String sql = "SELECT * FROM cores WHERE id = ?";
+
+        try {
+
+            PreparedStatement stmt = conection.prepareStatement(sql);
+            stmt.setInt(1,id);
+
+            ResultSet resultSet = stmt.executeQuery();
+
+            while(resultSet.next()) {
+                Cor color = new Cor();
+                color.setId(resultSet.getInt("id"));
+                color.setNome(resultSet.getString("nome"));
+                color.setHexadecimal(resultSet.getString("Hexadecimal"));
+                return color;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
+    }
+    public void editarCor(Cor cor) {
+        String sql = "UPDATE cores SET nome = ?, hexadecimal = ? WHERE id = ?";
+
+        try {
+            PreparedStatement stmt = conection.prepareStatement(sql);
+
+            stmt.setString(1, cor.getNome());
+            stmt.setString(2, cor.getHexadecimal());
+            stmt.setInt(3, (int) cor.getId());
+
+            stmt.execute();
+
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deletaProduto(Cor cor) {
+        String sql = "DELETE FROM cores WHERE id = ?";
+
+        try {
+            PreparedStatement stmt = conection.prepareStatement(sql);
+            stmt.setInt(1, (int) cor.getId());
+            stmt.execute();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
