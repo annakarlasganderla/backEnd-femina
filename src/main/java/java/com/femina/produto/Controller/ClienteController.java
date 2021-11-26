@@ -6,25 +6,34 @@ import java.util.*;
 
 public class ClienteController {
 
+    public void criarTabela(){
+        ClienteDao cd = new ClienteDao();
+        cd.criarTabelaClientes();
+    }
+
     public void cadastrarCliente(Cliente cliente){
         ClienteDao cd = new ClienteDao();
         cd.cadastrarCliente(cliente);
     }
 
-//    public List<Cliente> listarClientes(){
-//        ClienteDao cd = new ClienteDao();
-//        List<Cliente> ldc = cd.listarCliente();
-//        return ldc;
-//    }
-//
-//    public void editarCliente(Cliente ldc){
-//        ClienteDao cd = new ClienteDao();
-//        cd.editarCliente(ldc);
-//    }
-//
-//    public void deletarCliente(Cliente ldc){
-//        ClienteDao cd = new ClienteDao();
-//        cd.deletarCliente(ldc);
-//    }
+    public List<Cliente> listarClientes(){
+        ClienteDao cd = new ClienteDao();
+        return cd.listarClientes();
+    }
+
+    public Cliente selectById(int id){
+        ClienteDao cd = new ClienteDao();
+        return cd.selectById(id);
+    }
+
+    public void editarCliente(Cliente cliente){
+        ClienteDao cd = new ClienteDao();
+        cd.editarCliente(cliente);
+    }
+
+    public void deletarCliente(Cliente cliente){
+        ClienteDao cd = new ClienteDao();
+        cd.deletarCliente(cliente);
+    }
 
 }

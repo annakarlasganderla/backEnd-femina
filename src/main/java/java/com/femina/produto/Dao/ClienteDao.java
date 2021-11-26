@@ -21,14 +21,14 @@ public class ClienteDao {
 
     public void criarTabelaClientes(){
         String sql = "CREATE TABLE IF NOT EXISTS cliente (" +
-        "id_cliente INT PRIMARY KEY AUTO_INCREMENT,"+
+        "idCliente INT PRIMARY KEY AUTO_INCREMENT,"+
         "nome VARCHAR(40) NOT NULL," +
         "idade INTEGER(11),"+
         "senha VARCHAR(32) NOT NULL,"+
-        "id_contatos INT,"+
-        "id_endereco INT,"+
-        "FOREIGN KEY (id_contatos) REFERENCE contatos(id),"+
-        "FOREIGN KEY (id_endereco) REFERENCE endereco(id)"+
+        "idContatos INT,"+
+        "idEndereco INT,"+
+        "FOREIGN KEY (idContatos) REFERENCE contatos(idContatos),"+
+        "FOREIGN KEY (idEndereco) REFERENCE endereco(idEndereco)"+
         ");";
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);
@@ -81,23 +81,96 @@ public class ClienteDao {
             while (resultSet.next()){
                 Cliente cliente = new Cliente();
 
-                cliente.setId(resultSet.getInt("id_cliente"));
+                cliente.setId(resultSet.getInt("idCliente"));
                 cliente.setNome(resultSet.getString("nome"));
                 cliente.setIdade(resultSet.getInt("idade"));
                 cliente.setSenha(resultSet.getString("senha"));
 
                 ContatoDao contatoDao = new ContatoDao();
-                Contatos contato = contatoDao.selecionaContatoById(resultSet.getInt("id_contato"));
+                Contatos contato = contatoDao.selectById(resultSet.getInt("idContato"));
                 cliente.setContatos(contato);
 
                 EnderecoDao enderecoDao = new EnderecoDao();
-                Endereco endereco = enderecoDao.selecionaEnderecoById(resultSet.getInt("id_endereco"));
+                Endereco endereco = enderecoDao.selectById(resultSet.getInt("idEndereco"));
                 cliente.setEndereco(endereco);
 
                 listaClientes.add(cliente);
             }
 
             return listaClientes;
+
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Cliente selectById(int id){
+        String sql = "SELECT * FROM cliente WHERE idCliente = ?";
+
+        try {
+
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, id);
+
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()){
+
+                Cliente cliente = new Cliente();
+
+                cliente.setId(resultSet.getInt("idCliente"));
+                cliente.setNome(resultSet.getString("nome"));
+                cliente.setIdade(resultSet.getInt("idade"));
+                cliente.setSenha(resultSet.getString("senha"));
+
+                ContatoDao contatoDao = new ContatoDao();
+                Contatos contato = contatoDao.selectById(resultSet.getInt("idContato"));
+                cliente.setContatos(contato);
+
+                EnderecoDao enderecoDao = new EnderecoDao();
+                Endereco endereco = enderecoDao.selectById(resultSet.getInt("idEndereco"));
+                cliente.setEndereco(endereco);
+
+                return cliente;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
+    }
+
+    public void editarCliente(Cliente cliente){
+        String sql = "UPDATE cliente SET nome = ?,idade = ?, senha = ?, idContatos = ?, idEndereco = ? WHERE idCliente = ?";
+
+        try {
+
+            PreparedStatement stmt = connection.prepareStatement(sql);
+
+            stmt.setString(1,cliente.getNome());
+            stmt.setInt(2, cliente.getIdade());
+            stmt.setString(3, cliente.getSenha());
+            stmt.setInt(4,cliente.getContatos().getId());
+            stmt.setInt(5, cliente.getEndereco().getIdEndereco());
+            stmt.setInt(6, cliente.getId());
+
+            stmt.execute();
+
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deletarCliente(Cliente cliente){
+        String sql = "DELETE FROM cliente WHERE idCliente = ?";
+
+        try {
+
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, cliente.getId());
+
+            stmt.execute();
 
         } catch (SQLException e){
             throw new RuntimeException(e);

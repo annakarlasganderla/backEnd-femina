@@ -1,7 +1,8 @@
 package java.com.femina.produto.View;
 
-import Controller.ModeloController;
 import Model.ModelosDosProdutos;
+
+import java.com.femina.produto.Controller.ModeloController;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
@@ -104,8 +105,6 @@ public class ModeloView {
             default:
                 System.out.println("Opção invalida");
         }
-
-        modeloController.deletarModelo(modelo);
 
     }
 
