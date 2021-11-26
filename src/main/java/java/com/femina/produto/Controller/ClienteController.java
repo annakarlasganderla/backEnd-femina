@@ -1,10 +1,16 @@
-package java.com.femina.produto.Controller;
+package Controller;
 
-import java.com.femina.produto.Dao.ClienteDao;
-import java.com.femina.produto.Model.Cliente;
+import Dao.ClienteDao;
+import Model.Cliente;
+import Model.Contatos;
+
 import java.util.*;
 
 public class ClienteController {
+
+    public ClienteController() {
+        this.criarTabela();
+    }
 
     public void criarTabela(){
         ClienteDao cd = new ClienteDao();
@@ -34,6 +40,10 @@ public class ClienteController {
     public void deletarCliente(Cliente cliente){
         ClienteDao cd = new ClienteDao();
         cd.deletarCliente(cliente);
+        ContatoController cc = new ContatoController();
+        cc.deletaContato(cliente.getContatos());
+        EnderecoController ec = new EnderecoController();
+        ec.deletarEndereco(cliente.getEndereco());
     }
 
 }

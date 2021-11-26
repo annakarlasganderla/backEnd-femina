@@ -1,4 +1,4 @@
-package java.com.femina.produto.Model;
+package Model;
 
 public class Cliente {
 
@@ -70,8 +70,8 @@ public class Cliente {
     @Override
     public String toString() {
         return  "CLIENTE: " +
-                nome + " - " +
-                idade + "\n" +
+                "Nome:" + nome + " - " +
+                "Idade" + idade + "\n" +
                 "   " + contatos.toString() + "\n" +
                 "   " + endereco.toString();
     }

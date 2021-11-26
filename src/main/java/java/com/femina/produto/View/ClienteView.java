@@ -1,11 +1,11 @@
-package java.com.femina.produto.View;
+package View;
 
-import main.java.com.femina.produto.View.ContatoView;
+import Model.Contatos;
 
-import java.com.femina.produto.Controller.ClienteController;
-import java.com.femina.produto.Model.Cliente;
-import java.com.femina.produto.Model.Contatos;
-import java.com.femina.produto.Model.Endereco;
+
+import Controller.ClienteController;
+import Model.Cliente;
+import Model.Endereco;
 import java.util.*;
 
 public class ClienteView {
@@ -65,8 +65,7 @@ public class ClienteView {
                 System.out.println((i + 1) + " - " + ldc.get(i).toString());
             }
         }
-
-        return listarClientes();
+        return ldc;
     }
 
     public Cliente selectClienteById(){
@@ -96,7 +95,7 @@ public class ClienteView {
 
     }
 
-    public void editarClientes() {
+    public void editarClientes(Cliente cliente) {
 
         Scanner entrada = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
         ClienteController cc = new ClienteController();
@@ -104,8 +103,6 @@ public class ClienteView {
         EndereçoView enderecoView = new EndereçoView();
 
         System.out.println("EDITAR CLIENTE: \n");
-
-        Cliente cliente = this.selectClienteById();
 
         System.out.println("Selecione o que você quer editar!");
         System.out.println("1-Nome;2-Idade;3-Senha;4-Contato;5-Endereço");
@@ -124,7 +121,7 @@ public class ClienteView {
                 cliente.setSenha(entrada.next());
                 break;
             case 4:
-                contatoView.editContato(cliente.getContatos());
+                contatoView.editarContatos(cliente.getContatos());
                 break;
             case 5:
                 enderecoView.editarEndereco(cliente.getEndereco());
@@ -141,7 +138,7 @@ public class ClienteView {
 
         switch (entrada.nextInt()){
             case 1:
-                this.editarClientes();
+                this.editarClientes(cliente);
                 break;
             case 2:
                 System.out.println("Retornando ao Menu");

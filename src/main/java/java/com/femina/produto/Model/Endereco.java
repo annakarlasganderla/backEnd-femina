@@ -1,8 +1,8 @@
-package java.com.femina.produto.Model;
+package Model;
 
 public class Endereco {
 
-    private long idEndereco;
+    private int idEndereco;
     private String pais,estado,cidade,rua,cep;
     private int numCasa;
 
@@ -18,11 +18,11 @@ public class Endereco {
     public Endereco() {
     }
 
-    public long getIdEndereco() {
+    public int getIdEndereco() {
         return idEndereco;
     }
 
-    public void setIdEndereco(long idEndereco) {
+    public void setIdEndereco(int idEndereco) {
         this.idEndereco = idEndereco;
     }
 
@@ -72,16 +72,6 @@ public class Endereco {
 
     public void setNumCasa(int numCasa) {
         this.numCasa = numCasa;
-    }
-
-    public String toMostra() {
-        return  "Endereco: " +
-                "Pais - " + pais + "; " +
-                "Estado - " + estado + "; " +
-                "Cidade - " + cidade + "; " +
-                "Rua - " + rua + "; " +
-                "Cep - " + cep+ "; " +
-                "Numero da casa - " + numCasa;
     }
 
     @Override

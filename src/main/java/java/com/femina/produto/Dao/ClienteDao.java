@@ -1,11 +1,10 @@
-package java.com.femina.produto.Dao;
+package Dao;
 
-import main.java.com.femina.produto.Dao.ContatoDao;
+import Factory.ConectionFactory;
+import Model.Contatos;
 
-import java.com.femina.produto.Factory.ConectionFactory;
-import java.com.femina.produto.Model.Cliente;
-import java.com.femina.produto.Model.Contatos;
-import java.com.femina.produto.Model.Endereco;
+import Model.Cliente;
+import Model.Endereco;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +26,8 @@ public class ClienteDao {
         "senha VARCHAR(32) NOT NULL,"+
         "idContatos INT,"+
         "idEndereco INT,"+
-        "FOREIGN KEY (idContatos) REFERENCE contatos(idContatos),"+
-        "FOREIGN KEY (idEndereco) REFERENCE endereco(idEndereco)"+
+        "FOREIGN KEY (idContatos) REFERENCES contatos(idContatos),"+
+        "FOREIGN KEY (idEndereco) REFERENCES endereco(idEndereco)"+
         ");";
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);
@@ -43,7 +42,7 @@ public class ClienteDao {
 
     public void cadastrarCliente(Cliente cliente){
         String sql = "INSERT INTO cliente "+
-        "(nome, idade, senha, id_contatos, id_endereco) "+
+        "(nome, idade, senha, idContatos, idEndereco) "+
         "VALUES (?,?,?,?,?)";
 
         try {
@@ -87,11 +86,11 @@ public class ClienteDao {
                 cliente.setSenha(resultSet.getString("senha"));
 
                 ContatoDao contatoDao = new ContatoDao();
-                Contatos contato = contatoDao.selectById(resultSet.getInt("idContato"));
+                Contatos contato = contatoDao.selecionaId(resultSet.getInt("idContatos"));
                 cliente.setContatos(contato);
 
                 EnderecoDao enderecoDao = new EnderecoDao();
-                Endereco endereco = enderecoDao.selectById(resultSet.getInt("idEndereco"));
+                Endereco endereco = enderecoDao.selectEnderecoById(resultSet.getInt("idEndereco"));
                 cliente.setEndereco(endereco);
 
                 listaClientes.add(cliente);
@@ -124,11 +123,11 @@ public class ClienteDao {
                 cliente.setSenha(resultSet.getString("senha"));
 
                 ContatoDao contatoDao = new ContatoDao();
-                Contatos contato = contatoDao.selectById(resultSet.getInt("idContato"));
+                Contatos contato = contatoDao.selecionaId(resultSet.getInt("idContatos"));
                 cliente.setContatos(contato);
 
                 EnderecoDao enderecoDao = new EnderecoDao();
-                Endereco endereco = enderecoDao.selectById(resultSet.getInt("idEndereco"));
+                Endereco endereco = enderecoDao.selectEnderecoById(resultSet.getInt("idEndereco"));
                 cliente.setEndereco(endereco);
 
                 return cliente;
