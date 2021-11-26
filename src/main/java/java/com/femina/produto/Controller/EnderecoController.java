@@ -11,6 +11,11 @@ public class EnderecoController {
     public void criaTabelaEndereco() {
         enderecoDao.criaTabelaEndereco();
     }
+  
+    public void criaTabelaEndereco(Endereco endereco) {
+        enderecoDao.criaTabelaEndereco(endereco);
+
+    }
 
     public void cadastraProduto(Endereco endereco) {
         enderecoDao.cadastraEndereco(endereco);

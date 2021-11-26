@@ -1,4 +1,4 @@
-package java.com.femina.produto.Model;
+package Model;
 
 public class Contatos {
 

@@ -4,6 +4,9 @@ import java.com.femina.produto.Controller.ClienteController;
 import java.com.femina.produto.Model.Cliente;
 import java.com.femina.produto.Model.Contatos;
 import java.com.femina.produto.Model.Endereco;
+
+import java.com.femina.produto.View.EndereçoView;
+
 import java.util.*;
 
 public class ClienteView {
@@ -169,5 +172,8 @@ public class ClienteView {
             default:
                 System.out.println("Opção invalida");
         }
+    }
+}
+        cc.cadastrarCliente(cliente);
     }
 }

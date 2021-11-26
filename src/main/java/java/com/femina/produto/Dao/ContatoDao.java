@@ -1,3 +1,4 @@
+
 package java.com.femina.produto.Dao;
 
 import java.com.femina.produto.Factory.ConectionFactory;
@@ -5,8 +6,16 @@ import java.com.femina.produto.Model.Contatos;
 import java.sql.*;
 import java.util.*;
 
+package Dao;
+
+import Factory.ConectionFactory;
+import Model.Contatos;
+
+import java.sql.*;
+import java.util.*;
 
 public class ContatoDao {
+
 
     private Connection connection;
 
@@ -32,8 +41,7 @@ public class ContatoDao {
             throw new RuntimeException(e);
         }
     }
-
-
+  
     public void gravaNoBanco(Contatos contatos){
 
         String sql = "INSERT INTO contatos" +

@@ -2,6 +2,8 @@ package java.com.femina.produto.Controller;
 
 import java.com.femina.produto.Dao.ContatoDao;
 import java.com.femina.produto.Model.Contatos;
+import java.com.femina.produto.Model.Contatos;
+
 import java.util.List;
 
 public class ContatoController {
@@ -40,6 +42,4 @@ public class ContatoController {
         ContatoDao contDao = new ContatoDao();
         contDao.removeContatoDoBanco(contatos);
     }
-
-
 }

@@ -1,15 +1,12 @@
 package java.com.femina.produto.Model;
 
 public class Categoria {
-
     private String nome;
-    private long id;
-    private long idProduto;
+    private int id;
 
-    public Categoria(String nome, long id, long idProduto) {
+    public Categoria(String nome, int id) {
         this.nome = nome;
         this.id = id;
-        this.idProduto = idProduto;
     }
 
     public Categoria() {
@@ -23,28 +20,16 @@ public class Categoria {
         this.nome = nome;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
-    }
-
-    public long getIdProduto() {
-        return idProduto;
-    }
-
-    public void setIdProduto(long idProduto) {
-        this.idProduto = idProduto;
     }
 
     @Override
     public String toString() {
-        return nome + ";" +
-                id + ";" +idProduto;
-    }
-
-    public void setNome() {
+        return id + ";" + nome + ";" + "\n";
     }
 }

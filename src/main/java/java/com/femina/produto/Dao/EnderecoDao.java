@@ -14,7 +14,7 @@ public class EnderecoDao {
         this.conection = new ConectionFactory().getConection();
     }
 
-    public void criaTabelaEndereco()  {
+    public void criaTabelaEndereco(Endereco endereco)  {
         try{
             String sql = "CREATE TABLE IF NOT EXISTS endereco (" +
                     "idEndereco INT PRIMARY KEY AUTO_INCREMENT," +

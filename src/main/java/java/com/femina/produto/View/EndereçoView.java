@@ -2,6 +2,7 @@ package java.com.femina.produto.View;
 
 import java.com.femina.produto.Controller.EnderecoController;
 import java.com.femina.produto.Model.Endereco;
+
 import java.util.*;
 
 public class EndereçoView {
@@ -29,7 +30,7 @@ public class EndereçoView {
         System.out.println("Informe o número da casa:");
         endereco.setNumCasa(leitor.nextInt());
 
-        enderecoController.criaTabelaEndereco();
+        enderecoController.criaTabelaEndereco(endereco);
         enderecoController.cadastraProduto(endereco);
         return endereco;
     }

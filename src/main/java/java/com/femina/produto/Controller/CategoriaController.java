@@ -1,34 +1,30 @@
-package main.java.com.femina.produto.Controller;
-import main.java.com.femina.produto.Dao.CategoriasDao;
-import main.java.com.femina.produto.Model.Categoria;
-
-import java.io.IOException;
-import java.util.ArrayList;
+package java.com.femina.produto.Controller;
+import java.com.femina.produto.Dao.CategoriaDao;
+import java.com.femina.produto.Model.Categoria;
 import java.util.List;
 
 public class CategoriaController {
 
-    List<Categoria> categorias = new ArrayList<>();
-    CategoriasDao categoriasDao = new CategoriasDao();
+    CategoriaDao categoriaDao = new CategoriaDao();
 
-    public void cadastrarCategoria(Categoria categoria) throws IOException {
-        categorias.add(categoria);
-        categoriasDao.cadastrarCategoria(categorias);
+    public void criaTabelaCategoria(Categoria categoria) {
+        categoriaDao.criaTabelaCategoria(categoria);
     }
 
-
-    public List<Categoria> mostrarListaDeCategoria() throws IOException {
-        categoriasDao.mostrarListaDeCategoria();
-        return categorias;
+    public void cadastraCategoria(Categoria categoria) {
+        categoriaDao.cadastraCategoria(categoria);
     }
 
-    public void editaDeletaCategoria(List<Categoria> produtoDescontos) throws IOException {
-        categoriasDao.editaDeletaCategorias(categorias);
+    public List<Categoria> listarCategorias() {
+        return categoriaDao.listarCategorias();
     }
 
-    public void removeCategoria(List<Categoria> categorias) throws IOException {
-        categoriasDao.editaDeletaCategorias(categorias);
+    public Categoria selectById(int id) {
+        return categoriaDao.selectById(id);
     }
 
+    public void deletarCategoria(Categoria categoria) {
+        categoriaDao.deletarCategoria(categoria);
+    }
 
 }
