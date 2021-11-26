@@ -1,8 +1,8 @@
 package java.com.femina.produto.Controller;
 
+import java.com.femina.produto.Dao.ContatoDao;
 import java.com.femina.produto.Model.Contatos;
-import java.io.IOException;
-
+import java.com.femina.produto.Model.Contatos;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class ContatoController {
     public Contatos seleionaById(int id){
 
         ContatoDao contDao = new ContatoDao();
-        return contDao.SelecionaId(id);
+        return contDao.selecionaId(id);
     }
 
     public void editarContato(Contatos contatos){
@@ -42,6 +42,4 @@ public class ContatoController {
         ContatoDao contDao = new ContatoDao();
         contDao.removeContatoDoBanco(contatos);
     }
-
-
 }

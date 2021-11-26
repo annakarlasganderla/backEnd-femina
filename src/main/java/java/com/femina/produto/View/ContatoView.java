@@ -1,3 +1,7 @@
+package java.com.femina.produto.View;
+
+import java.com.femina.produto.Controller.ContatoController;
+import java.com.femina.produto.Model.Contatos;
 package View;
 import Controller.ContatoController;
 import Dao.ContatoDao;
@@ -49,17 +53,20 @@ public class ContatoView {
         }
     }
 
-
-
-
     public void criaTabela(){
 
+        ContatoController cc = new ContatoController();
+        cc.criaTabela();
+
+    }
+
+    public void criaTabela(){
         ContatoDao prodDao = new ContatoDao();
         prodDao.criaTabela();
 
     }
 
-    public void cadastraContato() {
+    public Contato cadastraContato() {
 
         System.out.println("Digite o Numero de contato: ");
         String telefone = leitor.next();
@@ -71,6 +78,9 @@ public class ContatoView {
 
         ContatoController contatoController = new ContatoController();
         contatoController.cadastraContato(contato);
+
+        return contato;
+
     }
 
     public void mostraContato()  {
@@ -86,7 +96,26 @@ public class ContatoView {
     public Contatos retornaById(){
 
         Scanner entrada = new Scanner(System.in).useDelimiter("\n");
-        Contatos cont = new Contatos();
+        ContatoController pc = new ContatoController();
+
+        System.out.println("Qual o id você quer selecionar:");
+
+        Contatos cont = pc.seleionaById(entrada.nextInt());
+
+        System.out.println("O produto selecionado foi:");
+        System.out.println(cont);
+
+        return cont;
+    }
+
+    public void editarContatos(Contatos cont){
+
+        Scanner entrada = new Scanner(System.in).useDelimiter("\n");
+        ContatoController cc = new ContatoController();
+
+        System.out.println("Escolha o que você quer editar: ");
+
+      Contatos cont = new Contatos();
         ContatoController pc = new ContatoController();
 
         System.out.println("Qual o id você quer selecionar:");
@@ -120,6 +149,10 @@ public class ContatoView {
         }
 
         cc.editarContato(cont);
+
+        System.out.println("Produto Editado!");
+        System.out.println("Deseja Continuar?");
+        System.out.println("1-Sim;2-Não;");
 
         System.out.println("Produto Editado!");
         System.out.println("Deseja Continuar?");

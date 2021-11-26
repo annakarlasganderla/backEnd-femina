@@ -1,4 +1,4 @@
-package Model;
+package java.com.femina.produto.Model;
 
 public class ModelosDosProdutos {
 

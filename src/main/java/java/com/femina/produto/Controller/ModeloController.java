@@ -1,4 +1,9 @@
-package Controller;
+package java.com.femina.produto.Controller;
+
+import java.com.femina.produto.Dao.ModeloDao;
+import java.com.femina.produto.Model.ModelosDosProdutos;
+import java.util.List;
+
 
 public class ModeloController {
 
