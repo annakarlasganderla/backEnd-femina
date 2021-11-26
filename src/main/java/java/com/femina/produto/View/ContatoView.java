@@ -1,8 +1,7 @@
-package View;
-import Controller.ContatoController;
-import Dao.ContatoDao;
-import Model.Contatos;
+package java.com.femina.produto.View;
 
+import java.com.femina.produto.Controller.ContatoController;
+import java.com.femina.produto.Model.Contatos;
 import java.util.*;
 
 public class ContatoView {

@@ -1,11 +1,9 @@
-package View;
+package java.com.femina.produto.View;
 
-import Model.Contatos;
-
-
-import Controller.ClienteController;
-import Model.Cliente;
-import Model.Endereco;
+import java.com.femina.produto.Controller.ClienteController;
+import java.com.femina.produto.Model.Cliente;
+import java.com.femina.produto.Model.Contatos;
+import java.com.femina.produto.Model.Endereco;
 import java.util.*;
 
 public class ClienteView {

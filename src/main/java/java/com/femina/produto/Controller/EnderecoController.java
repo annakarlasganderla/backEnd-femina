@@ -1,8 +1,7 @@
-package Controller;
+package java.com.femina.produto.Controller;
 
-import Dao.EnderecoDao;
-import Model.Endereco;
-
+import java.com.femina.produto.Dao.EnderecoDao;
+import java.com.femina.produto.Model.Endereco;
 import java.util.List;
 
 public class EnderecoController {

@@ -1,8 +1,7 @@
 package java.com.femina.produto.View;
 
-import Model.ModelosDosProdutos;
-
 import java.com.femina.produto.Controller.ModeloController;
+import java.com.femina.produto.Model.ModelosDosProdutos;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;

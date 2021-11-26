@@ -1,7 +1,7 @@
-package Dao;
+package java.com.femina.produto.Dao;
 
-import Factory.ConectionFactory;
-import Model.Endereco;
+import java.com.femina.produto.Factory.ConectionFactory;
+import java.com.femina.produto.Model.Endereco;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

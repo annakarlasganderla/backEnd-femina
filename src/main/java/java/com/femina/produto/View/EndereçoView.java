@@ -1,8 +1,7 @@
-package View;
+package java.com.femina.produto.View;
 
-import Controller.EnderecoController;
-import Model.Endereco;
-
+import java.com.femina.produto.Controller.EnderecoController;
+import java.com.femina.produto.Model.Endereco;
 import java.util.*;
 
 public class EndereçoView {

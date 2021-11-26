@@ -1,11 +1,7 @@
-package Controller;
+package java.com.femina.produto.Controller;
 
-import Dao.ContatoDao;
-import Model.Contatos;
-
-import java.io.IOException;
-
-
+import java.com.femina.produto.Dao.ContatoDao;
+import java.com.femina.produto.Model.Contatos;
 import java.util.List;
 
 public class ContatoController {

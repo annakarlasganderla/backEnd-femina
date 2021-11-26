@@ -1,9 +1,7 @@
-package Controller;
+package java.com.femina.produto.Controller;
 
-import Dao.ClienteDao;
-import Model.Cliente;
-import Model.Contatos;
-
+import java.com.femina.produto.Dao.ClienteDao;
+import java.com.femina.produto.Model.Cliente;
 import java.util.*;
 
 public class ClienteController {

@@ -1,8 +1,7 @@
-package Dao;
+package java.com.femina.produto.Dao;
 
-import Factory.ConectionFactory;
-import Model.Contatos;
-
+import java.com.femina.produto.Factory.ConectionFactory;
+import java.com.femina.produto.Model.Contatos;
 import java.sql.*;
 import java.util.*;
 
