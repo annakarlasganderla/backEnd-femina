@@ -1,31 +1,40 @@
-//package main.java.com.femina.produto.Controller;
-//
-//import main.java.com.femina.produto.Dao.MarcaDao;
-//import main.java.com.femina.produto.Model.Marca;
-//
-//import java.io.*;
-//import java.util.*;
-//
-//public class MarcaController {
-//
-//    public void cadastraMarca (List<Marca> marca) {
-//        MarcaDao marcaDao = new MarcaDao();
-//        marcaDao.cadastraMarca(marca);
-//    }
-//
-//    public List<Marca> mostraMarcaCadastrada() throws IOException {
-//        MarcaDao marcaDao = new MarcaDao();
-//        List<Marca> listaMarcas = marcaDao.mostraMarcas();
-//        return listaMarcas;
-//    }
-//
-//    public void editaMarca(List<Marca> marcas) throws IOException {
-//        MarcaDao marcaDao = new MarcaDao();
-//        marcaDao.editaMarca(marcas);
-//    }
-//
-//    public void deletaMarca(List<Marca> marcas) throws IOException {
-//        MarcaDao marcaDao = new MarcaDao();
-//        marcaDao.deletaMarca(marcas);
-//    }
-//}
+package java.com.femina.produto.Controller;
+
+import java.com.femina.produto.Dao.MarcaDao;
+import java.com.femina.produto.Model.Marca;
+import java.io.*;
+import java.util.*;
+
+public class MarcaController {
+
+
+    public void criaTabela(){
+        MarcaDao marcDao = new MarcaDao();
+        marcDao.criaTabela();
+    }
+
+    public void cadastraMarca(Marca marc){
+        MarcaDao marcDao = new MarcaDao();
+        marcDao.gravaNoBanco(marc);
+    }
+
+    public List<Marca> mostraTabela(){
+        MarcaDao marcDao = new MarcaDao();
+        return marcDao.listaMarca();
+    }
+
+    public Marca seleionaById(int id){
+        MarcaDao marcDao = new MarcaDao();
+        return marcDao.SelecionaId(id);
+    }
+
+    public void deletaMarca(Marca marca){
+
+        ContatoController cc = new ContatoController();
+        cc.deletaContato(marca.getContatos());
+        MarcaDao marcDao = new MarcaDao();
+        marcDao.removeMarcaDoBanco(marca);
+
+    }
+
+}

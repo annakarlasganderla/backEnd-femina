@@ -1,118 +1,141 @@
-//package main.java.com.femina.produto.Dao;
-//
-//import main.java.com.femina.produto.Controller.ContatoController;
-//import main.java.com.femina.produto.Controller.EnderecoController;
-//import main.java.com.femina.produto.Model.Contatos;
-//import main.java.com.femina.produto.Model.Endereco;
-//import main.java.com.femina.produto.Model.Marca;
-//
-//import java.io.*;
-//import java.util.*;
-//
-//public class MarcaDao {
-//
-//    public void cadastraMarca(List<Marca> marca) {
-//        try {
-//
-//            FileWriter fileWriter = new FileWriter("marcas.txt", true);
-//
-//            PrintWriter printWriter = new PrintWriter(fileWriter);
-//
-//            for(int i = 0;i < marca.size();i++) {
-//                if (marca.get(i).getId() != i + 1) {
-//                    marca.get(i).setId(i+1);
-//                    printWriter.println(marca.get(i));
-//                }
-//            }
-//
-//            printWriter.flush();
-//            printWriter.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
-//
-//    public List<Marca> mostraMarcas() throws IOException {
-//
-//        FileReader fileReader = new FileReader("marcas.txt");
-//        BufferedReader bufferedReader = new BufferedReader(fileReader);
-//
-//        List<String> tranformToString = new ArrayList<>();
-//
-//        List<Marca> listaMarcas = new ArrayList<>();
-//
-//        String linha = " ";
-//
-//        while((linha = bufferedReader.readLine()) != null) {
-//            if(linha != null) {
-//                tranformToString.add(linha);
-//            }
-//        }
-//
-//        fileReader.close();
-//        bufferedReader.close();
-//
-//        for (String i: tranformToString) {
-//            String[] marc = i.split(";");
-//
-//            Marca marc2 = new Marca();
-//
-//            marc2.setId(Long.valueOf(marc[0]));
-//            marc2.setNome(marc[1]);
-//            ContatoController cc = new ContatoController();
-//            List<Contatos> ldc = cc.mostraContato("marca");
-//            for(int j = 0;j < ldc.size();j++){
-//                if(ldc.get(j).getId() == Integer.valueOf(marc[2])){
-//                    marc2.setContatos(ldc.get(j));
-//                }
-//            }
-//            EnderecoController ec = new EnderecoController();
-//            List<Endereco> lde = ec.mostraEndereco("marca");
-//            for(int j = 0;j < lde.size();j++){
-//                if(lde.get(j).getIdEndereco() == Long.valueOf(marc[3])){
-//                    marc2.setEnderecoMarca(lde.get(j));
-//                }
-//            }
-//
-//            listaMarcas.add(marc2);
-//        }
-//        return listaMarcas;
-//    }
-//
-//    public void editaMarca(List<Marca> marcas) throws IOException {
-//
-//        FileWriter fileWriter = new FileWriter("marcas.txt",false);
-//        PrintWriter printWriter = new PrintWriter(fileWriter);
-//
-//        for (int listMarcas = 0; listMarcas < marcas.size(); listMarcas++) {
-//            printWriter.println(marcas.get(listMarcas));
-//        }
-//
-//        printWriter.flush();
-//        printWriter.close();
-//        fileWriter.close();
-//    }
-//
-//    public void deletaMarca(List<Marca> marcas) throws IOException {
-//
-//        FileWriter fileWriter = new FileWriter("marcas.txt",false);
-//        PrintWriter printWriter = new PrintWriter(fileWriter);
-//
-//        for (int list = 0; list < marcas.size(); list++) {
-//            if(marcas.get(list).getEnderecoMarca().getIdEndereco() != 1){
-//                marcas.get(list).getEnderecoMarca().setIdEndereco(marcas.get(list).getEnderecoMarca().getIdEndereco()-1);
-//            }
-//            if(marcas.get(list).getContatos().getId() != 1){
-//                marcas.get(list).getContatos().setId(marcas.get(list).getContatos().getId()-1);
-//            }
-//            marcas.get(list).setId(list+1);
-//            printWriter.println(marcas.get(list));
-//        }
-//
-//        printWriter.flush();
-//        printWriter.close();
-//        fileWriter.close();
-//
-//    }
-//}
+package java.com.femina.produto.Dao;
+
+import java.com.femina.produto.Factory.ConectionFactory;
+import java.com.femina.produto.Model.Contatos;
+import java.com.femina.produto.Model.Marca;
+
+import java.sql.*;
+import java.util.*;
+
+public class MarcaDao {
+
+    private Connection connection;
+
+    public MarcaDao() {
+        this.connection = new ConectionFactory().getConection();
+    }
+
+    public void criaTabela() {
+
+        String sql = "CREATE TABLE IF NOT EXISTS marca (" +
+                "idMarca INT PRIMARY KEY AUTO_INCREMENT," +
+                "nome VARCHAR(50) NOT NULL," +
+                "idContatos INT," +
+                "CONSTRAINT fk_idContatos FOREIGN KEY (idContatos)" +
+                "REFERENCES contatos(idContatos)" +
+                ");";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+
+            stmt.execute();
+            stmt.close();
+
+            System.out.println("Tabela Marca criada com sucesso!");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public void gravaNoBanco(Marca marca) {
+
+        String sql = "INSERT INTO marca" +
+                " (nome,idContatos) " +
+                "VALUES (?,?)";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+            stmt.setString(1, marca.getNome());
+            stmt.setInt(2, marca.getContatos().getId());
+
+            stmt.execute();
+
+            ResultSet resultSet = stmt.getGeneratedKeys();
+
+            while (resultSet.next()) {
+                marca.setId(resultSet.getInt(1));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Marca> listaMarca() {
+        String sql = "SELECT * FROM marca";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            ResultSet resultSet = stmt.executeQuery();
+
+            List<Marca> marcaList = new ArrayList<>();
+            Marca marca;
+
+            while (resultSet.next()) {
+                marca = new Marca();
+                marca.setId(resultSet.getInt("idMarca"));
+                marca.setNome(resultSet.getString("nome"));
+
+
+                ContatoDao contatosDao = new ContatoDao();
+                Contatos contatos1 = contatosDao.selecionaId(resultSet.getInt("idContatos"));
+                marca.setContatos(contatos1);
+
+                marcaList.add(marca);
+            }
+
+            return marcaList;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public Marca SelecionaId(int id) {
+
+        String sql = "SELECT * FROM marca WHERE idMarca = ?";
+
+        try {
+
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, id);
+
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()) {
+                Marca marca = new Marca();
+                marca.setId(resultSet.getInt("idMarca"));
+                marca.setNome(resultSet.getString("Nome"));
+
+                ContatoDao cd = new ContatoDao();
+                Contatos contatos = cd.selecionaId(resultSet.getInt("idContatos"));
+                marca.setContatos(contatos);
+
+                return marca;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
+    }
+
+
+    public void removeMarcaDoBanco(Marca marca) {
+
+        String sql = "DELETE FROM marca WHERE idMarca = ?";
+
+        try {
+
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, marca.getId());
+            stmt.execute();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+}

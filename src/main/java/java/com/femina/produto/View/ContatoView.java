@@ -2,11 +2,6 @@ package java.com.femina.produto.View;
 
 import java.com.femina.produto.Controller.ContatoController;
 import java.com.femina.produto.Model.Contatos;
-package View;
-import Controller.ContatoController;
-import Dao.ContatoDao;
-import Model.Contatos;
-
 import java.util.*;
 
 public class ContatoView {
@@ -60,13 +55,7 @@ public class ContatoView {
 
     }
 
-    public void criaTabela(){
-        ContatoDao prodDao = new ContatoDao();
-        prodDao.criaTabela();
-
-    }
-
-    public Contato cadastraContato() {
+    public Contatos cadastraContato() {
 
         System.out.println("Digite o Numero de contato: ");
         String telefone = leitor.next();
@@ -108,14 +97,14 @@ public class ContatoView {
         return cont;
     }
 
-    public void editarContatos(Contatos cont){
+    public Contatos editarContatos(){
 
         Scanner entrada = new Scanner(System.in).useDelimiter("\n");
         ContatoController cc = new ContatoController();
 
         System.out.println("Escolha o que você quer editar: ");
 
-      Contatos cont = new Contatos();
+        Contatos cont = new Contatos();
         ContatoController pc = new ContatoController();
 
         System.out.println("Qual o id você quer selecionar:");
