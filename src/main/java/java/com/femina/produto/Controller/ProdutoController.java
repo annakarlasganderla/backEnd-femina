@@ -1,9 +1,8 @@
-package main.java.com.femina.produto.Controller;
+package java.com.femina.produto.Controller;
 
 import main.java.com.femina.produto.Dao.ProdutoDao;
-import main.java.com.femina.produto.Model.Produto;
 
-import java.util.List;
+import java.com.femina.produto.Model.Produto;
 
 public class ProdutoController {
 

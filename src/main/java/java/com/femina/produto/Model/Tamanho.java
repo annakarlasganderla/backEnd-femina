@@ -1,4 +1,4 @@
-package main.java.com.femina.produto.Model;
+package java.com.femina.produto.Model;
 
 public class Tamanho {
 

@@ -1,7 +1,4 @@
-package main.java.com.femina.produto.Model;
-
-import java.util.ArrayList;
-import java.util.List;
+package java.com.femina.produto.Model;
 
 public class Produto {
 
@@ -10,24 +7,12 @@ public class Produto {
     private Double preco;
     private int codigo,qtd;
     private Categoria categoria;
-    private Fornecedor fornecedor; // obj
-
-    private List<ModelosDosProdutos> modeloDosProdutos = new ArrayList<>();
-    private List<Cor> cor = new ArrayList<>();
-    private List<Tamanho> tamanho = new ArrayList<>();
-
-    private long idLoja;
+    private Fornecedor fornecedor;
+    private ModelosDosProdutos modelo;
+    private Cor cor ;
+    private Tamanho tamanho;
 
     public Produto() {}
-
-    public Produto(long id, int codigo, String nome, Double preco, int qtd, Fornecedor fornecedor, Categoria categoria) {
-        this.id = id;
-        this.nome = nome;
-        this.preco = preco;
-        this.qtd = qtd;
-        this.fornecedor = fornecedor;
-        this.categoria = categoria;
-    }
 
     public long getId() {
         return id;
@@ -35,14 +20,6 @@ public class Produto {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public int getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(int codigo) {
-        this.codigo = codigo;
     }
 
     public String getNome() {
@@ -61,28 +38,20 @@ public class Produto {
         this.preco = preco;
     }
 
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
+    }
+
     public int getQtd() {
         return qtd;
     }
 
     public void setQtd(int qtd) {
         this.qtd = qtd;
-    }
-
-    public List<ModelosDosProdutos> getModeloDosProdutos() {
-        return modeloDosProdutos;
-    }
-
-    public void setModeloDosProdutos(List<ModelosDosProdutos> modeloDosProdutos) {
-        this.modeloDosProdutos = modeloDosProdutos;
-    }
-
-    public List<Cor> getCor() {
-        return cor;
-    }
-
-    public void setCor(List<Cor> cor) {
-        this.cor = cor;
     }
 
     public Categoria getCategoria() {
@@ -93,14 +62,6 @@ public class Produto {
         this.categoria = categoria;
     }
 
-    public List<Tamanho> getTamanho() {
-        return tamanho;
-    }
-
-    public void setTamanho(List<Tamanho> tamanho) {
-        this.tamanho = tamanho;
-    }
-
     public Fornecedor getFornecedor() {
         return fornecedor;
     }
@@ -109,37 +70,41 @@ public class Produto {
         this.fornecedor = fornecedor;
     }
 
-    public long getIdLoja() {
-        return idLoja;
+    public ModelosDosProdutos getModelo() {
+        return modelo;
     }
 
-    public void setIdLoja(long idLoja) {
-        this.idLoja = idLoja;
+    public void setModelo(ModelosDosProdutos modelo) {
+        this.modelo = modelo;
     }
 
-    public String toMostra() {
-        return  "Produto: \n" +
-                "Id - "+ id + "\n" +
-                "Código do Produto:" + codigo + "\n" +
-               "Nome - " + nome + "\n" +
-               "Preço - " + preco + "\n" +
-               "Quantidade - " + qtd + "\n" +
-//                ", categoria=" + categoria.getNome() +
-                fornecedor.toMostra() +
-                "Cores - " + cor + "\n" +
-                "Tamanho - " + tamanho + "\n" +
-                "Modelos - " + modeloDosProdutos;
+    public Cor getCor() {
+        return cor;
+    }
+
+    public void setCor(Cor cor) {
+        this.cor = cor;
+    }
+
+    public Tamanho getTamanho() {
+        return tamanho;
+    }
+
+    public void setTamanho(Tamanho tamanho) {
+        this.tamanho = tamanho;
     }
 
     @Override
     public String toString() {
-        return ""+ id + ';' +
-                codigo + ';' +
-                nome + ';' +
-                preco + ';' +
-                qtd + ';' +
-//                ", categoria=" + categoria.getNome() +
-                fornecedor.getId() + ';' +
-                idLoja;
+        return "PRODUTO: \n"+
+                "|  Código: " + codigo + " - " +
+                "|  Nome: " + nome + " \n " +
+                "|  Valor: " + preco + " \n " +
+                "|  Quantidade: " + qtd + "\n" +
+                "|  Cor: " + cor + "\n" +
+                "|  Tamanho: " + tamanho + "\n" +
+                "|  Categoria: " + categoria.getNome() + "\n" +
+                "|  Fornecedor: " + fornecedor.getNome() +
+                "|-----------------------------------------------|";
     }
 }

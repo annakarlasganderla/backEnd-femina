@@ -1,10 +1,6 @@
-package main.java.com.femina.produto.View;
+package java.com.femina.produto.View;
 
-
-import main.java.com.femina.produto.Model.*;
-import main.java.com.femina.produto.Controller.ProdutoController;
-import main.java.com.femina.produto.View.FornecedorView;
-
+import java.com.femina.produto.Model.Produto;
 import java.io.IOException;
 import java.util.*;
 
@@ -12,31 +8,7 @@ public class ProdutoView {
 
     private List<Produto> lpd = new ArrayList<>();
 
-    public ProdutoView() throws IOException {
-        CorView cv = new CorView();
-        ModeloView mv = new ModeloView();
-        TamanhoView tv = new TamanhoView();
-        ProdutoController pc = new ProdutoController();
-
-        lpd = pc.listarProdutos();
-        for(int i = 0; i < this.lpd.size();i++){
-            List<Cor> cores = cv.listaCorDoProduto(Long.valueOf(lpd.get(i).getId()));
-            for(int j = 0;j < cores.size();j++){
-                lpd.get(i).getCor().add(cores.get(j));
-            }
-            List<ModelosDosProdutos> models = mv.listarModelosDoProduto(Long.valueOf(lpd.get(i).getId()));
-            for(int j = 0;j < models.size();j++){
-                lpd.get(i).getModeloDosProdutos().add(models.get(j));
-            }
-            List<Tamanho> tamanhos = tv.listarTamanhosDoProduto((int) lpd.get(i).getId());
-            for(int j = 0;j < tamanhos.size();j++){
-                lpd.get(i).getTamanho().add(tamanhos.get(j));
-            }
-        }
-
-    }
-
-    public void cadastro(Long idLoja) throws IOException {
+    public void cadastro()  {
 
         ProdutoController pc = new ProdutoController();
         FornecedorView fv = new FornecedorView();
