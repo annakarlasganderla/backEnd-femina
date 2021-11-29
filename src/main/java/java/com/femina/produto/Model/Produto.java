@@ -7,10 +7,12 @@ public class Produto {
     private Double preco;
     private int codigo,qtd;
     private Categoria categoria;
+    private Marca marca;
     private Fornecedor fornecedor;
     private ModelosDosProdutos modelo;
-    private Cor cor ;
+    private CorProduto cores;
     private Tamanho tamanho;
+
 
     public Produto() {}
 
@@ -62,6 +64,14 @@ public class Produto {
         this.categoria = categoria;
     }
 
+    public Marca getMarca() {
+        return marca;
+    }
+
+    public void setMarca(Marca marca) {
+        this.marca = marca;
+    }
+
     public Fornecedor getFornecedor() {
         return fornecedor;
     }
@@ -78,12 +88,12 @@ public class Produto {
         this.modelo = modelo;
     }
 
-    public Cor getCor() {
-        return cor;
+    public CorProduto getCores() {
+        return cores;
     }
 
-    public void setCor(Cor cor) {
-        this.cor = cor;
+    public void setCores(CorProduto cores) {
+        this.cores = cores;
     }
 
     public Tamanho getTamanho() {
@@ -101,7 +111,8 @@ public class Produto {
                 "|  Nome: " + nome + " \n " +
                 "|  Valor: " + preco + " \n " +
                 "|  Quantidade: " + qtd + "\n" +
-                "|  Cor: " + cor + "\n" +
+                "|  Cor: " + cores.getCores() + "\n" +
+                "|  Marca: " + marca.getNome() + "\n" +
                 "|  Tamanho: " + tamanho + "\n" +
                 "|  Categoria: " + categoria.getNome() + "\n" +
                 "|  Fornecedor: " + fornecedor.getNome() +
