@@ -2,7 +2,7 @@ package java.com.femina.produto.Model;
 
 public class Cor {
 
-    private long id;
+    private int id;
     private String nome, hexadecimal;
     private long idProduto;
 
@@ -14,11 +14,11 @@ public class Cor {
         this.hexadecimal = hexadecimal;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

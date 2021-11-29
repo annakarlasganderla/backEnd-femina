@@ -1,11 +1,11 @@
 package java.com.femina.produto.View;
 
+import main.java.com.femina.produto.View.CategoriaView;
 import main.java.com.femina.produto.View.CorView;
+import main.java.com.femina.produto.View.MarcaView;
 
 import java.com.femina.produto.Controller.ProdutoController;
-import java.com.femina.produto.Model.Cor;
-import java.com.femina.produto.Model.CorProduto;
-import java.com.femina.produto.Model.Produto;
+import java.com.femina.produto.Model.*;
 import java.io.IOException;
 import java.util.*;
 
@@ -14,7 +14,9 @@ public class ProdutoView {
     public void cadastro() {
 
         ProdutoController pc = new ProdutoController();
+        CategoriaView categoriaView = new CategoriaView();
         CorView cv = new CorView();
+        MarcaView mv = new MarcaView();
         Scanner entrada = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
 
         Produto prod = new Produto();
@@ -32,6 +34,14 @@ public class ProdutoView {
         System.out.println("Informe a Quantidade:");
         prod.setQtd(entrada.nextInt());
 
+        System.out.println("Selecione a Categoria do Produto:");
+        Categoria categoria = categoriaView.selectByID();
+        prod.setCategoria(categoria);
+
+        System.out.println("Selecione a Marca do Produto:");
+        Marca marca = mv.retornaById();
+        prod.setMarca(marca);
+
         System.out.println("Selecione as cores do produto:");
         CorProduto corProduto = new CorProduto();
         while (op != 0) {
@@ -41,7 +51,6 @@ public class ProdutoView {
             System.out.println("1 - SIM;                                 2 - NÃO;");
             op = entrada.nextInt();
         }
-        corProduto.setProduto(prod);
 
         pc.cadastrarProduto(prod);
 //        System.out.println("Selecione um Fornecedor");

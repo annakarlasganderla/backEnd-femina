@@ -4,18 +4,9 @@ import java.util.List;
 
 public class CorProduto {
 
-    private Produto produto;
     private List<Cor> cores;
 
     public CorProduto() {
-    }
-
-    public Produto getProduto() {
-        return produto;
-    }
-
-    public void setProduto(Produto produto) {
-        this.produto = produto;
     }
 
     public List<Cor> getCores() {
@@ -28,8 +19,6 @@ public class CorProduto {
 
     @Override
     public String toString() {
-        return "CorProduto{" +
-                ", cores=" + cores +
-                '}';
+        return "" + cores;
     }
 }

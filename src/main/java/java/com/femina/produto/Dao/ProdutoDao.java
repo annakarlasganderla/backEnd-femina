@@ -1,11 +1,11 @@
 package java.com.femina.produto.Dao;
 
+import com.mysql.cj.jdbc.result.ResultSetImpl;
+
 import java.com.femina.produto.Factory.ConectionFactory;
 import java.com.femina.produto.Model.Produto;
 import java.io.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
 
 
@@ -51,17 +51,46 @@ public class ProdutoDao {
         }
     }
 
-//    public void cadastrarProduto(Produto prod){
-//
-//       String sql = "";
-//
-//        try {
-//
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//    }
+    public void cadastrarProduto(Produto prod){
+
+       String sql = "INSERT INTO produtos" +
+               "(codigo,nome,valor,quantidade,idMarca,idCategoria) " +
+               "VALUES (?,?,?,?,?,?)";
+
+       String sqlCor = "INSERT INTO corproduto" +
+               "(idProduto, idCor)" +
+               "VALUES (?,?)";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            stmt.setInt(1, prod.getCodigo());
+            stmt.setString(2, prod.getNome());
+            stmt.setDouble(3, prod.getPreco());
+            stmt.setInt(4, prod.getQtd());
+            stmt.setInt(5, prod.getMarca().getId());
+            stmt.setInt(6, prod.getCategoria().getId());
+
+            stmt.execute();
+
+            ResultSet resultSet = stmt.getGeneratedKeys();
+
+            while (resultSet.next()){
+                prod.setId(resultSet.getInt(1));
+            }
+
+            for(int i = 0; i < prod.getCores().getCores().size(); i++){
+                stmt = connection.prepareStatement(sqlCor);
+                stmt.setInt(1, prod.getId());
+                stmt.setInt(2, prod.getCores().getCores().get(i).getId());
+
+                stmt.execute();
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 //
 //    public List<Produto> retornaProdutos(){
 //        List<Produto> produtos = new ArrayList<>();
