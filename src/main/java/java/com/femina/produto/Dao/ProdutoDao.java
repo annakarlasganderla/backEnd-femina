@@ -1,9 +1,7 @@
 package java.com.femina.produto.Dao;
 
-import com.mysql.cj.jdbc.result.ResultSetImpl;
-
 import java.com.femina.produto.Factory.ConectionFactory;
-import java.com.femina.produto.Model.Produto;
+import java.com.femina.produto.Model.*;
 import java.io.*;
 import java.sql.*;
 import java.util.*;
@@ -91,57 +89,56 @@ public class ProdutoDao {
         }
 
     }
-//
-//    public List<Produto> retornaProdutos(){
-//        List<Produto> produtos = new ArrayList<>();
-//        try {
-//            File arquivoDeTexto = new File ("produtos.txt");
-//
-//            if(!arquivoDeTexto.isFile()){
-//                arquivoDeTexto.createNewFile();
-//            }
-//
-//            FileReader fileReader = new FileReader(arquivoDeTexto);
-//            BufferedReader bufferedReader = new BufferedReader(fileReader);
-//            String linha = "";
-//
-//            List<String> result = new ArrayList();
-//
-//            while ((linha = bufferedReader.readLine()) != null) {
-//                if (linha != null && !linha.isEmpty()) {
-//                    result.add(linha);
-//                }
-//            }
-//            fileReader.close();
-//            bufferedReader.close();
-//
-//            for (String s : result) {
-//                String[] produts = s.split(";");
-//
-//                Produto p = new Produto();
-//
-//                p.setId(Integer.valueOf(produts[0]));
-//                p.setCodigo(Integer.valueOf(produts[1]));
-//                p.setNome(produts[2]);
-//                p.setPreco(Double.valueOf(produts[3]));
-//                p.setQtd(Integer.valueOf(produts[4]));
-//                FornecedorController fc = new FornecedorController();
-//                List<Fornecedor> lfd = fc.listarFornecedores();
-//                for (int i = 0;i < lfd.size();i++){
-//                    if(lfd.get(i).getId() == Integer.valueOf(produts[5])){
-//                        p.setFornecedor(lfd.get(i));
-//                    }
-//                }
-//                p.setIdLoja(Long.valueOf(produts[6]));
-//
-//                produtos.add(p);
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return produtos;
-//    }
-//
+
+    public List<Produto> listarProdutos(){
+        String sql = "SELECT * FROM produtos";
+        String sqlCor = "SELECT idCor FROM corproduto cp JOIN cores c ON cp.idCor = c.id WHERE cp.idProduto = ?";
+
+        try {
+
+            List<Produto> listaProdutos = new ArrayList<>();
+
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()){
+                Produto produto = new Produto();
+
+                produto.setId(resultSet.getInt("idProduto"));
+                produto.setCodigo(resultSet.getInt("codigo"));
+                produto.setNome(resultSet.getString("nome"));
+                produto.setPreco(resultSet.getDouble("valor"));
+                produto.setQtd(resultSet.getInt("quantidade"));
+
+                MarcaDao md = new MarcaDao();
+                Marca marca = md.SelecionaId(resultSet.getInt("idMarca"));
+                produto.setMarca(marca);
+
+                CategoriaDao cd = new CategoriaDao();
+                Categoria categoria = cd.selectById(resultSet.getInt("idCategoria"));
+                produto.setCategoria(categoria);
+
+                CorProduto corProduto = new CorProduto();
+                stmt = connection.prepareStatement(sqlCor);
+                stmt.setInt(1,produto.getId());
+                ResultSet resultSet1 = stmt.executeQuery();
+                while (resultSet1.next()){
+                    CorDao corDao = new CorDao();
+                    Cor cor = corDao.selectCorById(resultSet1.getInt("idCor"));
+                    corProduto.getCores().add(cor);
+                }
+                produto.setCores(corProduto);
+
+                listaProdutos.add(produto);
+            }
+
+            return listaProdutos;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 //    public void updateProd(List<Produto> prod){
 //        try {
 //

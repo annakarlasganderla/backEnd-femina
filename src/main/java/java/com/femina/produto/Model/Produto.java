@@ -107,9 +107,9 @@ public class Produto {
     @Override
     public String toString() {
         return "PRODUTO: \n"+
-                "|  Código: " + codigo + " - " +
-                "|  Nome: " + nome + " \n " +
-                "|  Valor: " + preco + " \n " +
+                "|  Código: " + codigo + "\n" +
+                "|  Nome: " + nome + "\n" +
+                "|  Valor: " + preco + "\n" +
                 "|  Quantidade: " + qtd + "\n" +
                 "|  Cor: " + cores.getCores() + "\n" +
                 "|  Marca: " + marca.getNome() + "\n" +

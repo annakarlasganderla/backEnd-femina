@@ -4,7 +4,7 @@ public class Cor {
 
     private int id;
     private String nome, hexadecimal;
-    private long idProduto;
+
 
     public Cor() {
     }
@@ -38,14 +38,6 @@ public class Cor {
         this.hexadecimal = hexadecimal;
     }
 
-    public long getIdProduto() {
-        return idProduto;
-    }
-
-    public void setIdProduto(long idProduto) {
-        this.idProduto = idProduto;
-    }
-
     public String toMostra() {
         return  "Cor: \n" +
                 "Id - " + id + "; " +
@@ -58,7 +50,6 @@ public class Cor {
     public String toString() {
         return "" + id + ';'+
                 nome + ';' +
-                hexadecimal + ';' +
-                idProduto;
+                hexadecimal + ';' ;
     }
 }

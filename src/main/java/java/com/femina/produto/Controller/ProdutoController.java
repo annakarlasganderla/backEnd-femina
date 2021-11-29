@@ -20,11 +20,12 @@ public class ProdutoController {
         pd.cadastrarProduto(prod);
     }
 
-//    public List<Produto> listarProdutos(){
-//        ProdutoDao pd = new ProdutoDao();
-//        return lpd;
-//    }
-//
+    public List<Produto> listarProdutos(){
+        ProdutoDao pd = new ProdutoDao();
+        return pd.listarProdutos();
+    }
+
+
 //    public void editarProduto(Produto produto){
 //        ProdutoDao pd = new ProdutoDao();
 //        pd.editarProduto(produto);

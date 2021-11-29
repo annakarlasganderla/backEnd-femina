@@ -1,109 +1,123 @@
-package main.java.com.femina.produto.View;
+package java.com.femina.produto.View;
 
-import main.java.com.femina.produto.Model.Contatos;
-import main.java.com.femina.produto.Model.Endereco;
-import main.java.com.femina.produto.Model.Fornecedor;
-import main.java.com.femina.produto.Model.Marca;
-import main.java.com.femina.produto.Controller.MarcaController;
-
-import java.io.*;
-import java.util.*;
+import java.com.femina.produto.Controller.MarcaController;
+import java.com.femina.produto.Dao.MarcaDao;
+import java.com.femina.produto.Model.Contatos;
+import java.com.femina.produto.Model.Marca;
+import java.util.List;
+import java.util.Locale;
+import java.util.Scanner;
 
 public class MarcaView {
 
     Scanner leitor = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
 
-    public void cadastrarMarca() throws IOException {
-        MarcaController marcaController = new MarcaController();
+
+    public void menu() {
+
+        Scanner leitor = new Scanner(System.in).useDelimiter("\n");
+        MarcaView mv = new MarcaView();
+
         ContatoView cv = new ContatoView();
-        EndereçoView ev = new EndereçoView();
 
-        Marca marca = new Marca();
+        mv.criaTabela();
 
-        System.out.println("Digite o nome da marca: ");
-        marca.setNome(leitor.next());
+        System.out.println("Escolha uma opção:");
 
-        Contatos contato = cv.cadastraContato("marca");
-        marca.setContatos(contato);
+        System.out.println("  1 - Cadastrar Marca ");
+        System.out.println("  2 - Mostrar Marcas  ");
+        System.out.println("  3 - Deletar Contatos   ");
 
-        Endereco endereco = ev.cadastraEndereco("marca");
-        marca.setEnderecoMarca(endereco);
 
-        List<Marca> ldm = marcaController.mostraMarcaCadastrada();
-        ldm.add(marca);
-        marcaController.cadastraMarca(ldm);
-        System.out.println("Marca cadastrada com sucesso" );
-    }
-
-    public void mostrarMarcas() throws IOException {
-
-        MarcaController mc = new MarcaController();
-
-        List<Marca> listaDeMarcas = mc.mostraMarcaCadastrada();
-
-        for (int i = 0; i < listaDeMarcas.size(); i++) {
-            System.out.println(listaDeMarcas.get(i).toMostra());
-        }
-
-    }
-
-    public void editarMarcas() throws IOException {
-
-        MarcaController mc = new MarcaController();
-        ContatoView cv = new ContatoView();
-        EndereçoView ev = new EndereçoView();
-        List<Marca> listaDeMarcas = mc.mostraMarcaCadastrada();
-
-        for(int i = 0; i < listaDeMarcas.size(); i++) {
-            System.out.println((i+1) + " - " + listaDeMarcas.get(i).toMostra());
-        }
-
-        System.out.println("Escolha qual marca você quer editar: ");
-        int opMarca = leitor.nextInt();
-        System.out.println("1 - Nome da marca;2 - Contato da marca;3 - Endereço da marca");
-        int opItem = leitor.nextInt();
-        switch (opItem) {
+        switch (leitor.nextInt()) {
             case 1:
-                listaDeMarcas.get(opMarca - 1).setNome(leitor.next());
+                mv.cadastraMarca();
+                this.menu();
                 break;
             case 2:
-                cv.editContato((int) listaDeMarcas.get(opMarca-1).getContatos().getId(),"marca");
+                mv.mostraMarca();
+                this.menu();
                 break;
             case 3:
-                ev.editEndereco((int) listaDeMarcas.get(opMarca-1).getEnderecoMarca().getIdEndereco(),"marca");
+                mv.mostraMarca();
+                mv.deletarMarca(mv.retornaById());
+                this.menu();
                 break;
-
             default:
-                System.out.println("Opção inválida");
-                break;
+                System.out.println("Opção invalida");
         }
-
-        mc.editaMarca(listaDeMarcas);
-        System.out.println("Marca editada com sucesso!");
     }
 
-    public void deletaMarca() throws IOException {
+
+    public void criaTabela() {
+
+        MarcaDao marcDao = new MarcaDao();
+        marcDao.criaTabela();
+
+    }
+
+    public void cadastraMarca() {
+        Marca marca = new Marca();
+
+        System.out.println("Digite o Nome da Marca Cadastrada: ");
+        marca.setNome(leitor.next());
+
+        ContatoView cv = new ContatoView();
+        Contatos contato = cv.cadastraContato();
+        marca.setContatos(contato);
 
         MarcaController mc = new MarcaController();
-        ContatoView cv = new ContatoView();
-        EndereçoView ev = new EndereçoView();
-        List<Marca> listaDeMarcas = mc.mostraMarcaCadastrada();
+        mc.cadastraMarca(marca);
+    }
 
-        for (int i = 0; i < listaDeMarcas.size();i++) {
-            System.out.println((i+1) + " - " + listaDeMarcas.get(i).toMostra());
+    public void mostraMarca() {
+
+        MarcaController mc = new MarcaController();
+        List<Marca> listaDeContatos = mc.mostraTabela();
+        for (int i = 0; i < listaDeContatos.size(); i++) {
+            System.out.println(listaDeContatos.get(i));
         }
-
-        System.out.println("Escolha qual marca você quer deletar: ");
-        int opMarca = leitor.nextInt();
-
-        cv.deletContato(opMarca,"marca");
-        ev.deletEndereco(opMarca,"marca");
-        listaDeMarcas.remove(opMarca - 1);
-
-        mc.deletaMarca(listaDeMarcas);
-
-        System.out.println(".\nMarca deletada com sucesso!");
 
     }
 
+    public Marca retornaById() {
+
+        Scanner entrada = new Scanner(System.in).useDelimiter("\n");
+
+        MarcaController mc = new MarcaController();
+
+        this.mostraMarca();
+
+        System.out.println("Qual o id você quer selecionar:");
+
+        Marca marc = mc.seleionaById(entrada.nextInt());
+
+        System.out.println("A marca selecionado foi:");
+        System.out.println(marc);
+
+        return marc;
+    }
+
+
+    public void deletarMarca(Marca marc) {
+
+        MarcaController mc = new MarcaController();
+        Scanner entrada = new Scanner(System.in).useDelimiter("\n");
+
+        System.out.println("Tem certeza que deseja deletar essa Marca?");
+        System.out.println("1-Sim;2-Não;");
+
+        switch (entrada.nextInt()) {
+            case 1:
+                mc.deletaMarca(marc);
+                break;
+            case 2:
+                System.out.println("Operação cancelada");
+                break;
+            default:
+                System.out.println("Opção invalida");
+        }
+
+
+    }
 }

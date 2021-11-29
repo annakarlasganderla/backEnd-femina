@@ -7,11 +7,12 @@ import main.java.com.femina.produto.View.MarcaView;
 import java.com.femina.produto.Controller.ProdutoController;
 import java.com.femina.produto.Model.*;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.*;
 
 public class ProdutoView {
 
-    public void cadastro() {
+    public void cadastrarProdutos() throws SQLException, IOException {
 
         ProdutoController pc = new ProdutoController();
         CategoriaView categoriaView = new CategoriaView();
@@ -20,7 +21,7 @@ public class ProdutoView {
         Scanner entrada = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
 
         Produto prod = new Produto();
-        int op = 0;
+        int op = 1;
 
         System.out.println("Informe o Código do Produto:");
         prod.setCodigo(entrada.nextInt());
@@ -35,7 +36,7 @@ public class ProdutoView {
         prod.setQtd(entrada.nextInt());
 
         System.out.println("Selecione a Categoria do Produto:");
-        Categoria categoria = categoriaView.selectByID();
+        Categoria categoria = categoriaView.selectById();
         prod.setCategoria(categoria);
 
         System.out.println("Selecione a Marca do Produto:");
@@ -48,10 +49,10 @@ public class ProdutoView {
             Cor cor = cv.selecionaCoresById();
             corProduto.getCores().add(cor);
             System.out.println("Deseja Selecionar mais uma cor para esse produto?");
-            System.out.println("1 - SIM;                                 2 - NÃO;");
+            System.out.println("1 - SIM;                                 0 - NÃO;");
             op = entrada.nextInt();
         }
-
+        prod.setCores(corProduto);
         pc.cadastrarProduto(prod);
 //        System.out.println("Selecione um Fornecedor");
 //
@@ -60,13 +61,36 @@ public class ProdutoView {
 
     }
 
-//    public void mostrarProdutos() throws IOException {
-//        ProdutoController pc = new ProdutoController();
-//
-//        for(int i = 0; i < this.lpd.size();i++){
-//            System.out.println((i+1) + " - " + this.lpd.get(i).toMostra());
-//        }
-//    }
+    public void listarProdutos() throws SQLException, IOException {
+
+        Scanner entrada = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
+
+        ProdutoController pc = new ProdutoController();
+        List<Produto> listaProdutos = pc.listarProdutos();
+
+        if(listaProdutos.isEmpty()){
+            System.out.println("Nenhum Produto Cadastrado!");
+            System.out.println("Deseja Cadastrar?");
+            System.out.println("1-Sim;     2-Não;");
+
+            switch (entrada.nextInt()){
+                case 1:
+                    this.cadastrarProdutos();
+                    break;
+                case 2:
+                    System.out.println("Voltando Para o Menu!");
+                    break;
+                default:
+                    System.out.println("Opção Inválidada!");
+            }
+        } else {
+            System.out.println("PRODUTOS: \n");
+            for (int i = 0; i < listaProdutos.size(); i++){
+                System.out.println((i+1) + " - " + listaProdutos.get(i).toString());
+            }
+        }
+
+    }
 
 //    public void alterarProduto() throws IOException {
 //        ProdutoController pc = new ProdutoController();

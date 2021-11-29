@@ -1,10 +1,11 @@
 package java.com.femina.produto.Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CorProduto {
 
-    private List<Cor> cores;
+    private List<Cor> cores = new ArrayList<>();
 
     public CorProduto() {
     }
@@ -22,3 +23,4 @@ public class CorProduto {
         return "" + cores;
     }
 }
+
