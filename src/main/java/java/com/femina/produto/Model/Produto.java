@@ -113,10 +113,10 @@ public class Produto {
                 "|  Valor: " + preco + "\n" +
                 "|  Quantidade: " + qtd + "\n" +
                 "|  Cores: " + cores.getCores() + "\n" +
-                "|  Marca: " + marca.getNome() + "\n" +
-                "|  Modelos: " + modelo.getModelos() + "\n" +
-//                "|  Tamanho: " + tamanho + "\n" +
                 "|  Categoria: " + categoria.getNome() + "\n" +
+                "|  Modelos: " + modelo.getModelos() + "\n" +
+                "|  Marca: " + marca.getNome() + "\n" +
+//                "|  Tamanho: " + tamanho + "\n" +
 //                "|  Fornecedor: " + fornecedor.getNome() +
                 "|-----------------------------------------------|";
     }
