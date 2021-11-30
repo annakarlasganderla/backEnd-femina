@@ -1,135 +1,168 @@
-//package main.java.com.femina.produto.Dao;
-//
-//import main.java.com.femina.produto.Controller.ContatoController;
-//import main.java.com.femina.produto.Controller.EnderecoController;
-//import main.java.com.femina.produto.Model.Contatos;
-//import main.java.com.femina.produto.Model.Endereco;
-//import main.java.com.femina.produto.Model.Fornecedor;
-//
-//import java.io.*;
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//public class FornecedorDao {
-//
-//    public void gravarFornecedor(List<Fornecedor> forn){
-//        File arq = new File("fornecedores.txt");
-//
-//        try {
-//            if(arq.isFile() ==  false){
-//                arq.createNewFile();
-//            }
-//            FileWriter fileWriter = new FileWriter(arq, true);
-//            PrintWriter printWriter = new PrintWriter(fileWriter);
-//
-//            for(int i = 0;i < forn.size();i++){
-//                if(forn.get(i).getId() != i+1){
-//                    forn.get(i).setId(i+1);
-//                    printWriter.println(forn.get(i));
-//                }
-//            }
-//
-//            printWriter.flush();
-//            printWriter.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    public List<Fornecedor> retornaFornecedores(){
-//        List<Fornecedor> fornecedores = new ArrayList<>();
-//        try {
-//            File arquivoDeTexto = new File ("fornecedores.txt");
-//
-//            if(!arquivoDeTexto.isFile()){
-//                arquivoDeTexto.createNewFile();
-//            }
-//
-//            FileReader fileReader = new FileReader(arquivoDeTexto);
-//            BufferedReader bufferedReader = new BufferedReader(fileReader);
-//            String linha = "";
-//
-//            List<String> result = new ArrayList();
-//
-//            while ((linha = bufferedReader.readLine()) != null) {
-//                if (linha != null && !linha.isEmpty()) {
-//                    result.add(linha);
-//                }
-//            }
-//            fileReader.close();
-//            bufferedReader.close();
-//
-//            for (String s : result) {
-//                String[] forncedores = s.split(";");
-//
-//                Fornecedor fornecedor = new Fornecedor();
-//
-//                fornecedor.setId(Integer.valueOf(forncedores[0]));
-//                fornecedor.setNome(forncedores[1]);
-//                fornecedor.setCnpj(forncedores[2]);
-//                ContatoDao cd = new ContatoDao();
-//                List<Contatos> ldc = cd.mostraContato("fornecedor");
-//                for(int i = 0;i < ldc.size();i++){
-//                    if(ldc.get(i).getId() == Integer.valueOf(forncedores[3])){
-//                        fornecedor.setContatos(ldc.get(i));
-//                    }
-//                }
-//                EnderecoDao ed = new EnderecoDao();
-//                List<Endereco> lde = ed.mostraEndereco("fornecedor");
-//                for(int i = 0;i < lde.size();i++){
-//                    if(lde.get(i).getIdEndereco() == Long.valueOf(forncedores[4])){
-//                        fornecedor.setEndereco(lde.get(i));
-//                    }
-//                }
-//
-//                fornecedores.add(fornecedor);
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return fornecedores;
-//    }
-//
-//    public void editFornecedor(List<Fornecedor> forn){
-//        try {
-//
-//            FileWriter fileWriter = new FileWriter("fornecedores.txt", false);
-//            PrintWriter printWriter = new PrintWriter(fileWriter);
-//
-//            for (int list = 0; list < forn.size(); list++) {
-//                printWriter.println(forn.get(list));
-//            }
-//
-//            printWriter.flush();
-//            printWriter.close();
-//            fileWriter.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    public void delFornecedor(List<Fornecedor> forn){
-//        try {
-//
-//            FileWriter fileWriter = new FileWriter("fornecedores.txt", false);
-//            PrintWriter printWriter = new PrintWriter(fileWriter);
-//
-//            for (int list = 0; list < forn.size(); list++) {
-//                if(forn.get(list).getEndereco().getIdEndereco() != 1){
-//                    forn.get(list).getEndereco().setIdEndereco(forn.get(list).getEndereco().getIdEndereco()-1);
-//                }
-//                if(forn.get(list).getContatos().getId() != 1){
-//                    forn.get(list).getContatos().setId(forn.get(list).getContatos().getId()-1);
-//                }
-//                forn.get(list).setId(list+1);
-//                printWriter.println(forn.get(list));
-//            }
-//
-//            printWriter.flush();
-//            printWriter.close();
-//            fileWriter.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//}
+package java.com.femina.produto.Dao;
+
+import Model.Contatos;
+
+import java.com.femina.produto.Factory.ConectionFactory;
+import java.com.femina.produto.Model.Endereco;
+import java.com.femina.produto.Model.Fornecedor;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class FornecedorDao {
+
+    private Connection connection;
+
+    public FornecedorDao(){
+        this.connection = new ConectionFactory().getConection();
+    }
+
+    public void criarTabelaFornecedores() {
+        String sql = "CREATE TABLE IF NOT EXISTS fornecedores (" +
+                "idFornecedor INT PRIMARY KEY AUTO_INCREMENT, " +
+                "nomeFornecedor VARCHAR(50) NOT NULL," +
+                "cnpjFornecedor VARCHAR(50) NOT NULL," +
+                "idContato INT," +
+                "idEndereco INT," +
+                //             nome que eu dei             nome que esta no banco
+                "FOREIGN KEY (idContato) REFERENCES contatos(idContatos)," +
+                "FOREIGN KEY (idEndereco) REFERENCES endereco(idEndereco)" +
+                ");";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+
+            stmt.execute();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void cadastrarFornecedor (Fornecedor fornecedor) {
+        String sql = "INSERT INTO fornecedores" +
+                "(nomeFornecedor, cnpjFornecedor, idContato, idEndereco) " +
+                "VALUES(?,?,?,?)";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+            stmt.setString(1, fornecedor.getNomeFornecedor());
+            stmt.setString(2, fornecedor.getCnpjFornecedor());
+            stmt.setInt(3,fornecedor.getContatoFornecedor().getId());
+            stmt.setInt(4,fornecedor.getEnderecoFornecedor().getIdEndereco());
+
+            stmt.execute();
+
+            ResultSet resultSet = stmt.getGeneratedKeys();
+
+            while(resultSet.next()) {
+                fornecedor.setIdFornecedor(resultSet.getInt(1));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Fornecedor> listarFornecedores() {
+        String sql = "SELECT * FROM fornecedores";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            ResultSet resultSet = stmt.executeQuery();
+
+            List<Fornecedor> listaFornecedores = new ArrayList<>();
+
+            while(resultSet.next()) {
+                Fornecedor fornecedor = new Fornecedor();
+
+                fornecedor.setIdFornecedor(resultSet.getInt("idFornecedor"));
+                fornecedor.setNomeFornecedor(resultSet.getString("nomeFornecedor"));
+                fornecedor.setCnpjFornecedor(resultSet.getString("cnpjFornecedor"));
+
+                Dao.ContatoDao contatoDao = new Dao.ContatoDao();
+                Contatos contatos = contatoDao.selecionaId(resultSet.getInt("idContato"));
+                fornecedor.setContatoFornecedor(contatos);
+
+                EnderecoDao enderecoDao = new EnderecoDao();
+                Endereco enderecos = enderecoDao.selectEnderecoById(resultSet.getInt("idEndereco"));
+                fornecedor.setEnderecoFornecedor(enderecos);
+
+                listaFornecedores.add(fornecedor);
+            }
+
+            return listaFornecedores;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Fornecedor selectFornecedorById (int idFornecedor) {
+        String sql = "SELECT * FROM fornecedores WHERE idFornecedor = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, idFornecedor);
+
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()) {
+                Fornecedor fornecedor = new Fornecedor();
+
+                fornecedor.setIdFornecedor(resultSet.getInt("idFornecedor"));
+                fornecedor.setNomeFornecedor(resultSet.getString("nomeFornecedor"));
+                fornecedor.setCnpjFornecedor(resultSet.getString("cnpjFornecedor"));
+
+                Dao.ContatoDao contatoDao = new Dao.ContatoDao();
+                Contatos contatos = contatoDao.selecionaId(resultSet.getInt("idContato"));
+                fornecedor.setContatoFornecedor(contatos);
+
+                EnderecoDao enderecoDao = new EnderecoDao();
+                Endereco enderecos = enderecoDao.selectEnderecoById(resultSet.getInt("idEndereco"));
+                fornecedor.setEnderecoFornecedor(enderecos);
+
+                return fornecedor;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void editarFornecedor (Fornecedor fornecedor) {
+        String sql = "UPDATE fornecedores SET nomeFornecedor = ?, cnpjFornecedor = ?, idContato = ?, idEndereco = ? WHERE idFornecedor = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+
+            stmt.setString(1,fornecedor.getNomeFornecedor());
+            stmt.setString(2,fornecedor.getCnpjFornecedor());
+            stmt.setInt(3,fornecedor.getContatoFornecedor().getId());
+            stmt.setInt(4,fornecedor.getEnderecoFornecedor().getIdEndereco());
+            stmt.setInt(5,fornecedor.getIdFornecedor());
+
+            stmt.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deletarFornecedor(Fornecedor fornecedor) {
+        String sql = "DELETE FROM fornecedores WHERE idFornecedor = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1,fornecedor.getIdFornecedor());
+
+            stmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+}

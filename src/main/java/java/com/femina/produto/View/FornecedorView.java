@@ -1,111 +1,238 @@
-//package main.java.com.femina.produto.View;
-//
-//import main.java.com.femina.produto.Model.Contatos;
-//import main.java.com.femina.produto.Model.Endereco;
-//import main.java.com.femina.produto.Model.Fornecedor;
-//import main.java.com.femina.produto.Controller.FornecedorController;
-//
-//import java.io.IOException;
-//import java.util.*;
-//
-//public class FornecedorView {
-//
-//    public void cadastro() throws IOException {
-//
-//        FornecedorController fc = new FornecedorController();
-//        ContatoView cv = new ContatoView();
-//        EndereçoView ev = new EndereçoView();
-//        Scanner entrada = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
-//
-//        Fornecedor forn = new Fornecedor();
-//
-//        System.out.println("Informe o nome do fornecedor");
-//        forn.setNome(entrada.next());
-//
-//        System.out.println("Informe o CNPJ do fornecedor");
-//        forn.setCnpj(entrada.next());
-//
-//        Contatos contato = cv.cadastraContato("fornecedor");
-//        forn.setContatos(contato);
-//
-//        Endereco endereco = ev.cadastraEndereco("fornecedor");
-//        forn.setEndereco(endereco);
-//
-//        List<Fornecedor> ldf = fc.listarFornecedores();
-//        ldf.add(forn);
-//
-//        fc.cadastrarFornecedor(ldf);
-//
-//        System.out.println("Fornecedor cadastrado com sucesso!\n");
-//    }
-//
-//    public List<Fornecedor> mostrarFornecedores(){
-//        FornecedorController fc = new FornecedorController();
-//        List<Fornecedor> lfd = fc.listarFornecedores();
-//        for(int i = 0; i < lfd.size();i++){
-//            System.out.println((i+1) + " - " + lfd.get(i).toMostra());
-//        }
-//        return lfd;
-//    }
-//
-//    public void alterarFornecedor() throws IOException {
-//        FornecedorController fc = new FornecedorController();
-//        ContatoView cv = new ContatoView();
-//        EndereçoView ev = new EndereçoView();
-//        Scanner entrada = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
-//
-//        List<Fornecedor> lfd = fc.listarFornecedores();
-//        for(int i = 0; i < lfd.size();i++){
-//            System.out.println((i+1) + " - " + lfd.get(i).toMostra());
-//        }
-//        System.out.println("Escolha qual fornecedor quer editar");
-//        int select = entrada.nextInt();
-//        System.out.println("Selecione: 1-Nome;2-CNPJ;3-Contato;4-Endereço");
-//        int selectItem = entrada.nextInt();
-//        switch (selectItem) {
-//            case 1:
-//                System.out.print("Nome-" + lfd.get(select - 1).getNome() + ": ");
-//                lfd.get(select-1).setNome(entrada.next());
-//                break;
-//            case 2:
-//                System.out.print("Cnpj-" + lfd.get(select - 1).getCnpj() + ": ");
-//                lfd.get(select-1).setCnpj(entrada.next());
-//                break;
-//            case 3:
-//                cv.editContato((int) lfd.get(select-1).getContatos().getId(),"fornecedor");
-//                break;
-//            case 4:
-//                ev.editEndereco((int) lfd.get(select-1).getEndereco().getIdEndereco(),"fornecedor");
-//                break;
-//            default:
-//                System.out.println("Opção Inválida");
-//        }
-//
-//        fc.editarFornecedor(lfd);
-//
-//        System.out.println("Fornecedor editado com sucesso!\n");
-//    }
-//
-//    public void deletarFornecedor() throws IOException {
-//        FornecedorController fc = new FornecedorController();
-//        ContatoView cv = new ContatoView();
-//        EndereçoView ev = new EndereçoView();
-//        Scanner entrada = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
-//
-//        List<Fornecedor> lfd = fc.listarFornecedores();
-//        for(int i = 0; i < lfd.size();i++){
-//            System.out.println((i+1) + " - " + lfd.get(i).toMostra());
-//        }
-//        System.out.println("Escolha qual fornecedor quer Deletar");
-//        int select = entrada.nextInt();
-//
-//        cv.deletContato(select,"fornecedor");
-//        ev.deletEndereco(select,"fornecedor");
-//        lfd.remove(select - 1);
-//
-//        fc.removerFornecedor(lfd);
-//
-//        System.out.println(".\nFornecedor deletado com sucesso!");
-//    }
-//
-//}
+package java.com.femina.produto.View;
+
+import Model.Contatos;
+
+
+import java.com.femina.produto.Controller.FornecedorController;
+import java.com.femina.produto.Model.Endereco;
+import java.com.femina.produto.Model.Fornecedor;
+import java.util.List;
+import java.util.Locale;
+import java.util.Scanner;
+
+public class FornecedorView {
+
+    Scanner leitor = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
+
+    FornecedorController fornecedorController = new FornecedorController();
+
+    View.ContatoView contatoView = new View.ContatoView();
+    EnderecoView enderecoView = new EnderecoView();
+
+    public void cadastrarFornecedor() {
+        Fornecedor fornecedor = new Fornecedor();
+
+        System.out.println("Informe o nome do fornecedor: ");
+        fornecedor.setNomeFornecedor(leitor.next());
+
+        System.out.println("Informe o cnpj do fornecedor: ");
+        fornecedor.setCnpjFornecedor(leitor.next());
+
+        Contatos contatos = contatoView.cadastraContato();
+        fornecedor.setContatoFornecedor(contatos);
+
+        Endereco endereco = enderecoView.cadastraEndereco();
+        fornecedor.setEnderecoFornecedor(endereco);
+
+        fornecedorController.criarTabela();
+        fornecedorController.cadastrarFornecedor(fornecedor);
+    }
+
+    public List<Fornecedor> listarFornecedores() {
+
+        List<Fornecedor> listaDeFornecedores = fornecedorController.listarFornecedores();
+
+        if(listaDeFornecedores.isEmpty()) {
+            System.out.println("Nenhum fornecedor cadastro!");
+            System.out.println("Deseja cadastrar?");
+            System.out.println("1 - Sim | 2 - Não");
+            switch (leitor.nextInt()) {
+                case 1:
+                    this.cadastrarFornecedor();
+                    break;
+
+                case 2:
+                    System.out.println("Voltando para o menu!");
+                    break;
+
+                default:
+                    System.out.println("Opção inválida");
+                    break;
+            }
+        } else {
+            System.out.println("-- Fornecedores --");
+            for(int i = 0; i < listaDeFornecedores.size(); i++) {
+                System.out.println((i + 1) + " - " + listaDeFornecedores.get(i).toString());
+            }
+        }
+
+        return listaDeFornecedores;
+    }
+
+    public Fornecedor selectFornecedorById() {
+        System.out.println("Selecione o fornecedor: ");
+        List<Fornecedor> listaDeFornecedores = this.listarFornecedores();
+
+        if(listaDeFornecedores.isEmpty()) {
+            System.out.println("Nenhum fornecedor cadastrado");
+            System.out.println("Deseja cadastrar?");
+            System.out.println("1 - Sim | 2 - Não");
+            switch (leitor.nextInt()) {
+                case 1:
+                    this.cadastrarFornecedor();
+                    break;
+
+                case 2:
+                    System.out.println("Voltando para o menu!");
+                    break;
+
+                default:
+                    System.out.println("Opção inválida");
+                    break;
+            }
+        }
+
+        System.out.println("Escolha o fornecedor: ");
+
+        Fornecedor fornecedor = fornecedorController.selectFornecedorById(listaDeFornecedores.get(leitor.nextInt() - 1).getIdFornecedor());
+        System.out.println("Fornecedor selecionado -> " + fornecedor.getNomeFornecedor());
+
+        return fornecedor;
+    }
+
+    public void editarFornecedor(Fornecedor fornecedor) {
+
+        System.out.println("Selecione o que você quer editar: ");
+        System.out.println("|     1 - Nome            |");
+        System.out.println("|     2 - Cnpj            |");
+        System.out.println("|     3 - Contato         |");
+        System.out.println("|     4 - Endereço        |");
+        int selectForn = leitor.nextInt();
+
+        switch (selectForn) {
+            case 1:
+                System.out.println("Nome: ");
+                fornecedor.setNomeFornecedor(leitor.next());
+                break;
+
+            case 2:
+                System.out.println("Fornecedor: ");
+                fornecedor.setCnpjFornecedor(leitor.next());
+                break;
+
+            case 3:
+                contatoView.editarContatos(fornecedor.getContatoFornecedor());
+                break;
+
+            case 4:
+                enderecoView.editarEndereco(fornecedor.getEnderecoFornecedor());
+                break;
+
+            default:
+                System.out.println("Opção inválida");
+        }
+
+        fornecedorController.editarFornecedor(fornecedor);
+
+        System.out.println("Fornecedor Editado!");
+        System.out.println("Deseja Continuar?");
+        System.out.println("1-Sim;2-Não;");
+
+        switch (leitor.nextInt()){
+            case 1:
+                this.editarFornecedor(fornecedor);
+                break;
+            case 2:
+                System.out.println("Retornando ao Menu");
+                break;
+            default:
+                System.out.println("Opção invalida");
+        }
+    }
+
+    public void deletarFornecedor() {
+        Fornecedor fornecedor = this.selectFornecedorById();
+
+        System.out.println("Tem certeza que deseja deletar esse fornecedor?");
+        System.out.println(" 1 - Sim | 2 - Não");
+
+        switch (leitor.nextInt()) {
+            case 1:
+                fornecedorController.deletarFornecedor(fornecedor);
+                break;
+            case 2:
+                System.out.println("Operação cancelada");
+                break;
+            default:
+                System.out.println("Opção invalida");
+
+        }
+    }
+
+    public void menuFornecedor() {
+        int op = 0;
+        char control = 's';
+
+        do {
+            do {
+                System.out.println("-------------------------------------");
+                System.out.println("|        0 - Sair                   |");
+                System.out.println("|        1 - Cadastrar              |");
+                System.out.println("|        2 - Visualizar             |");
+                System.out.println("|        3 - Editar                 |");
+                System.out.println("|        4 - Deletar                |");
+                System.out.println("-------------------------------------");
+                System.out.println("|     Digite aqui a sua opção:      |");
+                System.out.println("-------------------------------------");
+                op = leitor.nextInt();
+            } while (op == 5);
+
+            switch (op) {
+
+                case 0:
+                    break;
+
+                case 1:
+                    do {
+                        this.cadastrarFornecedor();
+
+                        System.out.println("Deseja continuar cadastrando? digite s ou S para sim");
+                        control = leitor.next().charAt(0);
+
+                    } while (control == 's' || control == 'S');
+
+                    System.out.println("5 - Voltar");
+                    op = leitor.nextInt();
+                    break;
+
+                case 2:
+                    this.listarFornecedores();
+                    System.out.println("5 - Voltar");
+                    op = leitor.nextInt();
+                    break;
+
+                case 3:
+                    this.editarFornecedor(selectFornecedorById());
+                    System.out.println("5 - Voltar");
+                    op = leitor.nextInt();
+                    break;
+
+                case 4:
+                    this.deletarFornecedor();
+                    System.out.println("5 - Voltar");
+                    op = leitor.nextInt();
+                    break;
+
+                default:
+                    System.out.println("Opção inválida");
+                    System.out.println("5 - Voltar");
+                    op = leitor.nextInt();
+                    break;
+            }
+
+        } while (op != 0);
+
+    }
+
+
+}
