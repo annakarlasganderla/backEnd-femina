@@ -1,5 +1,7 @@
 package java.com.femina.produto.Dao;
 
+import main.java.com.femina.produto.Dao.FornecedorDao;
+
 import java.com.femina.produto.Factory.ConectionFactory;
 import java.com.femina.produto.Model.*;
 import java.io.*;
@@ -43,6 +45,23 @@ public class ProdutoDao {
                 "FOREIGN KEY (idProduto) REFERENCES produtos(idProduto)," +
                 "FOREIGN KEY (idModeloP) REFERENCES modelo(idModelo)" +
                 ");";
+
+        String sqlTamanho = "CREATE TABLE IF NOT EXISTS tamanhoproduto (" +
+                "idTamanhoProduto INT PRIMARY KEY AUTO_INCREMENT," +
+                "idProduto INT," +
+                "idTamanho INT," +
+                "FOREIGN KEY (idProduto) REFERENCES produtos(idProduto)," +
+                "FOREIGN KEY (idTamanho) REFERENCES tamanho(id)" +
+                ");";
+
+        String sqlFornecedor = "CREATE TABLE IF NOT EXISTS fornecedorproduto (" +
+                "idFornecedorProduto INT PRIMARY KEY AUTO_INCREMENT," +
+                "idProduto INT," +
+                "idFornecedor_fk INT," +
+                "FOREIGN KEY (idProduto) REFERENCES produtos(idProduto)," +
+                "FOREIGN KEY (idFornecedor_fk) REFERENCES fornecedores(idFornecedor)" +
+                ");";
+
         try {
 
             PreparedStatement stmt = connection.prepareStatement(sql);
@@ -50,6 +69,10 @@ public class ProdutoDao {
             stmt = connection.prepareStatement(sqlCor);
             stmt.execute();
             stmt = connection.prepareStatement(sqlModelo);
+            stmt.execute();
+            stmt = connection.prepareStatement(sqlTamanho);
+            stmt.execute();
+            stmt = connection.prepareStatement(sqlFornecedor);
             stmt.execute();
 
             stmt.close();
@@ -71,6 +94,14 @@ public class ProdutoDao {
 
         String sqlModelo = "INSERT INTO modeloproduto" +
                 "(idProduto, idModeloP)" +
+                "VALUES (?,?)";
+
+        String sqlTamanho = "INSERT INTO tamanhoproduto" +
+                "(idProduto, idTamanho)" +
+                "VALUES (?,?)";
+
+        String sqlFornecedor = "INSERT INTO fornecedorproduto" +
+                "(idProduto, idFornecedor_fk)" +
                 "VALUES (?,?)";
 
         try {
@@ -106,6 +137,22 @@ public class ProdutoDao {
                 stmt.execute();
             }
 
+            for(int i = 0; i < prod.getTamanhos().getTamanhos().size(); i++){
+                stmt = connection.prepareStatement(sqlTamanho);
+                stmt.setInt(1, prod.getId());
+                stmt.setInt(2, prod.getTamanhos().getTamanhos().get(i).getId());
+
+                stmt.execute();
+            }
+
+            for(int i = 0; i < prod.getFornecedor().getFornecedores().size(); i++){
+                stmt = connection.prepareStatement(sqlFornecedor);
+                stmt.setInt(1, prod.getId());
+                stmt.setInt(2, prod.getFornecedor().getFornecedores().get(i).getId());
+
+                stmt.execute();
+            }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -114,8 +161,14 @@ public class ProdutoDao {
 
     public List<Produto> listarProdutos(){
         String sql = "SELECT * FROM produtos";
-        String sqlCor = "SELECT idCor FROM corproduto cp JOIN cores c ON cp.idCor = c.id WHERE cp.idProduto = ?";
-        String sqlModelo = "SELECT idModeloP FROM modeloproduto mp JOIN modelo m ON mp.idModeloP = m.idModelo WHERE mp.idProduto = ?";
+        String sqlCor = "SELECT idCor FROM corproduto cp JOIN cores c " +
+                "ON cp.idCor = c.id WHERE cp.idProduto = ?";
+        String sqlModelo = "SELECT idModeloP FROM modeloproduto mp JOIN modelo m " +
+                "ON mp.idModeloP = m.idModelo WHERE mp.idProduto = ?";
+        String sqlTamanho = "SELECT idTamanho FROM tamanhoproduto tp JOIN tamanho t " +
+                "ON tp.idTamanho = t.id WHERE tp.idProduto = ?";
+        String sqlFornecedor = "SELECT idFornecedor_fk FROM fornecedorproduto fp JOIN fornecedor f " +
+                "ON fp.idFornecedor_fk = f.idFornecedor WHERE fp.idProduto = ?";
 
         try {
 
@@ -152,19 +205,38 @@ public class ProdutoDao {
                 }
                 produto.setCores(corProduto);
 
-
                 ModeloProduto modeloProduto = new ModeloProduto();
                 stmt = connection.prepareStatement(sqlModelo);
                 stmt.setInt(1, produto.getId());
                 ResultSet resultSet2 = stmt.executeQuery();
-
                 while (resultSet2.next()){
                     ModeloDao modeloDao = new ModeloDao();
-
                     ModelosDosProdutos modelo = modeloDao.selecionaModeloById(resultSet2.getInt("idModeloP"));
                     modeloProduto.getModelos().add(modelo);
                 }
                 produto.setModelo(modeloProduto);
+
+                TamanhoProduto tamanhoProduto = new TamanhoProduto();
+                stmt = connection.prepareStatement(sqlTamanho);
+                stmt.setInt(1, produto.getId());
+                ResultSet resultSet3 = stmt.executeQuery();
+                while (resultSet3.next()){
+                    TamanhoDAO tamanhoDAO = new TamanhoDAO();
+                    Tamanho tamanho = tamanhoDAO.listTamanhosId(resultSet3.getInt("idTamanho"));
+                    tamanhoProduto.getTamanhos().add(tamanho);
+                }
+                produto.setTamanhos(tamanhoProduto);
+
+                FornecedorProduto fornecedorProduto = new FornecedorProduto();
+                stmt = connection.prepareStatement(sqlFornecedor);
+                stmt.setInt(1, produto.getId());
+                ResultSet resultSet4 = stmt.executeQuery();
+                while (resultSet4.next()) {
+                    FornecedorDao fornecedorDao = new FornecedorDao();
+                    Fornecedor fornecedor = fornecedorDao.selectFornecedorById();
+                    fornecedorProduto.getFornecedores().add(fornecedor);
+                }
+                produto.setFornecedor(fornecedorProduto);
 
                 listaProdutos.add(produto);
             }
@@ -172,6 +244,108 @@ public class ProdutoDao {
             return listaProdutos;
 
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Produto selectById(int idProduto){
+
+        String sql = "SELECT * FROM produtos WHERE idProduto = ?";
+        String sqlCor = "SELECT idCor FROM corproduto cp JOIN cores c " +
+                "ON cp.idCor = c.id WHERE cp.idProduto = ?";
+        String sqlModelo = "SELECT idModeloP FROM modeloproduto mp JOIN modelo m " +
+                "ON mp.idModeloP = m.idModelo WHERE mp.idProduto = ?";
+        String sqlTamanho = "SELECT idTamanho FROM tamanhoproduto tp JOIN tamanho t " +
+                "ON tp.idTamanho = t.id WHERE tp.idProduto = ?";
+        String sqlFornecedor = "SELECT idFornecedor_fk FROM fornecedorproduto fp JOIN fornecedor f " +
+                "ON fp.idFornecedor_fk = f.idFornecedor WHERE fp.idProduto = ?";
+
+        try {
+
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, idProduto);
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()) {
+                Produto produto = new Produto();
+
+                produto.setId(resultSet.getInt("idProduto"));
+                produto.setCodigo(resultSet.getInt("codigo"));
+                produto.setNome(resultSet.getString("nome"));
+                produto.setPreco(resultSet.getDouble("valor"));
+                produto.setQtd(resultSet.getInt("quantidade"));
+
+                MarcaDao md = new MarcaDao();
+                Marca marca = md.SelecionaId(resultSet.getInt("idMarca"));
+                produto.setMarca(marca);
+
+                CategoriaDao cd = new CategoriaDao();
+                Categoria categoria = cd.selectById(resultSet.getInt("idCategoria"));
+                produto.setCategoria(categoria);
+
+                CorProduto corProduto = new CorProduto();
+                stmt = connection.prepareStatement(sqlCor);
+                stmt.setInt(1, produto.getId());
+                ResultSet resultSet1 = stmt.executeQuery();
+                while (resultSet1.next()) {
+                    CorDao corDao = new CorDao();
+                    Cor cor = corDao.selectCorById(resultSet1.getInt("idCor"));
+                    corProduto.getCores().add(cor);
+                }
+                produto.setCores(corProduto);
+
+                ModeloProduto modeloProduto = new ModeloProduto();
+                stmt = connection.prepareStatement(sqlModelo);
+                stmt.setInt(1, produto.getId());
+                ResultSet resultSet2 = stmt.executeQuery();
+                while (resultSet2.next()) {
+                    ModeloDao modeloDao = new ModeloDao();
+                    ModelosDosProdutos modelo = modeloDao.selecionaModeloById(resultSet2.getInt("idModeloP"));
+                    modeloProduto.getModelos().add(modelo);
+                }
+                produto.setModelo(modeloProduto);
+
+                TamanhoProduto tamanhoProduto = new TamanhoProduto();
+                stmt = connection.prepareStatement(sqlTamanho);
+                stmt.setInt(1, produto.getId());
+                ResultSet resultSet3 = stmt.executeQuery();
+                while (resultSet3.next()) {
+                    TamanhoDAO tamanhoDAO = new TamanhoDAO();
+                    Tamanho tamanho = tamanhoDAO.listTamanhosId(resultSet3.getInt("idTamanho"));
+                    tamanhoProduto.getTamanhos().add(tamanho);
+                }
+                produto.setTamanhos(tamanhoProduto);
+
+                FornecedorProduto fornecedorProduto = new FornecedorProduto();
+                stmt = connection.prepareStatement(sqlFornecedor);
+                stmt.setInt(1, produto.getId());
+                ResultSet resultSet4 = stmt.executeQuery();
+                while (resultSet4.next()) {
+                    FornecedorDao fornecedorDao = new FornecedorDao();
+                    Fornecedor fornecedor = fornecedorDao.selectFornecedorById();
+                    fornecedorProduto.getFornecedores().add(fornecedor);
+                }
+                produto.setFornecedor(fornecedorProduto);
+
+                return produto;
+            }
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public void deletarProduto(Produto produto){
+        String sql = "DELETE FROM produtos WHERE idProduto = ?";
+
+        try {
+
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, produto.getId());
+
+            stmt.execute();
+
+        } catch (SQLException e){
             throw new RuntimeException(e);
         }
     }

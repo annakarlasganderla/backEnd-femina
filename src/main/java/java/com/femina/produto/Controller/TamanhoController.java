@@ -1,36 +1,44 @@
-package main.java.com.femina.produto.Controller;
+package java.com.femina.produto.Controller;
 
-import main.java.com.femina.produto.Dao.TamanhoDAO;
-import main.java.com.femina.produto.Model.Tamanho;
+import java.com.femina.produto.Dao.TamanhoDAO;
 
+import java.com.femina.produto.Model.Tamanho;
 import java.io.IOException;
 import java.util.List;
 
 public class TamanhoController {
 
+    public TamanhoController(){
+        this.criarTabelaTamanho();
+    }
+
     TamanhoDAO tamanhoDAO = new TamanhoDAO();
 
-    public void cadastrarTamanho(List<Tamanho> tamanhos){
+    public void criarTabelaTamanho(){
+        tamanhoDAO.creatTable();
+    }
 
-        tamanhoDAO.cadastrarTamanho(tamanhos);
+    public void cadastrarTamanho(Tamanho tamanho){
+
+        tamanhoDAO.cadastrarTamanho(tamanho);
 
     }
 
-    public List<Tamanho> listaTamanho(){
+    public List<Tamanho> listarTamanho(){
 
-       return tamanhoDAO.listarTamanhos();
+        return tamanhoDAO.listarTamanhos();
 
     }
 
-    public List<Tamanho> listarTamanhosPeloIdProd(int idProd) {
+    public Tamanho listarTamanhosPeloIdProd(int idProd) {
 
         return tamanhoDAO.listTamanhosId(idProd);
 
     }
 
-    public void deletaTamanho(List<Tamanho> listTamanho) throws IOException {
+    public void deletaTamanho(Tamanho idDelete) throws IOException {
 
-        tamanhoDAO.deletaTamanho(listTamanho);
+        tamanhoDAO.deletaTamanho(idDelete);
 
     }
 

@@ -5,7 +5,7 @@ import java.com.femina.produto.Model.Endereco;
 
 public class Fornecedor {
 
-    private long id;
+    private int id;
     private String nome;
     private String cnpj;
     private Endereco endereco; // OBJETO -> endereço
@@ -14,7 +14,7 @@ public class Fornecedor {
     public Fornecedor() {
     }
 
-    public Fornecedor(long id, String nome, String cnpj, Endereco endereco, Contatos contatos) {
+    public Fornecedor(int id, String nome, String cnpj, Endereco endereco, Contatos contatos) {
         this.id = id;
         this.nome = nome;
         this.cnpj = cnpj;
@@ -22,11 +22,11 @@ public class Fornecedor {
         this.contatos = contatos;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

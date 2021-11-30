@@ -8,11 +8,10 @@ public class Produto {
     private int codigo, qtd;
     private Categoria categoria;
     private Marca marca;
-    //    private Fornecedor fornecedor;
+    private FornecedorProduto fornecedor;
     private ModeloProduto modelo;
     private CorProduto cores;
-//    private Tamanho tamanho;
-
+    private TamanhoProduto tamanhos;
 
     public Produto() {
     }
@@ -73,13 +72,13 @@ public class Produto {
         this.marca = marca;
     }
 
-//    public Fornecedor getFornecedor() {
-//        return fornecedor;
-//    }
-//
-//    public void setFornecedor(Fornecedor fornecedor) {
-//        this.fornecedor = fornecedor;
-//    }
+    public FornecedorProduto getFornecedor() {
+        return fornecedor;
+    }
+
+    public void setFornecedor(FornecedorProduto fornecedor) {
+        this.fornecedor = fornecedor;
+    }
 
     public ModeloProduto getModelo() {
         return modelo;
@@ -97,13 +96,13 @@ public class Produto {
         this.cores = cores;
     }
 
-//    public Tamanho getTamanho() {
-//        return tamanho;
-//    }
-//
-//    public void setTamanho(Tamanho tamanho) {
-//        this.tamanho = tamanho;
-//    }
+    public TamanhoProduto getTamanhos() {
+        return tamanhos;
+    }
+
+    public void setTamanhos(TamanhoProduto tamanhos) {
+        this.tamanhos = tamanhos;
+    }
 
     @Override
     public String toString() {
@@ -112,12 +111,12 @@ public class Produto {
                 "|  Nome: " + nome + "\n" +
                 "|  Valor: " + preco + "\n" +
                 "|  Quantidade: " + qtd + "\n" +
-                "|  Cores: " + cores.getCores() + "\n" +
+                "|  Cores: " + cores + "\n" +
                 "|  Categoria: " + categoria.getNome() + "\n" +
-                "|  Modelos: " + modelo.getModelos() + "\n" +
+                "|  Modelos: " + modelo + "\n" +
                 "|  Marca: " + marca.getNome() + "\n" +
-//                "|  Tamanho: " + tamanho + "\n" +
-//                "|  Fornecedor: " + fornecedor.getNome() +
+                "|  Tamanho: " + tamanhos + "\n" +
+                "|  Fornecedor: " + fornecedor +
                 "|-----------------------------------------------|";
     }
 }

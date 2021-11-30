@@ -2,6 +2,7 @@ package java.com.femina.produto.View;
 
 import main.java.com.femina.produto.View.CategoriaView;
 import main.java.com.femina.produto.View.CorView;
+import main.java.com.femina.produto.View.FornecedorView;
 import main.java.com.femina.produto.View.MarcaView;
 
 import java.com.femina.produto.Controller.ProdutoController;
@@ -19,6 +20,8 @@ public class ProdutoView {
         ModeloView modeloView = new ModeloView();
         CorView cv = new CorView();
         MarcaView mv = new MarcaView();
+        TamanhoView tv = new TamanhoView();
+        FornecedorView fv = new FornecedorView();
         Scanner entrada = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
 
         Produto prod = new Produto();
@@ -55,6 +58,7 @@ public class ProdutoView {
         Marca marca = mv.retornaById();
         prod.setMarca(marca);
 
+        op = 1;
         System.out.println("Selecione as Cores do produto:");
         CorProduto corProduto = new CorProduto();
         while (op != 0) {
@@ -65,15 +69,36 @@ public class ProdutoView {
             op = entrada.nextInt();
         }
         prod.setCores(corProduto);
+
+        op = 1;
+        System.out.println("Selecione os Tamanhos do produto:");
+        TamanhoProduto tamanhoProduto = new TamanhoProduto();
+        while (op != 0){
+            Tamanho tamanho = tv.listarTamanhosDoProduto();
+            tamanhoProduto.getTamanhos().add(tamanho);
+            System.out.println("Deseja Selecionar mais Tamanhos para esse Produto?");
+            System.out.println("1 - SIM;                                  0 - NÃO;");
+            op = entrada.nextInt();
+        }
+        prod.setTamanhos(tamanhoProduto);
+
+        op = 1;
+        System.out.println("Selecione os Fornecedores do produto:");
+        FornecedorProduto fornecedorProduto = new FornecedorProduto();
+        while (op != 0) {
+            Fornecedor fornecedor = fv.selectFornecedorById();
+            fornecedorProduto.getFornecedores().add(fornecedor);
+            System.out.println("Deseja Selecionar mais Fornecedor para esse Produto?");
+            System.out.println("1 - SIM;                                    0 - NÃO;");
+            op = entrada.nextInt();
+        }
+        prod.setFornecedor(fornecedorProduto);
+
         pc.cadastrarProduto(prod);
-//        System.out.println("Selecione um Fornecedor");
-//
-//        List<Fornecedor> lfd = fv.mostrarFornecedores();
-//        prod.setFornecedor(lfd.get(entrada.nextInt() - 1));
 
     }
 
-    public void listarProdutos() throws SQLException, IOException {
+    public List<Produto> listarProdutos() throws SQLException, IOException {
 
         Scanner entrada = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
 
@@ -102,6 +127,55 @@ public class ProdutoView {
             }
         }
 
+    }
+
+    public Produto retornaById() throws SQLException, IOException {
+
+        Scanner entrada = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
+        ProdutoController pc = new ProdutoController();
+
+        System.out.println("Selecione o Produto: ");
+        List<Produto> listaProduto = this.listarProdutos();
+
+        if(listaProduto.isEmpty()){
+            System.out.println("Nenhum Produto Cadastrado!");
+            System.out.println("Cadastre um!");
+            this.cadastrarProdutos();
+        }
+
+        System.out.println("Escolha o Produto");
+
+        Produto produto = pc.selectById(listaProduto.get(entrada.nextInt()-1).getId());
+
+        System.out.println("----------------------");
+        System.out.println("Produto Selecionado: ");
+        System.out.println(produto.toString());
+
+        return produto;
+    }
+
+    public void deletarProduto() throws SQLException, IOException {
+
+        Scanner entrada = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
+        ProdutoController pc = new ProdutoController();
+
+        System.out.println("DELETAR PRODUTO");
+
+        Produto produto = this.retornaById();
+
+        System.out.println("Tem certeza que deseja deletar o Produto?");
+        System.out.println("1-SIM;                             2-NÃO;");
+
+        switch (entrada.nextInt()){
+            case 1:
+                pc.deletarProduto(produto);
+                break;
+            case 2:
+                System.out.println("Operação Cancelada!");
+                break;
+            default:
+                System.out.println("Opção Inválida!");
+        }
     }
 
 //    public void alterarProduto() throws IOException {
@@ -154,30 +228,5 @@ public class ProdutoView {
 //
 //        pc.editarProduto(lpd);
 //    }
-//
-//    public void deletarProduto() throws IOException {
-//        ProdutoController pc = new ProdutoController();
-//        CorView cv = new CorView();
-//        ModeloView mv = new ModeloView();
-//        TamanhoView tv = new TamanhoView();
-//        Scanner entrada = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
-//
-//        for(int i = 0; i < lpd.size();i++){
-//            System.out.println((i+1)+" - "+lpd.get(i).toMostra());
-//        }
-//
-//        System.out.println("Escolha qual produto quer Deletar");
-//        int select = entrada.nextInt();
-//
-//        cv.removeCor(lpd.get(select-1).getId());
-//        mv.deletaModelo(lpd.get(select-1).getId());
-//        tv.deletarTamanho((int) lpd.get(select-1).getId());
-//
-//        lpd.remove(select - 1);
-//
-//        pc.removerProduto(lpd);
-//    }
-
-
 
 }

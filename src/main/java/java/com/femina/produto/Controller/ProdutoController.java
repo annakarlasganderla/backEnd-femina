@@ -25,6 +25,15 @@ public class ProdutoController {
         return pd.listarProdutos();
     }
 
+    public Produto selectById(int idProduto){
+        ProdutoDao pd = new ProdutoDao();
+        return pd.selectById(idProduto);
+    }
+
+    public void deletarProduto(Produto produto){
+        ProdutoDao pd = new ProdutoDao();
+        pd.deletarProduto(produto);
+    }
 
 //    public void editarProduto(Produto produto){
 //        ProdutoDao pd = new ProdutoDao();
@@ -35,17 +44,6 @@ public class ProdutoController {
 //    public void deletarProduto(Produto produto){
 //        ProdutoDao pd = new ProdutoDao();
 //        pd.deletarProduto(produto);
-//    }
-//
-//    public Produto pegaIdProduto(int index){
-//        ProdutoDao pd = new ProdutoDao();
-//        List<Produto> lpd = pd.retornaProdutos();
-//        return lpd.get(index);
-//    }
-//
-//    public List<Produto> listarProdutosPeloId(Long idLoja){
-//        ProdutoDao pd = new ProdutoDao();
-//        return pd.retornaProdutosPeloIdLoja(idLoja);
 //    }
 
 }
