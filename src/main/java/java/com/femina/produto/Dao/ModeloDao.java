@@ -16,7 +16,7 @@ public class ModeloDao {
 
     public void criarTabelaModelo() {
         String sql = "CREATE TABLE IF NOT EXISTS modelo ("+
-        "id_modelo INT PRIMARY KEY AUTO_INCREMENT,"+
+        "idModelo INT PRIMARY KEY AUTO_INCREMENT,"+
         "nome VARCHAR(50) NOT NULL"+
         ");";
 
@@ -76,7 +76,7 @@ public class ModeloDao {
     }
 
     public ModelosDosProdutos selecionaModeloById(int id){
-        String sql = "SELECT * FROM modelo WHERE id_modelo = ?";
+        String sql = "SELECT * FROM modelo WHERE idModelo = ?";
 
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);
@@ -101,7 +101,7 @@ public class ModeloDao {
     }
 
     public void deletarModelo(ModelosDosProdutos modelo){
-        String sql = "DELETE FROM modelo WHERE id_modelo = ?";
+        String sql = "DELETE FROM modelo WHERE idModelo = ?";
 
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);

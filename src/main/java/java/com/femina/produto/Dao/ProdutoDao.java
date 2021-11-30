@@ -35,11 +35,21 @@ public class ProdutoDao {
                 "FOREIGN KEY (idProduto) REFERENCES produtos(idProduto)," +
                 "FOREIGN KEY (idCor) REFERENCES cores(id)" +
                 ");";
+
+        String sqlModelo = "CREATE TABLE IF NOT EXISTS modeloproduto (" +
+                "idModeloProduto INT PRIMARY KEY AUTO_INCREMENT," +
+                "idProduto INT," +
+                "idModeloP INT," +
+                "FOREIGN KEY (idProduto) REFERENCES produtos(idProduto)," +
+                "FOREIGN KEY (idModeloP) REFERENCES modelo(idModelo)" +
+                ");";
         try {
 
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.execute();
             stmt = connection.prepareStatement(sqlCor);
+            stmt.execute();
+            stmt = connection.prepareStatement(sqlModelo);
             stmt.execute();
 
             stmt.close();
@@ -51,13 +61,17 @@ public class ProdutoDao {
 
     public void cadastrarProduto(Produto prod){
 
-       String sql = "INSERT INTO produtos" +
-               "(codigo,nome,valor,quantidade,idMarca,idCategoria) " +
-               "VALUES (?,?,?,?,?,?)";
+        String sql = "INSERT INTO produtos" +
+                "(codigo,nome,valor,quantidade,idMarca,idCategoria) " +
+                "VALUES (?,?,?,?,?,?)";
 
-       String sqlCor = "INSERT INTO corproduto" +
-               "(idProduto, idCor)" +
-               "VALUES (?,?)";
+        String sqlCor = "INSERT INTO corproduto" +
+                "(idProduto, idCor)" +
+                "VALUES (?,?)";
+
+        String sqlModelo = "INSERT INTO modeloproduto" +
+                "(idProduto, idModeloP)" +
+                "VALUES (?,?)";
 
         try {
             PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -84,6 +98,14 @@ public class ProdutoDao {
                 stmt.execute();
             }
 
+            for(int i = 0; i < prod.getModelo().getModelos().size(); i++){
+                stmt = connection.prepareStatement(sqlModelo);
+                stmt.setInt(1, prod.getId());
+                stmt.setInt(2, prod.getModelo().getModelos().get(i).getId());
+
+                stmt.execute();
+            }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -93,6 +115,7 @@ public class ProdutoDao {
     public List<Produto> listarProdutos(){
         String sql = "SELECT * FROM produtos";
         String sqlCor = "SELECT idCor FROM corproduto cp JOIN cores c ON cp.idCor = c.id WHERE cp.idProduto = ?";
+        String sqlModelo = "SELECT idModeloP FROM modeloproduto mp JOIN modelo m ON mp.idModeloP = m.idModelo WHERE mp.idProduto = ?";
 
         try {
 
@@ -128,6 +151,20 @@ public class ProdutoDao {
                     corProduto.getCores().add(cor);
                 }
                 produto.setCores(corProduto);
+
+
+                ModeloProduto modeloProduto = new ModeloProduto();
+                stmt = connection.prepareStatement(sqlModelo);
+                stmt.setInt(1, produto.getId());
+                ResultSet resultSet2 = stmt.executeQuery();
+
+                while (resultSet2.next()){
+                    ModeloDao modeloDao = new ModeloDao();
+
+                    ModelosDosProdutos modelo = modeloDao.selecionaModeloById(resultSet2.getInt("idModeloP"));
+                    modeloProduto.getModelos().add(modelo);
+                }
+                produto.setModelo(modeloProduto);
 
                 listaProdutos.add(produto);
             }

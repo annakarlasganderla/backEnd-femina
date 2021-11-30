@@ -16,6 +16,7 @@ public class ProdutoView {
 
         ProdutoController pc = new ProdutoController();
         CategoriaView categoriaView = new CategoriaView();
+        ModeloView modeloView = new ModeloView();
         CorView cv = new CorView();
         MarcaView mv = new MarcaView();
         Scanner entrada = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
@@ -39,16 +40,27 @@ public class ProdutoView {
         Categoria categoria = categoriaView.selectById();
         prod.setCategoria(categoria);
 
+        System.out.println("Selecione os Modelos do Produto");
+        ModeloProduto modeloProduto = new ModeloProduto();
+        while (op != 0) {
+            ModelosDosProdutos modelo = modeloView.selecionaModeloById();
+            modeloProduto.getModelos().add(modelo);
+            System.out.println("Deseja Selecionar mais um Modelo para esse Produto?");
+            System.out.println("1 - SIM;                                   0 - NÃO;");
+            op = entrada.nextInt();
+        }
+        prod.setModelo(modeloProduto);
+
         System.out.println("Selecione a Marca do Produto:");
         Marca marca = mv.retornaById();
         prod.setMarca(marca);
 
-        System.out.println("Selecione as cores do produto:");
+        System.out.println("Selecione as Cores do produto:");
         CorProduto corProduto = new CorProduto();
         while (op != 0) {
             Cor cor = cv.selecionaCoresById();
             corProduto.getCores().add(cor);
-            System.out.println("Deseja Selecionar mais uma cor para esse produto?");
+            System.out.println("Deseja Selecionar mais uma Cor para esse Produto?");
             System.out.println("1 - SIM;                                 0 - NÃO;");
             op = entrada.nextInt();
         }

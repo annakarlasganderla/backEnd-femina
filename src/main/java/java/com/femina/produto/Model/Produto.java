@@ -5,16 +5,17 @@ public class Produto {
     private int id;
     private String nome;
     private Double preco;
-    private int codigo,qtd;
+    private int codigo, qtd;
     private Categoria categoria;
     private Marca marca;
-    private Fornecedor fornecedor;
-    private ModelosDosProdutos modelo;
+    //    private Fornecedor fornecedor;
+    private ModeloProduto modelo;
     private CorProduto cores;
-    private Tamanho tamanho;
+//    private Tamanho tamanho;
 
 
-    public Produto() {}
+    public Produto() {
+    }
 
     public int getId() {
         return id;
@@ -72,19 +73,19 @@ public class Produto {
         this.marca = marca;
     }
 
-    public Fornecedor getFornecedor() {
-        return fornecedor;
-    }
+//    public Fornecedor getFornecedor() {
+//        return fornecedor;
+//    }
+//
+//    public void setFornecedor(Fornecedor fornecedor) {
+//        this.fornecedor = fornecedor;
+//    }
 
-    public void setFornecedor(Fornecedor fornecedor) {
-        this.fornecedor = fornecedor;
-    }
-
-    public ModelosDosProdutos getModelo() {
+    public ModeloProduto getModelo() {
         return modelo;
     }
 
-    public void setModelo(ModelosDosProdutos modelo) {
+    public void setModelo(ModeloProduto modelo) {
         this.modelo = modelo;
     }
 
@@ -96,26 +97,27 @@ public class Produto {
         this.cores = cores;
     }
 
-    public Tamanho getTamanho() {
-        return tamanho;
-    }
-
-    public void setTamanho(Tamanho tamanho) {
-        this.tamanho = tamanho;
-    }
+//    public Tamanho getTamanho() {
+//        return tamanho;
+//    }
+//
+//    public void setTamanho(Tamanho tamanho) {
+//        this.tamanho = tamanho;
+//    }
 
     @Override
     public String toString() {
-        return "PRODUTO: \n"+
+        return "PRODUTO: \n" +
                 "|  Código: " + codigo + "\n" +
                 "|  Nome: " + nome + "\n" +
                 "|  Valor: " + preco + "\n" +
                 "|  Quantidade: " + qtd + "\n" +
-                "|  Cor: " + cores.getCores() + "\n" +
+                "|  Cores: " + cores.getCores() + "\n" +
                 "|  Marca: " + marca.getNome() + "\n" +
-                "|  Tamanho: " + tamanho + "\n" +
+                "|  Modelos: " + modelo.getModelos() + "\n" +
+//                "|  Tamanho: " + tamanho + "\n" +
                 "|  Categoria: " + categoria.getNome() + "\n" +
-                "|  Fornecedor: " + fornecedor.getNome() +
+//                "|  Fornecedor: " + fornecedor.getNome() +
                 "|-----------------------------------------------|";
     }
 }
