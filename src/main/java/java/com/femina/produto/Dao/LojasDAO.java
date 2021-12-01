@@ -99,7 +99,6 @@ public class LojasDAO {
         String sqlInsert = "INSERT INTO lojasXprodutos (idLoja, " +
                 "idProduto) " +
                 "VALUES (?,?)";
-
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlInsert);
             for (int i = 0; i < loja.getProdutos().getProdutosList().size(); i++) {

@@ -17,6 +17,10 @@ public class LojasController {
         return lojasDAO.listarTodasAsLojas();
     }
 
+    public Lojas selectLojaById(int idLoja){
+        return lojasDAO.selectLojaById(idLoja);
+    }
+
     public void cadastrarProdutosNaLOja(Lojas loja){
         lojasDAO.cadastrarProdutosNaLOja(loja);
     }
@@ -29,7 +33,7 @@ public class LojasController {
         lojasDAO.deleteLoja(idLoja);
     }
 
-    public void editarLojas(Lojas loja, int idSelect){
+    public void editarNomeLoja(Lojas loja, int idSelect){
         lojasDAO.editarNomeLoja(loja, idSelect);
     }
 

@@ -117,6 +117,28 @@ public class ContatoView {
         return cont;
     }
 
+    public void editarContatoLoja(Contatos contatos){
+        Contatos contatos1 = new Contatos();
+        Scanner entrada = new Scanner(System.in).useDelimiter("\n");
+        ContatoController contatoController = new ContatoController();
+        System.out.println("O que deseja editar?");
+        System.out.println("1 - Telefone    2 - Email");
+        int oqueEditar = entrada.nextInt();
+        if(oqueEditar == 1){
+            System.out.println("Digite o novo telefone:");
+            String novoTelefone = entrada.next();
+            contatos1.setTel(novoTelefone);
+        }else if(oqueEditar == 2){
+            System.out.println("Digite o novo email:");
+            String novoEmail = entrada.next();
+            contatos1.setEmail(novoEmail);
+        }else{
+            System.out.println("Valor invalido");
+            editarContatoLoja(contatos);
+        }
+        contatoController.editarContato(contatos1);
+    }
+
     public void editarContatos(Contatos cont){
 
         Scanner entrada = new Scanner(System.in).useDelimiter("\n");

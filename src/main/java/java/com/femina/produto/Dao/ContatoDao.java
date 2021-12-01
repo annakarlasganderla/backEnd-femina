@@ -81,8 +81,8 @@ public class ContatoDao {
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } }
-
+        }
+    }
 
     public Contatos selecionaId (int id){
 
@@ -120,7 +120,6 @@ public class ContatoDao {
             stmt.setString(1, contatos.getEmail());
             stmt.setString(2, contatos.getTel());
             stmt.setInt(3, contatos.getId());
-
 
             stmt.execute();
 
