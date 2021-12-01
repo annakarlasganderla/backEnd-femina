@@ -1,13 +1,18 @@
-import View.ModeloView;
+import View.ProdutoView;
+
+import java.io.IOException;
+import java.sql.SQLException;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException, IOException {
 
-        ModeloView mv = new ModeloView();
+        ProdutoView pv = new ProdutoView();
 
-
-//        mv.deletaModelo(mv.selecionaModeloById());
-        mv.listarModelos();
+        pv.listarProdutos();
+        pv.editarProduto();
+        pv.listarProdutos();
+//        pv.retornaById();
+//        pv.deletarProduto();
     }
 }
