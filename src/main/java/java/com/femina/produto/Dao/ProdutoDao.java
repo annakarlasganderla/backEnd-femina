@@ -1,13 +1,9 @@
 package java.com.femina.produto.Dao;
 
-import main.java.com.femina.produto.Dao.FornecedorDao;
-
 import java.com.femina.produto.Factory.ConectionFactory;
 import java.com.femina.produto.Model.*;
-import java.io.*;
 import java.sql.*;
 import java.util.*;
-
 
 public class ProdutoDao {
 
