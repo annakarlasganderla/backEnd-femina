@@ -12,7 +12,6 @@ public class MarcaView {
 
     Scanner leitor = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
 
-
     public void menu() {
 
         Scanner leitor = new Scanner(System.in).useDelimiter("\n");
