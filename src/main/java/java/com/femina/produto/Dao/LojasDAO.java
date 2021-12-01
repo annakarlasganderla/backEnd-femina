@@ -150,8 +150,5 @@ public class LojasDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
-
-
 }
