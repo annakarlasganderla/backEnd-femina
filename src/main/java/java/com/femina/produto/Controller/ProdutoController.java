@@ -1,6 +1,8 @@
 package java.com.femina.produto.Controller;
 
 import java.com.femina.produto.Dao.ProdutoDao;
+import java.com.femina.produto.Model.Cor;
+import java.com.femina.produto.Model.ModelosDosProdutos;
 import java.com.femina.produto.Model.Produto;
 import java.util.List;
 
@@ -20,9 +22,9 @@ public class ProdutoController {
         pd.cadastrarProduto(prod);
     }
 
-    public List<Produto> listarProdutos(){
+    public ProdutosAux listarProdutos(int idLoja){
         ProdutoDao pd = new ProdutoDao();
-        return pd.listarProdutos();
+        return pd.listarProdutos(idLoja);
     }
 
     public Produto selectById(int idProduto){
@@ -38,6 +40,16 @@ public class ProdutoController {
     public void deletarProduto(Produto produto){
         ProdutoDao pd = new ProdutoDao();
         pd.deletarProduto(produto);
+    }
+
+    public void deletarModeloProduto(ModelosDosProdutos modelo, Produto produto){
+        ProdutoDao pd = new ProdutoDao();
+        pd.deletarModeloProduto(modelo, produto);
+    }
+
+    public void deletarCorProduto(Cor cor, Produto produto){
+        ProdutoDao pd = new ProdutoDao();
+        pd.deletarCorProduto(cor, produto);
     }
 
 }

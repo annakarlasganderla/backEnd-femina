@@ -159,8 +159,8 @@ public class ProdutoDao {
 
     }
 
-    public List<Produto> listarProdutos(){
-        String sql = "SELECT * FROM produtos";
+    public ProdutosAux listarProdutos(int idLoja){
+        String sql = "SELECT * FROM produtos WHERE idLoja = " + idLoja;
         String sqlCor = "SELECT idCor FROM corproduto cp JOIN cores c " +
                 "ON cp.idCor = c.id WHERE cp.idProduto = ?";
         String sqlModelo = "SELECT idModeloP FROM modeloproduto mp JOIN modelo m " +
@@ -171,7 +171,7 @@ public class ProdutoDao {
                 "ON fp.idFornecedor_fk = f.idFornecedor WHERE fp.idProduto = ?";
 
         try {
-
+            ProdutosAux produtosAux = new ProdutosAux();
             List<Produto> listaProdutos = new ArrayList<>();
 
             PreparedStatement stmt = connection.prepareStatement(sql);
@@ -240,8 +240,8 @@ public class ProdutoDao {
 
                 listaProdutos.add(produto);
             }
-
-            return listaProdutos;
+            produtosAux.setProdutosList(listaProdutos);
+            return produtosAux;
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -351,8 +351,11 @@ public class ProdutoDao {
     }
 
     public void editarProduto(Produto produto){
-        String sql = "UPDATE produtos SET codigo = ?, nome = ?, valor ?, quantidade = ?, " +
+        String sql = "UPDATE produtos SET codigo = ?, nome = ?, valor = ?, quantidade = ?, " +
                 "idMarca = ?, idCategoria= ? WHERE idProduto = ?";
+        String sqlModelo = "INSERT INTO modeloproduto" +
+                "(idProduto, idModeloP)" +
+                "VALUES (?,?)";
 
         try {
 
@@ -368,27 +371,49 @@ public class ProdutoDao {
 
             stmt.execute();
 
+            for(int i = 0; i < produto.getModelo().getModelos().size(); i++){
+                stmt = connection.prepareStatement(sqlModelo);
+                stmt.setInt(1, produto.getId());
+                stmt.setInt(2, produto.getModelo().getModelos().get(i).getId());
+
+                stmt.execute();
+            }
+
         } catch (SQLException e){
             throw new RuntimeException(e);
         }
     }
 
-//    public void updateProd(List<Produto> prod){
-//        try {
-//
-//            FileWriter fileWriter = new FileWriter("produtos.txt", false);
-//            PrintWriter printWriter = new PrintWriter(fileWriter);
-//
-//            for (int list = 0; list < prod.size(); list++) {
-//                printWriter.println(prod.get(list));
-//            }
-//
-//            printWriter.flush();
-//            printWriter.close();
-//            fileWriter.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    public void deletarModeloProduto(ModelosDosProdutos modelo, Produto produto){
+        String sql = "DELETE FROM modeloproduto WHERE idModeloP = ? AND idProduto = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, modelo.getId());
+            stmt.setInt(2, produto.getId());
+
+            stmt.execute();
+
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public void deletarCorProduto(Cor cor, Produto produto){
+        String sql = "DELETE FROM corproduto WHERE idCor = ? AND idProduto = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, cor.getId());
+            stmt.setInt(2, produto.getId());
+
+            stmt.execute();
+
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+
+    }
 
 }

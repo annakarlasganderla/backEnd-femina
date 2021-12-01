@@ -2,6 +2,7 @@ package java.com.femina.produto.Dao;
 
 import java.com.femina.produto.Factory.ConectionFactory;
 import java.com.femina.produto.Model.ModelosDosProdutos;
+import java.com.femina.produto.Model.Produto;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +63,7 @@ public class ModeloDao {
             while (resultSet.next()){
                 ModelosDosProdutos modelo = new ModelosDosProdutos();
 
-                modelo.setId(resultSet.getInt("id_modelo"));
+                modelo.setId(resultSet.getInt("idModelo"));
                 modelo.setNomeTipo(resultSet.getString("nome"));
 
                 listaModelos.add(modelo);
@@ -71,6 +72,34 @@ public class ModeloDao {
             return listaModelos;
 
         } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<ModelosDosProdutos> listarModelosProdutos(Produto produto){
+        String sql = "SELECT * FROM modelo m JOIN modeloproduto mp ON m.idModelo = mp.idModeloP WHERE mp.idProduto = ?";
+
+        try {
+
+            List<ModelosDosProdutos> listaModelos = new ArrayList<>();
+
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, produto.getId());
+
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()){
+                ModelosDosProdutos modelo = new ModelosDosProdutos();
+
+                modelo.setId(resultSet.getInt("idModelo"));
+                modelo.setNomeTipo(resultSet.getString("nome"));
+
+                listaModelos.add(modelo);
+
+            }
+            return listaModelos;
+
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -87,7 +116,7 @@ public class ModeloDao {
             while (resultSet.next()){
                 ModelosDosProdutos modelo = new ModelosDosProdutos();
 
-                modelo.setId(resultSet.getInt("id_modelo"));
+                modelo.setId(resultSet.getInt("idModelo"));
                 modelo.setNomeTipo(resultSet.getString("nome"));
 
                 return modelo;

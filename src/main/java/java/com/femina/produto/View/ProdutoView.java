@@ -98,12 +98,12 @@ public class ProdutoView {
 
     }
 
-    public List<Produto> listarProdutos() throws SQLException, IOException {
+    public ProdutoAux listarProdutos(int idLoja) throws SQLException, IOException {
 
         Scanner entrada = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
 
         ProdutoController pc = new ProdutoController();
-        List<Produto> listaProdutos = pc.listarProdutos();
+        ProdutoAux listaProdutos = pc.listarProdutos(idLoja);
 
         if(listaProdutos.isEmpty()){
             System.out.println("Nenhum Produto Cadastrado!");
@@ -182,7 +182,10 @@ public class ProdutoView {
         Scanner entrada = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
         ProdutoController pc = new ProdutoController();
         CategoriaView categoriaView = new CategoriaView();
+        ModeloView modeloView = new ModeloView();
         MarcaView mv = new MarcaView();
+        CorView cv = new CorView();
+        int op = 1;
 
         System.out.println("EDITAR PRODUTO");
 
@@ -217,14 +220,29 @@ public class ProdutoView {
                 System.out.println("1-Adicionar Modelos;2-Remover Modelos");
                 switch (entrada.nextInt()){
                     case 1:
-
+                        ModeloProduto modeloProduto = new ModeloProduto();
+                        while (op != 0) {
+                            ModelosDosProdutos modelo = modeloView.selecionaModeloById();
+                            modeloProduto.getModelos().add(modelo);
+                            System.out.println("Deseja Selecionar mais um Modelo para esse Produto?");
+                            System.out.println("1 - SIM;                                   0 - NÃO;");
+                            op = entrada.nextInt();
+                        }
+                        produto.setModelo(modeloProduto);
                         break;
                     case 2:
+                        while (op != 0) {
+                            ModelosDosProdutos modelo = modeloView.selectModeloProdutoId(produto);
+                            pc.deletarModeloProduto(modelo,produto);
+                            produto.getModelo().getModelos().remove(modelo);
+                            System.out.println("Deseja Deletar mais um Modelo desse Produto?");
+                            System.out.println("1 - SIM;                            0 - NÃO;");
+                            op = entrada.nextInt();
+                        }
                         break;
                     default:
                         System.out.println("Opção Inválida");
                 }
-
                 break;
             case 6:
                 System.out.println("MARCA");
@@ -232,6 +250,32 @@ public class ProdutoView {
                 produto.setMarca(marca);
                 break;
             case 7:
+                System.out.println("1-Adicionar Cor;2-Remover Cor");
+                switch (entrada.nextInt()){
+                    case 1:
+                        CorProduto corProduto = new CorProduto();
+                        while (op != 0) {
+                            Cor cor = cv.selecionaCoresById();
+                            corProduto.getCores().add(cor);
+                            System.out.println("Deseja Selecionar mais uma Cor para esse Produto?");
+                            System.out.println("1 - SIM;                                 0 - NÃO;");
+                            op = entrada.nextInt();
+                        }
+                        produto.setCores(corProduto);
+                        break;
+                    case 2:
+                        while (op != 0) {
+                            Cor cor = cv.selectCorProdutoId(produto);
+                            pc.deletarCorProduto(cor,produto);
+                            produto.getCores().getCores().remove(cor);
+                            System.out.println("Deseja Deletar mais uma Cor desse Produto?");
+                            System.out.println("1 - SIM;                          0 - NÃO;");
+                            op = entrada.nextInt();
+                        }
+                        break;
+                    default:
+                        System.out.println("Opção Inválida");
+                }
                 break;
             case 8:
                 break;

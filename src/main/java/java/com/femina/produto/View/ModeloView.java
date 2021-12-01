@@ -2,6 +2,7 @@ package java.com.femina.produto.View;
 
 import java.com.femina.produto.Controller.ModeloController;
 import java.com.femina.produto.Model.ModelosDosProdutos;
+import java.com.femina.produto.Model.Produto;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
@@ -85,6 +86,34 @@ public class ModeloView {
         System.out.println("-------------------------------");
 
         return modelo;
+    }
+
+    public ModelosDosProdutos selectModeloProdutoId(Produto produto){
+
+        ModeloController modeloController = new ModeloController();
+
+        List<ModelosDosProdutos> listaModelos = modeloController.listarModelosProdutos(produto);
+
+        if(listaModelos.isEmpty()){
+            System.out.println("Esse produto não tem nenhum modelo!");
+        } else {
+
+            for(int i = 0; i < listaModelos.size();i++) {
+                System.out.println(listaModelos.get(i).toString());
+            }
+
+            System.out.println("Escolha o Modelo: ");
+
+            ModelosDosProdutos modelo = modeloController.selecionaModeloById(listaModelos.get(leitor.nextInt() - 1).getId());
+
+            System.out.println("-------------------------------");
+            System.out.println("Modelo Selecionado: ");
+            System.out.println(modelo.toString());
+            System.out.println("-------------------------------");
+
+            return modelo;
+        }
+        return null;
     }
 
     public void deletaModelo (ModelosDosProdutos modelo) {
