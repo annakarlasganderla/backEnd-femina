@@ -1,38 +1,38 @@
-package main.java.com.femina.produto.Controller;
+package java.com.femina.produto.Controller;
 
-import main.java.com.femina.produto.Dao.MarcaDao;
-import main.java.com.femina.produto.Model.Cor;
-import main.java.com.femina.produto.Dao.CorDao;
-import main.java.com.femina.produto.Model.Marca;
-
+import java.com.femina.produto.Dao.CorDao;
+import java.com.femina.produto.Model.Cor;
+import java.com.femina.produto.Model.Produto;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 public class CorController {
 
-    public void cadastraCor(List<Cor> cor) {
-        CorDao cd = new CorDao();
-        cd.cadastraCor(cor);
+    CorDao corDao = new CorDao();
+
+    public void criaCor (Cor cor)throws IOException, SQLException{
+        corDao.criaTabelaCor(cor);
     }
-    public List<Cor> mostraCorCadastrada() throws IOException {
-        CorDao corDao = new CorDao();
-        List<Cor> listaCores = corDao.mostraCor();
-        return listaCores;
+    public void cadastraCor(Cor cor)throws IOException,SQLException{
+        corDao.cadastraCor(cor);
+    }
+    public List<Cor> listarCores()throws SQLException,IOException{
+        return corDao.listarCores();
+
     }
 
-    public void editaCores(List<Cor> cor) {
-        CorDao corDao = new CorDao();
-        corDao.editaCores(cor);
+    public List<Cor> listarCoresProduto(Produto produto){
+        return corDao.listarCoresProduto(produto);
     }
 
-    public void apagaCores(List<Cor> cor) throws IOException {
-        CorDao corDao = new CorDao();
-        corDao.delCor(cor);
+    public Cor selecionaCor(int  id){
+        return corDao.selectCorById(id);
     }
-
-    public List<Cor> listarCoresPeloId(Long idProd) throws IOException {
-        CorDao corDao = new CorDao();
-        return corDao.listarId(idProd);
+    public void editarCor(Cor cor){
+        corDao.editarCor(cor);
+    }
+    public void deletaCor(Cor cor){
+        corDao.deletaProduto(cor);
     }
 }
-

@@ -24,7 +24,7 @@ public class ProdutoController {
 
     public ProdutosAux listarProdutos(int idLoja){
         ProdutoDao pd = new ProdutoDao();
-        return pd.listarProdutos(idLoja);
+        return pd.listarProdutos(idloja);
     }
 
     public Produto selectById(int idProduto){
@@ -35,6 +35,16 @@ public class ProdutoController {
     public void editarProduto(Produto produto){
         ProdutoDao pd = new ProdutoDao();
         pd.editarProduto(produto);
+    }
+
+    public void updateModelo(Produto produto){
+        ProdutoDao pd = new ProdutoDao();
+        pd.updateModelo(produto);
+    }
+
+    public void updateCor(Produto produto){
+        ProdutoDao pd = new ProdutoDao();
+        pd.updateCor(produto);
     }
 
     public void deletarProduto(Produto produto){

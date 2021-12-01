@@ -1,99 +1,115 @@
-package main.java.com.femina.produto.View;
+package java.com.femina.produto.View;
 
-import main.java.com.femina.produto.Controller.MarcaController;
-import main.java.com.femina.produto.Model.Cor;
-import main.java.com.femina.produto.Controller.CorController;
-import main.java.com.femina.produto.Model.Marca;
-
+import java.com.femina.produto.Controller.CorController;
+import java.com.femina.produto.Model.Cor;
+import java.com.femina.produto.Model.Produto;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.*;
 
 public class CorView {
-    public Cor cadastro(long idProd) throws IOException {
 
+    Scanner leitor = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);;
+    CorController cc = new CorController();
+
+    public void cadastraCor()throws SQLException,IOException{
         Cor cor = new Cor();
-        Scanner entrada = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);;
-        CorController cc = new CorController();
 
         System.out.println("Informe a cor:");
-        cor.setNome(entrada.next());
+        cor.setNome(leitor.next());
 
         System.out.println("Informe o Hexadecimal:");
-        cor.setHexadecimal(entrada.next());
+        cor.setHexadecimal(leitor.next());
 
-        cor.setIdProduto(idProd);
+        cc.criaCor(cor);
+        cc.cadastraCor(cor);
+    }
+    public void mostrarCores() throws SQLException, IOException {
+        System.out.println(cc.listarCores());
+    }
 
-        List<Cor> ldc = cc.mostraCorCadastrada();
-        ldc.add(cor);
+    public Cor selecionaCoresById() throws SQLException, IOException {
+        this.mostrarCores();
 
-        cc.cadastraCor(ldc);
+        System.out.println("Selecione a Cor: ");
+        int corSelecionada = leitor.nextInt();
+
+        Cor cor = cc.selecionaCor(corSelecionada);
+
+        System.out.println("A cor selecionada foi " + cor);
 
         return cor;
     }
-    public void mostrarCor() throws IOException {
 
-        CorController cd = new CorController();
+    public void editarCor(Cor cor) throws SQLException {
+        int op = 0;
 
-        List<Cor> listaCores = cd.mostraCorCadastrada();
+        do {
+            System.out.println("Escolha o que você quer editar: ");
+            System.out.println("| 1 - Nome |");
+            System.out.println("| 2 - Hexadecimal |");
 
-        for (int i = 0; i < listaCores.size(); i++) {
-            System.out.println(listaCores.get(i).toMostra());
-        }
+            int selecionaAtributo = leitor.nextInt();
 
-    }
-    public void editaCor(Long idProd)  throws IOException {
+            switch (selecionaAtributo) {
+                case 1:
+                    System.out.println("Digite o novo nome: ");
+                    cor.setNome(leitor.next());
+                    break;
 
-        Scanner entrada = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
-        CorController cd = new CorController();
+                case 2:
+                    System.out.println("Digite o novo Hexadecimal: ");
+                    cor.setHexadecimal(leitor.next());
+                    break;
 
-        List<Cor> coresId = cd.listarCoresPeloId(idProd);
-
-        List<Cor> cores = cd.mostraCorCadastrada();
-
-        for(int i = 0;i < coresId.size();i++){
-            System.out.println((i+1) + " - " + coresId.get(i).toMostra());
-        }
-
-        System.out.println("Escolha qual cor quer editar");
-        int select = entrada.nextInt();
-        System.out.println("Selecione: 1-cor;2-hexadecimal");
-        int selectItem = entrada.nextInt();
-        switch (selectItem) {
-            case 1:
-                cores.get((int)coresId.get(select-1).getId()-1).setNome(entrada.next());
-                break;
-            case 2:
-                cores.get((int)coresId.get(select-1).getId()-1).setHexadecimal(entrada.next());
-                break;
-            default:
-                System.out.println("Opção inválida");
-        }
-
-        cd.editaCores(cores);
-
-    }
-
-    public void removeCor(Long idProd) throws IOException {
-
-        Scanner entrada = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
-        CorController cd = new CorController();
-
-        List<Cor> cores = cd.mostraCorCadastrada();
-        List<Cor> coresNew = new ArrayList<>();
-
-        for(int i = 0;i < cores.size();i++) {
-            if (cores.get(i).getIdProduto() != idProd) {
-                coresNew.add(cores.get(i));
+                default:
+                    System.out.println("Opção invalida");
             }
+
+            System.out.println("Deseja continuar? 1 - Sim | 0 - Não");
+            op = leitor.nextInt();
+
+        } while (op != 0);
+
+        System.out.println("Cor editada com sucesso!");
+        cc.editarCor(cor);
+    }
+
+    public void deletarCor(Cor cor) {
+
+        int op;
+
+        System.out.println("Tem certeza que deseja deletar está Cor? 1 - Sim | 0 - Não");
+        op = leitor.nextInt();
+
+        switch (op) {
+            case 1:
+                cc.deletaCor(cor);
+                System.out.println("Produto deletado com sucesso!");
+                break;
+
+            default:
+                System.out.println("Opção invalida");
         }
 
-        cd.apagaCores(coresNew);
-
     }
 
-    public List<Cor> listaCorDoProduto(Long idProd) throws IOException {
-        CorController cd = new CorController();
-        return cd.listarCoresPeloId(idProd);
-    }
+    public Cor selectCorProdutoId(Produto produto){
 
+        List<Cor> listCor = cc.listarCoresProduto(produto);
+
+        for(int i = 0; i < listCor.size();i++){
+            System.out.println(listCor.get(i).toString());
+        }
+
+        System.out.println("Selecione a Cor: ");
+        int corSelecionada = leitor.nextInt();
+
+        Cor cor = cc.selecionaCor(listCor.get(corSelecionada-1).getId());
+
+        System.out.println("A cor selecionada foi " + cor);
+
+        return cor;
+
+    }
 }

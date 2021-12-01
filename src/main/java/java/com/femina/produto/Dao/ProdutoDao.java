@@ -353,9 +353,6 @@ public class ProdutoDao {
     public void editarProduto(Produto produto){
         String sql = "UPDATE produtos SET codigo = ?, nome = ?, valor = ?, quantidade = ?, " +
                 "idMarca = ?, idCategoria= ? WHERE idProduto = ?";
-        String sqlModelo = "INSERT INTO modeloproduto" +
-                "(idProduto, idModeloP)" +
-                "VALUES (?,?)";
 
         try {
 
@@ -371,14 +368,42 @@ public class ProdutoDao {
 
             stmt.execute();
 
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void updateModelo(Produto produto){
+        String sqlModelo = "INSERT INTO modeloproduto" +
+                "(idProduto, idModeloP)" +
+                "VALUES (?,?)";
+
+        try {
             for(int i = 0; i < produto.getModelo().getModelos().size(); i++){
-                stmt = connection.prepareStatement(sqlModelo);
+                PreparedStatement stmt = connection.prepareStatement(sqlModelo);
                 stmt.setInt(1, produto.getId());
                 stmt.setInt(2, produto.getModelo().getModelos().get(i).getId());
 
                 stmt.execute();
             }
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
 
+    public void updateCor(Produto produto){
+        String sqlModelo = "INSERT INTO corproduto" +
+                "(idProduto, idCor)" +
+                "VALUES (?,?)";
+
+        try {
+            for(int i = 0; i < produto.getModelo().getModelos().size(); i++){
+                PreparedStatement stmt = connection.prepareStatement(sqlModelo);
+                stmt.setInt(1, produto.getId());
+                stmt.setInt(2, produto.getCores().getCores().get(i).getId());
+
+                stmt.execute();
+            }
         } catch (SQLException e){
             throw new RuntimeException(e);
         }

@@ -229,6 +229,7 @@ public class ProdutoView {
                             op = entrada.nextInt();
                         }
                         produto.setModelo(modeloProduto);
+                        pc.updateModelo(produto);
                         break;
                     case 2:
                         while (op != 0) {
@@ -262,6 +263,7 @@ public class ProdutoView {
                             op = entrada.nextInt();
                         }
                         produto.setCores(corProduto);
+                        pc.updateCor(produto);
                         break;
                     case 2:
                         while (op != 0) {
@@ -272,6 +274,7 @@ public class ProdutoView {
                             System.out.println("1 - SIM;                          0 - NÃO;");
                             op = entrada.nextInt();
                         }
+
                         break;
                     default:
                         System.out.println("Opção Inválida");

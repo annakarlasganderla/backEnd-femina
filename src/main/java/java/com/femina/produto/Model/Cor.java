@@ -48,8 +48,8 @@ public class Cor {
 
     @Override
     public String toString() {
-        return "" + id + ';'+
-                nome + ';' +
-                hexadecimal + ';' ;
+        return "COR: "+
+                nome + "-" +
+                hexadecimal;
     }
 }
