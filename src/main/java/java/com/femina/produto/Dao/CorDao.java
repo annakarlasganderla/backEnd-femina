@@ -2,6 +2,7 @@ package java.com.femina.produto.Dao;
 
 import java.com.femina.produto.Factory.ConectionFactory;
 import java.com.femina.produto.Model.Cor;
+import java.com.femina.produto.Model.Produto;
 import java.io.*;
 import java.sql.*;
 import java.util.*;
@@ -17,7 +18,7 @@ public class CorDao {
         String sql =  "CREATE TABLE IF NOT EXISTS cores (" +
                 "id INT PRIMARY KEY AUTO_INCREMENT," +
                 "nome VARCHAR(50) NOT NULL," +
-                "hexadecimal DECIMAL(10,2) );";
+                "hexadecimal VARCHAR(10) );";
 
         PreparedStatement stmt = conection.prepareStatement(sql);
 
@@ -60,6 +61,33 @@ public class CorDao {
         }
         return listaDeCores;
     }
+
+    public List<Cor> listarCoresProduto(Produto produto){
+        String sql = "SELECT * FROM cores c JOIN corproduto cp ON c.id = cp.idCor WHERE cp.idProduto = ?";
+
+        try {
+
+            PreparedStatement stmt = conection.prepareStatement(sql);
+            stmt.setInt(1, produto.getId());
+            ResultSet resultSet = stmt.executeQuery();
+
+            List<Cor> listaDeCores = new ArrayList<>();
+
+            while(resultSet.next()) {
+                Cor cor = new Cor();
+
+                cor.setId(resultSet.getInt("id"));
+                cor.setNome(resultSet.getString("nome"));
+                cor.setHexadecimal((resultSet.getString("Hexadecimal")));
+                listaDeCores.add(cor);
+            }
+            return listaDeCores;
+
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
     public  Cor selectCorById(int id) {
         String sql = "SELECT * FROM cores WHERE id = ?";
 

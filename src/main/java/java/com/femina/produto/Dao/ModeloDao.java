@@ -2,6 +2,7 @@ package java.com.femina.produto.Dao;
 
 import java.com.femina.produto.Factory.ConectionFactory;
 import java.com.femina.produto.Model.ModelosDosProdutos;
+import java.com.femina.produto.Model.Produto;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ public class ModeloDao {
 
     public void criarTabelaModelo() {
         String sql = "CREATE TABLE IF NOT EXISTS modelo ("+
-        "id_modelo INT PRIMARY KEY AUTO_INCREMENT,"+
+        "idModelo INT PRIMARY KEY AUTO_INCREMENT,"+
         "nome VARCHAR(50) NOT NULL"+
         ");";
 
@@ -62,7 +63,7 @@ public class ModeloDao {
             while (resultSet.next()){
                 ModelosDosProdutos modelo = new ModelosDosProdutos();
 
-                modelo.setId(resultSet.getInt("id_modelo"));
+                modelo.setId(resultSet.getInt("idModelo"));
                 modelo.setNomeTipo(resultSet.getString("nome"));
 
                 listaModelos.add(modelo);
@@ -75,8 +76,36 @@ public class ModeloDao {
         }
     }
 
+    public List<ModelosDosProdutos> listarModelosProdutos(Produto produto){
+        String sql = "SELECT * FROM modelo m JOIN modeloproduto mp ON m.idModelo = mp.idModeloP WHERE mp.idProduto = ?";
+
+        try {
+
+            List<ModelosDosProdutos> listaModelos = new ArrayList<>();
+
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, produto.getId());
+
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()){
+                ModelosDosProdutos modelo = new ModelosDosProdutos();
+
+                modelo.setId(resultSet.getInt("idModelo"));
+                modelo.setNomeTipo(resultSet.getString("nome"));
+
+                listaModelos.add(modelo);
+
+            }
+            return listaModelos;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public ModelosDosProdutos selecionaModeloById(int id){
-        String sql = "SELECT * FROM modelo WHERE id_modelo = ?";
+        String sql = "SELECT * FROM modelo WHERE idModelo = ?";
 
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);
@@ -87,7 +116,7 @@ public class ModeloDao {
             while (resultSet.next()){
                 ModelosDosProdutos modelo = new ModelosDosProdutos();
 
-                modelo.setId(resultSet.getInt("id_modelo"));
+                modelo.setId(resultSet.getInt("idModelo"));
                 modelo.setNomeTipo(resultSet.getString("nome"));
 
                 return modelo;
@@ -101,7 +130,7 @@ public class ModeloDao {
     }
 
     public void deletarModelo(ModelosDosProdutos modelo){
-        String sql = "DELETE FROM modelo WHERE id_modelo = ?";
+        String sql = "DELETE FROM modelo WHERE idModelo = ?";
 
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);

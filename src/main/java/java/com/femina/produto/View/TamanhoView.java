@@ -1,12 +1,12 @@
 package java.com.femina.produto.View;
 
 import java.com.femina.produto.Controller.TamanhoController;
+import java.com.femina.produto.Model.Tamanho;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
-import main.java.com.femina.produto.Model.Tamanho;
 
 public class TamanhoView {
 
@@ -27,15 +27,35 @@ public class TamanhoView {
         List<Tamanho> listaTamanhos = tamanhoController.listaTamanho();
 
         for(int i = 0;i < listaTamanhos.size();i++){
-            System.out.println(listaTamanhos.get(i).toMostra());
+            System.out.println(listaTamanhos.get(i).toString());
         }
     }
 
-    public Tamanho listarTamanhosDoProduto(int idProd) throws IOException {
-        return tamanhoController.listarTamanhosPeloIdProd(idProd);
+    public Tamanho listarTamanhosDoProduto() throws IOException {
+
+        System.out.println("Selecione um tamanho:");
+        this.mostrarTamanho();
+        Tamanho tamanho = tamanhoController.listarTamanhosPeloIdProd(entrada.nextInt());
+        System.out.println("O tamanho seleciona foi:");
+        System.out.println(tamanho);
+        return tamanho;
     }
 
-    public void deletarTamanho(int idProd) throws IOException {
-        tamanhoController.deletaTamanho(idProd);
+    public void deletarTamanho(Tamanho idProd) throws IOException {
+        this.listarTamanhosDoProduto();
+        int op;
+
+        System.out.println("Tem certeza que deseja deletar este Tamanho? 1 - Sim | 0 - Não");
+        op = entrada.nextInt();
+
+        switch (op) {
+            case 1:
+                tamanhoController.deletaTamanho(idProd);
+                break;
+
+            default:
+                System.out.println("Opção invalida");
+        }
+
     }
 }

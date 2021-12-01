@@ -14,7 +14,7 @@ public class Cor {
         this.hexadecimal = hexadecimal;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -48,8 +48,8 @@ public class Cor {
 
     @Override
     public String toString() {
-        return "" + id + ';'+
-                nome + ';' +
-                hexadecimal + ';' ;
+        return "COR: "+
+                nome + "-" +
+                hexadecimal;
     }
 }
