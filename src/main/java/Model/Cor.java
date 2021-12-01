@@ -38,18 +38,9 @@ public class Cor {
         this.hexadecimal = hexadecimal;
     }
 
-    public String toMostra() {
-        return  "Cor: \n" +
-                "Id - " + id + "; " +
-                "Nome - " + nome +  "; " +
-                "Hexadecimal - " + hexadecimal +
-                "\n";
-    }
-
     @Override
     public String toString() {
-        return "" + id + ';'+
-                nome + ';' +
-                hexadecimal + ';' ;
+        return "COR: " + nome + " - " +
+                hexadecimal;
     }
 }

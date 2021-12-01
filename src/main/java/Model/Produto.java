@@ -109,14 +109,14 @@ public class Produto {
         return "PRODUTO: \n" +
                 "|  Código: " + codigo + "\n" +
                 "|  Nome: " + nome + "\n" +
-                "|  Valor: " + preco + "\n" +
+                "|  Valor: R$ " + preco + "\n" +
                 "|  Quantidade: " + qtd + "\n" +
                 "|  Cores: " + cores + "\n" +
                 "|  Categoria: " + categoria.getNome() + "\n" +
                 "|  Modelos: " + modelo + "\n" +
                 "|  Marca: " + marca.getNome() + "\n" +
                 "|  Tamanho: " + tamanhos + "\n" +
-                "|  Fornecedor: " + fornecedor +
+                "|  Fornecedor: " + fornecedor + "\n" +
                 "|-----------------------------------------------|";
     }
 }

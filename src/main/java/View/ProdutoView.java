@@ -180,6 +180,7 @@ public class ProdutoView {
         CategoriaView categoriaView = new CategoriaView();
         ModeloView modeloView = new ModeloView();
         MarcaView mv = new MarcaView();
+        CorView cv = new CorView();
         int op = 1;
 
         System.out.println("EDITAR PRODUTO");
@@ -224,6 +225,7 @@ public class ProdutoView {
                             op = entrada.nextInt();
                         }
                         produto.setModelo(modeloProduto);
+                        pc.updateModelo(produto);
                         break;
                     case 2:
                         while (op != 0) {
@@ -231,14 +233,13 @@ public class ProdutoView {
                             pc.deletarModeloProduto(modelo,produto);
                             produto.getModelo().getModelos().remove(modelo);
                             System.out.println("Deseja Deletar mais um Modelo desse Produto?");
-                            System.out.println("1 - SIM;                                   0 - NÃO;");
+                            System.out.println("1 - SIM;                            0 - NÃO;");
                             op = entrada.nextInt();
                         }
                         break;
                     default:
                         System.out.println("Opção Inválida");
                 }
-
                 break;
             case 6:
                 System.out.println("MARCA");
@@ -246,6 +247,34 @@ public class ProdutoView {
                 produto.setMarca(marca);
                 break;
             case 7:
+                System.out.println("1-Adicionar Cor;2-Remover Cor");
+                switch (entrada.nextInt()){
+                    case 1:
+                        CorProduto corProduto = new CorProduto();
+                        while (op != 0) {
+                            Cor cor = cv.selecionaCoresById();
+                            corProduto.getCores().add(cor);
+                            System.out.println("Deseja Selecionar mais uma Cor para esse Produto?");
+                            System.out.println("1 - SIM;                                 0 - NÃO;");
+                            op = entrada.nextInt();
+                        }
+                        produto.setCores(corProduto);
+                        pc.updateCor(produto);
+                        break;
+                    case 2:
+                        while (op != 0) {
+                            Cor cor = cv.selectCorProdutoId(produto);
+                            pc.deletarCorProduto(cor,produto);
+                            produto.getCores().getCores().remove(cor);
+                            System.out.println("Deseja Deletar mais uma Cor desse Produto?");
+                            System.out.println("1 - SIM;                          0 - NÃO;");
+                            op = entrada.nextInt();
+                        }
+
+                        break;
+                    default:
+                        System.out.println("Opção Inválida");
+                }
                 break;
             case 8:
                 break;

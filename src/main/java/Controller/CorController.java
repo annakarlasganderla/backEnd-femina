@@ -3,6 +3,8 @@ package Controller;
 
 import Dao.CorDao;
 import Model.Cor;
+import Model.Produto;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -21,6 +23,11 @@ public class CorController {
         return corDao.listarCores();
 
     }
+
+    public List<Cor> listarCoresProduto(Produto produto){
+        return corDao.listarCoresProduto(produto);
+    }
+
     public Cor selecionaCor(int  id){
         return corDao.selectCorById(id);
     }

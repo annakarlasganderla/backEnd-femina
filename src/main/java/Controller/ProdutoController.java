@@ -1,9 +1,12 @@
 package Controller;
 
+import Model.Cor;
 import Model.ModelosDosProdutos;
 import Model.Produto;
 
 import Dao.ProdutoDao;
+import Model.ProdutosAux;
+
 import java.util.List;
 
 public class ProdutoController {
@@ -24,7 +27,7 @@ public class ProdutoController {
 
     public List<Produto> listarProdutos(){
         ProdutoDao pd = new ProdutoDao();
-        return pd.listarProdutos();
+        return pd.listaProdutoByIdLoja();
     }
 
     public Produto selectById(int idProduto){
@@ -37,6 +40,16 @@ public class ProdutoController {
         pd.editarProduto(produto);
     }
 
+    public void updateModelo(Produto produto){
+        ProdutoDao pd = new ProdutoDao();
+        pd.updateModelo(produto);
+    }
+
+    public void updateCor(Produto produto){
+        ProdutoDao pd = new ProdutoDao();
+        pd.updateCor(produto);
+    }
+
     public void deletarProduto(Produto produto){
         ProdutoDao pd = new ProdutoDao();
         pd.deletarProduto(produto);
@@ -45,6 +58,11 @@ public class ProdutoController {
     public void deletarModeloProduto(ModelosDosProdutos modelo, Produto produto){
         ProdutoDao pd = new ProdutoDao();
         pd.deletarModeloProduto(modelo, produto);
+    }
+
+    public void deletarCorProduto(Cor cor, Produto produto){
+        ProdutoDao pd = new ProdutoDao();
+        pd.deletarCorProduto(cor, produto);
     }
 
 }

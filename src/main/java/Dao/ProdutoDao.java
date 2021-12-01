@@ -1,7 +1,9 @@
 package Dao;
 
+import Dao.*;
 import Factory.ConectionFactory;
 import Model.*;
+
 import java.io.*;
 import java.sql.*;
 import java.util.*;
@@ -157,8 +159,9 @@ public class ProdutoDao {
 
     }
 
-    public List<Produto> listarProdutos(){
+    public List<Produto> listaProdutoByIdLoja(){
         String sql = "SELECT * FROM produtos";
+//        String sql = "SELECT * FROM produtos WHERE idLoja = " + idLoja;
         String sqlCor = "SELECT idCor FROM corproduto cp JOIN cores c " +
                 "ON cp.idCor = c.id WHERE cp.idProduto = ?";
         String sqlModelo = "SELECT idModeloP FROM modeloproduto mp JOIN modelo m " +
@@ -169,7 +172,7 @@ public class ProdutoDao {
                 "ON fp.idFornecedor_fk = f.idFornecedor WHERE fp.idProduto = ?";
 
         try {
-
+            ProdutosAux produtosAux = new ProdutosAux();
             List<Produto> listaProdutos = new ArrayList<>();
 
             PreparedStatement stmt = connection.prepareStatement(sql);
@@ -351,9 +354,6 @@ public class ProdutoDao {
     public void editarProduto(Produto produto){
         String sql = "UPDATE produtos SET codigo = ?, nome = ?, valor = ?, quantidade = ?, " +
                 "idMarca = ?, idCategoria= ? WHERE idProduto = ?";
-        String sqlModelo = "INSERT INTO modeloproduto" +
-                "(idProduto, idModeloP)" +
-                "VALUES (?,?)";
 
         try {
 
@@ -369,14 +369,42 @@ public class ProdutoDao {
 
             stmt.execute();
 
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void updateModelo(Produto produto){
+        String sqlModelo = "INSERT INTO modeloproduto" +
+                "(idProduto, idModeloP)" +
+                "VALUES (?,?)";
+
+        try {
             for(int i = 0; i < produto.getModelo().getModelos().size(); i++){
-                stmt = connection.prepareStatement(sqlModelo);
+                PreparedStatement stmt = connection.prepareStatement(sqlModelo);
                 stmt.setInt(1, produto.getId());
                 stmt.setInt(2, produto.getModelo().getModelos().get(i).getId());
 
                 stmt.execute();
             }
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
 
+    public void updateCor(Produto produto){
+        String sqlModelo = "INSERT INTO corproduto" +
+                "(idProduto, idCor)" +
+                "VALUES (?,?)";
+
+        try {
+            for(int i = 0; i < produto.getModelo().getModelos().size(); i++){
+                PreparedStatement stmt = connection.prepareStatement(sqlModelo);
+                stmt.setInt(1, produto.getId());
+                stmt.setInt(2, produto.getCores().getCores().get(i).getId());
+
+                stmt.execute();
+            }
         } catch (SQLException e){
             throw new RuntimeException(e);
         }
@@ -388,6 +416,22 @@ public class ProdutoDao {
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, modelo.getId());
+            stmt.setInt(2, produto.getId());
+
+            stmt.execute();
+
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public void deletarCorProduto(Cor cor, Produto produto){
+        String sql = "DELETE FROM corproduto WHERE idCor = ? AND idProduto = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, cor.getId());
             stmt.setInt(2, produto.getId());
 
             stmt.execute();
