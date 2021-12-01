@@ -1,61 +1,42 @@
-//package main.java.com.femina.produto.View;
-//
-//import main.java.com.femina.produto.Controller.DestaquesController;
-//import main.java.com.femina.produto.Controller.ProdutoController;
-//import main.java.com.femina.produto.Model.Destaques;
-//import main.java.com.femina.produto.Model.Produto;
-//import main.java.com.femina.produto.Model.ProdutoDesconto;
-//
-//import java.io.IOException;
-//import java.util.ArrayList;
-//import java.util.List;
-//import java.util.Scanner;
-//
-//public class DestaquesView {
-//
-//    Scanner leitor = new Scanner(System.in);
-//    DestaquesController destaquesController = new DestaquesController();
-//
-//    public void cadastraDestaque() throws IOException {
-//        Destaques destaques = new Destaques();
-//        ProdutoController produtoController = new ProdutoController();
-//        List<Produto> listaDeProdutos = produtoController.listarProdutos();
-//
-//        for(int i = 0; i < listaDeProdutos.size();i++) {
-//            System.out.println(listaDeProdutos.get(i));
-//        }
-//
-//        System.out.println("Qual produto você quer adicionar aos destaques: ");
-//        int idProdutoSelecionado = leitor.nextInt();
-//
-//        destaques.setIdProduto(Long.valueOf(idProdutoSelecionado));
-//
-//        destaquesController.cadastraDestaque(destaques);
-//    }
-//
-//    public List<Destaques> mostraDestaques() throws IOException {
-//        List<Destaques> listaDeDestaques = destaquesController.mostraListaDeDestaques();
-//        System.out.println(listaDeDestaques);
-//        return listaDeDestaques;
-//    }
-//
-//    public void removeDestaque() throws IOException {
-//        ProdutoController produtoController = new ProdutoController();
-//        List<Produto> listaDeProdutos = produtoController.listarProdutos();
-//
-//        System.out.println(listaDeProdutos);
-//
-//        System.out.println("Qual produto você quer remover o desconto: ");
-//        int idProdutoSelecionado = leitor.nextInt();
-//
-//        List<Destaques> listaDeDestaques = mostraDestaques();
-//
-//        for (int i = 0; i < listaDeDestaques.size();i++) {
-//            if(listaDeDestaques.get(i).getIdProduto() == listaDeProdutos.get(idProdutoSelecionado - 1).getId()) {
-//                listaDeDestaques.remove(i);
-//            }
-//        }
-//        destaquesController.removeDestaque(listaDeDestaques);
-//    }
-//
-//}
+package java.com.femina.produto.View;
+
+import java.com.femina.produto.Controller.DestaquesController;
+import java.com.femina.produto.Model.Destaques;
+import java.com.femina.produto.Model.ProdutoDestaque;
+import java.util.Scanner;
+
+public class DestaquesView {
+
+    Scanner leitor = new Scanner(System.in).useDelimiter("\n");
+    ProdutoView pv = new ProdutoView();
+
+    public void cadastroDeDestaque(){
+
+        DestaquesController dc = new DestaquesController();
+        dc.criaTabelaDestaque();
+
+        int op = 1;
+
+        ProdutoDestaque produtoDestaque = new ProdutoDestaque();
+
+        System.out.println("Digite o Nome da coleção de destaque: ");
+        String nome = leitor.next();
+        Destaques destaques = new Destaques(nome);
+
+        System.out.println("Digite o id dos produtos dessa coleção ");
+
+        while (op != 0) {
+            Produtos produtos = pv.retornaById();
+            produtoDestaque.getProdutos().add(produtos);
+            System.out.println("Deseja Selecionar mais um produto para essa colecão ?");
+            System.out.println("1 - SIM;                                 0 - NÃO;");
+            op = leitor.nextInt();
+        }
+
+        destaques.setProdutoDestaque(produtoDestaque);
+
+        dc.cadastraDestaque(destaques);
+
+    }
+
+}

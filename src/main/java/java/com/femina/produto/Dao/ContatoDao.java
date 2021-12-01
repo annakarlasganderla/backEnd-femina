@@ -1,4 +1,3 @@
-
 package java.com.femina.produto.Dao;
 
 import java.com.femina.produto.Factory.ConectionFactory;
@@ -6,13 +5,6 @@ import java.com.femina.produto.Model.Contatos;
 import java.sql.*;
 import java.util.*;
 
-package Dao;
-
-import Factory.ConectionFactory;
-import Model.Contatos;
-
-import java.sql.*;
-import java.util.*;
 
 public class ContatoDao {
 
@@ -141,7 +133,6 @@ public class ContatoDao {
         String sql = "DELETE FROM contatos WHERE idContatos = ?";
 
         try {
-
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, contatos.getId());
             stmt.execute();

@@ -1,70 +1,87 @@
-//package main.java.com.femina.produto.Dao;
-//
-//import main.java.com.femina.produto.Model.Destaques;
-//import main.java.com.femina.produto.Model.ProdutoDesconto;
-//
-//import java.io.*;
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//public class DestaquesDao {
-//
-//    public void cadastraDestaque(List<Destaques> destaquesList) throws IOException {
-//
-//        FileWriter destaqueFile = new FileWriter("destaques.txt",true);
-//        PrintWriter printaDestaque = new PrintWriter(destaqueFile);
-//
-//        for(int i = 0; i < destaquesList.size();i++) {
-//            printaDestaque.println(destaquesList.get(i));
-//        }
-//
-//        printaDestaque.flush();
-//        printaDestaque.close();
-//
-//    }
-//
-//    public List<Destaques> mostraListaDeDestaques() throws IOException {
-//        FileReader fileReader = new FileReader("destaques.txt");
-//        BufferedReader bufferedReader = new BufferedReader(fileReader);
-//
-//        List<String> transformToString = new ArrayList<>();
-//
-//        List<Destaques> listaDeDestaques = new ArrayList<>();
-//
-//        String linha = " ";
-//
-//        while((linha = bufferedReader.readLine()) != null) {
-//            if (linha != null) {
-//                transformToString.add(linha);
-//            }
-//        }
-//
-//        fileReader.close();
-//        bufferedReader.close();
-//
-//        for (String i: transformToString) {
-//            String[] descs = i.split(";");
-//
-//            Destaques destaques = new Destaques();
-//
-//            destaques.setIdProduto(Long.valueOf(descs[0]));
-//
-//            listaDeDestaques.add(destaques);
-//        }
-//        return listaDeDestaques;
-//    }
-//
-//    public void removeDestaque(List<Destaques> destaquesList) throws IOException {
-//        FileWriter fileWriter = new FileWriter("destaques.txt",false);
-//        PrintWriter printWriter = new PrintWriter(fileWriter);
-//
-//        for (int listDestaques = 0; listDestaques < destaquesList.size(); listDestaques++) {
-//            printWriter.println(destaquesList.get(listDestaques));
-//        }
-//
-//        printWriter.flush();
-//        printWriter.close();
-//        fileWriter.close();
-//    }
-//
-//}
+package java.com.femina.produto.Dao;
+
+import java.com.femina.produto.Factory.ConectionFactory;
+import java.com.femina.produto.Model.Destaques;
+import java.io.*;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class DestaquesDao {
+
+    private Connection connection;
+
+    public DestaquesDao(){
+        this.connection = new ConectionFactory().getConection();
+    }
+
+
+    public void criarTabelasDetaques(){
+
+        String sql = "CREATE TABLE IF NOT EXISTS destaques (" +
+                "idDestaque INT PRIMARY KEY AUTO_INCREMENT," +
+                "nome VARCHAR(50) NOT NULL," +
+                ");";
+
+        String sqlDestaque = "CREATE TABLE IF NOT EXISTS produtoDestaque (" +
+                "idCorProduto INT PRIMARY KEY AUTO_INCREMENT," +
+                "idProduto INT," +
+                "idCor INT," +
+                "FOREIGN KEY (idProduto) REFERENCES produtos(idProduto)," +
+                "FOREIGN KEY (idDestaque) REFERENCES destaques(idDestaque)" +
+                ");";
+        try {
+
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.execute();
+            stmt = connection.prepareStatement(sqlDestaque);
+            stmt.execute();
+
+            stmt.close();
+
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public void cadastraDestaque(Destaques dest){
+
+
+        String sql = "INSERT INTO destaques" +
+                "(idDestaque,nome) " +
+                "VALUES (?,?)";
+
+        String sqlCor = "INSERT INTO produtoDestaque" +
+                "(idProduto, idDestaque)" +
+                "VALUES (?,?)";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            stmt.setInt(1, dest.getIdDestaque());
+            stmt.setString(2, dest.getNome());
+
+            stmt.execute();
+
+            ResultSet resultSet = stmt.getGeneratedKeys();
+
+            while (resultSet.next()){
+                dest.setIdDestaque(resultSet.getInt(1));
+            }
+
+            for(int i = 0; i < dest.getProdutoDestaque().getProdutos().size(); i++){
+                stmt = connection.prepareStatement(sqlCor);
+                stmt.setInt(1, dest.getIdDestaque());
+                stmt.setInt(2, dest.getProdutoDestaque().getProdutos().get(i).getId());
+
+                stmt.execute();
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
+}

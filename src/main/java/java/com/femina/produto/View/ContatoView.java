@@ -139,11 +139,11 @@ public class ContatoView {
 
         cc.editarContato(cont);
 
-        System.out.println("Produto Editado!");
+        System.out.println("Contato Editado!");
         System.out.println("Deseja Continuar?");
         System.out.println("1-Sim;2-Não;");
 
-        System.out.println("Produto Editado!");
+        System.out.println("Contato Editado!");
         System.out.println("Deseja Continuar?");
         System.out.println("1-Sim;2-Não;");
 
@@ -165,7 +165,7 @@ public class ContatoView {
         ContatoController cc = new ContatoController();
         Scanner entrada = new Scanner(System.in).useDelimiter("\n");
 
-        System.out.println("Tem certeza que deseja deletar o produto?");
+        System.out.println("Tem certeza que deseja deletar o contato?");
         System.out.println("1-Sim;2-Não;");
 
         switch (entrada.nextInt()){
