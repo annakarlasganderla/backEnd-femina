@@ -30,20 +30,14 @@ public class ProdutoController {
         return pd.selectById(idProduto);
     }
 
+    public void editarProduto(Produto produto){
+        ProdutoDao pd = new ProdutoDao();
+        pd.editarProduto(produto);
+    }
+
     public void deletarProduto(Produto produto){
         ProdutoDao pd = new ProdutoDao();
         pd.deletarProduto(produto);
     }
-
-//    public void editarProduto(Produto produto){
-//        ProdutoDao pd = new ProdutoDao();
-//        pd.editarProduto(produto);
-//
-//    }
-//
-//    public void deletarProduto(Produto produto){
-//        ProdutoDao pd = new ProdutoDao();
-//        pd.deletarProduto(produto);
-//    }
 
 }

@@ -116,7 +116,7 @@ public class Produto {
                 "|  Modelos: " + modelo + "\n" +
                 "|  Marca: " + marca.getNome() + "\n" +
                 "|  Tamanho: " + tamanhos + "\n" +
-                "|  Fornecedor: " + fornecedor +
+                "|  Fornecedor: " + fornecedor + "\n" +
                 "|-----------------------------------------------|";
     }
 }

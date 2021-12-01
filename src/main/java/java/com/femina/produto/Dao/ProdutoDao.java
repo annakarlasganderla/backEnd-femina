@@ -148,7 +148,7 @@ public class ProdutoDao {
             for(int i = 0; i < prod.getFornecedor().getFornecedores().size(); i++){
                 stmt = connection.prepareStatement(sqlFornecedor);
                 stmt.setInt(1, prod.getId());
-                stmt.setInt(2, prod.getFornecedor().getFornecedores().get(i).getId());
+                stmt.setInt(2, prod.getFornecedor().getFornecedores().get(i).getIdFornecedor());
 
                 stmt.execute();
             }
@@ -167,7 +167,7 @@ public class ProdutoDao {
                 "ON mp.idModeloP = m.idModelo WHERE mp.idProduto = ?";
         String sqlTamanho = "SELECT idTamanho FROM tamanhoproduto tp JOIN tamanho t " +
                 "ON tp.idTamanho = t.id WHERE tp.idProduto = ?";
-        String sqlFornecedor = "SELECT idFornecedor_fk FROM fornecedorproduto fp JOIN fornecedor f " +
+        String sqlFornecedor = "SELECT idFornecedor_fk FROM fornecedorproduto fp JOIN fornecedores f " +
                 "ON fp.idFornecedor_fk = f.idFornecedor WHERE fp.idProduto = ?";
 
         try {
@@ -233,7 +233,7 @@ public class ProdutoDao {
                 ResultSet resultSet4 = stmt.executeQuery();
                 while (resultSet4.next()) {
                     FornecedorDao fornecedorDao = new FornecedorDao();
-                    Fornecedor fornecedor = fornecedorDao.selectFornecedorById();
+                    Fornecedor fornecedor = fornecedorDao.selectFornecedorById(resultSet4.getInt("idFornecedor_fk"));
                     fornecedorProduto.getFornecedores().add(fornecedor);
                 }
                 produto.setFornecedor(fornecedorProduto);
@@ -257,7 +257,7 @@ public class ProdutoDao {
                 "ON mp.idModeloP = m.idModelo WHERE mp.idProduto = ?";
         String sqlTamanho = "SELECT idTamanho FROM tamanhoproduto tp JOIN tamanho t " +
                 "ON tp.idTamanho = t.id WHERE tp.idProduto = ?";
-        String sqlFornecedor = "SELECT idFornecedor_fk FROM fornecedorproduto fp JOIN fornecedor f " +
+        String sqlFornecedor = "SELECT idFornecedor_fk FROM fornecedorproduto fp JOIN fornecedores f " +
                 "ON fp.idFornecedor_fk = f.idFornecedor WHERE fp.idProduto = ?";
 
         try {
@@ -322,7 +322,7 @@ public class ProdutoDao {
                 ResultSet resultSet4 = stmt.executeQuery();
                 while (resultSet4.next()) {
                     FornecedorDao fornecedorDao = new FornecedorDao();
-                    Fornecedor fornecedor = fornecedorDao.selectFornecedorById();
+                    Fornecedor fornecedor = fornecedorDao.selectFornecedorById(resultSet4.getInt("idFornecedor_fk"));
                     fornecedorProduto.getFornecedores().add(fornecedor);
                 }
                 produto.setFornecedor(fornecedorProduto);
@@ -350,6 +350,29 @@ public class ProdutoDao {
         }
     }
 
+    public void editarProduto(Produto produto){
+        String sql = "UPDATE produtos SET codigo = ?, nome = ?, valor ?, quantidade = ?, " +
+                "idMarca = ?, idCategoria= ? WHERE idProduto = ?";
+
+        try {
+
+            PreparedStatement stmt = connection.prepareStatement(sql);
+
+            stmt.setInt(1, produto.getCodigo());
+            stmt.setString(2, produto.getNome());
+            stmt.setDouble(3, produto.getPreco());
+            stmt.setInt(4, produto.getQtd());
+            stmt.setInt(5, produto.getMarca().getId());
+            stmt.setInt(6, produto.getCategoria().getId());
+            stmt.setInt(7, produto.getId());
+
+            stmt.execute();
+
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
 //    public void updateProd(List<Produto> prod){
 //        try {
 //
@@ -366,40 +389,6 @@ public class ProdutoDao {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-//    }
-//
-//    public void delProd(List<Produto> prod){
-//        try {
-//
-//            FileWriter fileWriter = new FileWriter("produtos.txt", false);
-//            PrintWriter printWriter = new PrintWriter(fileWriter);
-//
-//            for (int list = 0; list < prod.size(); list++) {
-//                prod.get(list).setId(list+1);
-//                printWriter.println(prod.get(list));
-//            }
-//
-//            printWriter.flush();
-//            printWriter.close();
-//            fileWriter.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    public List<Produto> retornaProdutosPeloIdLoja(Long idLoja){
-//
-//        List<Produto> novaListaProdutosIdLoja = new ArrayList<>();
-//        List<Produto> listaDeProdutos = retornaProdutos();
-//
-//        for (int i = 0;i < listaDeProdutos.size();i++){
-//            if (listaDeProdutos.get(i).getIdLoja() == idLoja){
-//                novaListaProdutosIdLoja.add(listaDeProdutos.get(i));
-//            }
-//        }
-//
-//        return novaListaProdutosIdLoja;
-//
 //    }
 
 }

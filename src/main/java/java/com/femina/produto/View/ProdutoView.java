@@ -126,7 +126,7 @@ public class ProdutoView {
                 System.out.println((i+1) + " - " + listaProdutos.get(i).toString());
             }
         }
-
+        return listaProdutos;
     }
 
     public Produto retornaById() throws SQLException, IOException {
@@ -178,55 +178,70 @@ public class ProdutoView {
         }
     }
 
-//    public void alterarProduto() throws IOException {
-//        ProdutoController pc = new ProdutoController();
-//        FornecedorView fv = new FornecedorView();
-//        CorView cv = new CorView();
-//        ModeloView mv = new ModeloView();
-//        TamanhoView tv = new TamanhoView();
-//        Scanner entrada = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
-//
-//        List<Produto> lpd = pc.listarProdutos();
-//        for(int i = 0; i < lpd.size();i++){
-//            System.out.println((i+1)+" - "+lpd.get(i).toMostra());
-//        }
-//        System.out.println("Escolha qual produto quer editar");
-//        int select = entrada.nextInt();
-//        System.out.println("Selecione: 1-Código;2-Nome;3-Preço;4-Quantidade;5-Trocar Fornecedor;6-Cor;7-Modelo");
-//        int selectItem = entrada.nextInt();
-//        switch (selectItem) {
-//            case 1:
-//                System.out.print("Código-" + lpd.get(select - 1).getCodigo() + ": ");
-//                lpd.get(select-1).setCodigo(entrada.nextInt());
-//                break;
-//            case 2:
-//                System.out.print("Nome-" + lpd.get(select - 1).getNome() + ": ");
-//                lpd.get(select-1).setNome(entrada.next());
-//                break;
-//            case 3:
-//                System.out.print("Preço-" + lpd.get(select - 1).getPreco() + ": ");
-//                lpd.get(select-1).setPreco(entrada.nextDouble());
-//                break;
-//            case 4:
-//                System.out.print("Quantidade-" + lpd.get(select - 1).getQtd() + ": ");
-//                lpd.get(select-1).setQtd(entrada.nextInt());
-//                break;
-//            case 5:
-//                System.out.println("Selecione o novo fornecedor:");
-//                List<Fornecedor> lfd = fv.mostrarFornecedores();
-//                lpd.get(select-1).setFornecedor(lfd.get(entrada.nextInt()  - 1));
-//                break;
-//            case 6:
-//                cv.editaCor(lpd.get(select-1).getId());
-//                break;
-//            case 7:
-//                mv.editaModelo(lpd.get(select-1).getId());
-//                break;
-//            default:
-//                System.out.println("Opção Inválida");
-//        }
-//
-//        pc.editarProduto(lpd);
-//    }
+    public void editarProduto() throws IOException, SQLException {
+        Scanner entrada = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
+        ProdutoController pc = new ProdutoController();
+        CategoriaView categoriaView = new CategoriaView();
+        MarcaView mv = new MarcaView();
+
+        System.out.println("EDITAR PRODUTO");
+
+        Produto produto = this.retornaById();
+
+        System.out.println("Selecione o que você quer editar!");
+        System.out.println("0-Codigo;1-Nome;2-Preço;3-Quantidade;4-Categoria;5-Modelo;6-Marca;7-Cor;8-Tamanho;9-Fornecedor");
+
+        switch (entrada.nextInt()) {
+            case 0:
+                System.out.print("CÓDIGO: ");
+                produto.setCodigo(entrada.nextInt());
+                break;
+            case 1:
+                System.out.print("NOME: ");
+                produto.setNome(entrada.next());
+                break;
+            case 2:
+                System.out.print("PREÇO: ");
+                produto.setPreco(entrada.nextDouble());
+                break;
+            case 3:
+                System.out.print("QUANTIDADE: ");
+                produto.setQtd(entrada.nextInt());
+                break;
+            case 4:
+                System.out.println("CATEGORIA:");
+                Categoria categoria = categoriaView.selectById();
+                produto.setCategoria(categoria);
+                break;
+            case 5:
+                System.out.println("1-Adicionar Modelos;2-Remover Modelos");
+                switch (entrada.nextInt()){
+                    case 1:
+
+                        break;
+                    case 2:
+                        break;
+                    default:
+                        System.out.println("Opção Inválida");
+                }
+
+                break;
+            case 6:
+                System.out.println("MARCA");
+                Marca marca = mv.retornaById();
+                produto.setMarca(marca);
+                break;
+            case 7:
+                break;
+            case 8:
+                break;
+            case 9:
+                break;
+            default:
+                System.out.println("Opção Inválida");
+        }
+
+        pc.editarProduto(produto);
+    }
 
 }
