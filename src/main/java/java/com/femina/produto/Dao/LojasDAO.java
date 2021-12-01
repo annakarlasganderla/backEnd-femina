@@ -1,104 +1,154 @@
-//package main.java.com.femina.produto.Dao;
-//
-//import main.java.com.femina.produto.Model.Lojas;
-//
-//import java.io.*;
-//import java.nio.file.Files;
-//import java.nio.file.Path;
-//import java.nio.file.Paths;
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//public class LojasDAO {
-//
-//    List<String> lojasList = new ArrayList<>();
-//    Lojas lojas = new Lojas();
-//    List<Lojas> lojasListParaEditar = new ArrayList<>();
-//
-//    public void cadastrarLojas(List<Lojas> lojasList) throws IOException {
-//
-//        File arq = new File("lojas.txt");
-//
-//        if (!arq.isFile()) {
-//            arq.createNewFile();
-//        }
-//        FileWriter fileWriter = new FileWriter(arq, true);
-//        PrintWriter printWriter = new PrintWriter(fileWriter);
-//
-//        for(int i = 0; i < lojasList.size(); i++){
-//
-//            printWriter.println(validarId(lojasList.get(i)));
-//
-//        }
-//
-//        printWriter.flush();
-//        fileWriter.close();
-//        printWriter.close();
-//
-//    }
-//
-//    public void cadastrarLojasEditadas(List<Lojas> lojasList) throws IOException {
-//
-//        File arq = new File("lojas.txt");
-//
-//        if (!arq.isFile()) {
-//            arq.createNewFile();
-//        }
-//        FileWriter fileWriter = new FileWriter(arq);
-//        PrintWriter printWriter = new PrintWriter(fileWriter);
-//
-//        for(int i = 0; i < lojasList.size(); i++){
-//
-//            lojasList.get(i).setId(i);
-//            printWriter.println(lojasList.get(i));
-//
-//        }
-//
-//        printWriter.flush();
-//        fileWriter.close();
-//        printWriter.close();
-//
-//    }
-//
-//
-//    public List<Lojas> listarLojas() throws IOException {
-//        List<Lojas> lojasListParaEditar2 = new ArrayList<>();
-//        File arq = new File("lojas.txt");
-//
-//        FileReader fileReader = new FileReader(arq);
-//        BufferedReader bufferedReader = new BufferedReader(fileReader);
-//
-//        Path path = Paths.get("lojas.txt");
-//        lojasList = Files.readAllLines(path);
-//
-//
-//        for (int j = 0; j < lojasList.size(); j++) {
-//
-//            String lojasNaLista = lojasList.get(j);
-//
-//            String[] valorEditar = lojasNaLista.split(";");
-//
-//            lojas = new Lojas(Long.valueOf(valorEditar[0]), valorEditar[1]);
-//
-//            lojasListParaEditar2.add(lojas);
-//
-//        }
-//
-//        return lojasListParaEditar2;
-//    }
-//
-//    public Lojas validarId(Lojas lojas) throws IOException {
-//
-//        lojasListParaEditar = listarLojas();
-//
-//        for(int i = 0; i<lojasListParaEditar.size();i++){
-//
-//            if(lojas.getId() == lojasListParaEditar.get(i).getId()){
-//                lojas.setId((i+1));
-//            }
-//        }
-//
-//        return lojas;
-//    }
-//
-//}
+package java.com.femina.produto.Dao;
+
+import java.com.femina.produto.Controller.ContatoController;
+import java.com.femina.produto.Controller.EnderecoController;
+import java.com.femina.produto.Controller.FuncionariosController;
+import java.com.femina.produto.Factory.ConectionFactory;
+import java.com.femina.produto.Model.Lojas;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class LojasDAO {
+
+    private static Connection connection;
+
+    public LojasDAO(){
+        this.connection = ConectionFactory.getConection();
+    }
+
+    public void creatTable(){
+
+        String sqlCreat = "CREATE TABLE IF NOT EXISTS lojas (" +
+                "    idLoja INT PRIMARY KEY AUTO_INCREMENT," +
+                "    nome VARCHAR(244)," +
+                "    idEndereco INT," +
+                "    idContato INT," +
+                "FOREIGN KEY (idEndereco) REFERENCES endereco(id)," +
+                "FOREIGN KEY (idContato) REFERENCES contatos(idContatos)" +
+                ");";
+
+        try {
+            PreparedStatement  preparedStatement = connection.prepareStatement(sqlCreat);
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void creatTableAuxFunc(){
+
+        String sqlCreatAux = "CREATE TABLE IF NOT EXISTS lojasXfuncionarios (" +
+                "    idLoja INT," +
+                "    idFuncionarios INT," +
+                "FOREIGN KEY (idLoja) REFERENCES lojas(idLoja)," +
+                "FOREIGN KEY (idFuncionarios) REFERENCES funcionarios(idFuncionarios)" +
+                ");";
+        try {
+            PreparedStatement  preparedStatement = connection.prepareStatement(sqlCreatAux);
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void creatTableAuxProd(){
+
+        String sqlCreatAux = "CREATE TABLE IF NOT EXISTS lojasXprodutos (" +
+                "    idLoja INT," +
+                "    idProduto INT," +
+                "FOREIGN KEY (idLoja) REFERENCES lojas(idLoja)," +
+                "FOREIGN KEY (idProduto) REFERENCES produtos(id)" +
+                ");";
+        try {
+            PreparedStatement  preparedStatement = connection.prepareStatement(sqlCreatAux);
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void cadastrarLoja(Lojas loja){
+        String sqlInsert = "INSERT INTO lojas " +
+                "(nome, idEndereco, idContato) " +
+                "VALUES (?,?,?)";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlInsert);
+            preparedStatement.setString(1, loja.getNome());
+            preparedStatement.setInt(2, loja.getEndereco().getIdEndereco());
+            preparedStatement.setInt(3, loja.getContatos().getId());
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void cadastrarProdutosNaLOja(Lojas loja){
+
+        String sqlInsert = "INSERT INTO lojasXprodutos (idLoja, " +
+                "idProduto) " +
+                "VALUES (?,?)";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlInsert);
+            for(int i=0; i<loja.getProdutos().getProdutosList().size(); i++){
+                preparedStatement.setInt(1, loja.getId());
+                preparedStatement.setInt(2, loja.getProdutos().getProdutosList().get(i).getId());
+            }
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void cadastrarFuncionariosNaLOja(Lojas loja){
+
+        String sqlInsert = "INSERT INTO lojasXfuncionarios (idLoja, " +
+                "idProduto) " +
+                "VALUES (?,?)";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlInsert);
+            for(int i=0; i<loja.getFuncionarios().getProdutosList().size(); i++){
+                preparedStatement.setInt(1, loja.getId());
+                preparedStatement.setInt(2, loja.getFuncionarios().getProdutosList().get(i).getId());
+            }
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteLoja(int idDelete){
+        String sqlDel = "DELETE FROM lojas WHERE idLoja = " + idDelete;
+        String sqlDelEndereco = "DELETE FROM enderecos WHERE idLoja = " + idDelete;
+        String sqlDelContato = "DELETE FROM contatos WHERE idLoja = " + idDelete;
+        String sqlDelFuncionarios = "DELETE FROM funcionarios WHERE idLoja = " + idDelete;
+        String sqlDelProdutos = "DELETE FROM produtos WHERE idLoja = " + idDelete;
+        try {
+            PreparedStatement preparedStatement0 = connection.prepareStatement(sqlDel);
+            PreparedStatement preparedStatement1 = connection.prepareStatement(sqlDelEndereco);
+            PreparedStatement preparedStatement2 = connection.prepareStatement(sqlDelContato);
+            PreparedStatement preparedStatement3 = connection.prepareStatement(sqlDelFuncionarios);
+            PreparedStatement preparedStatement4 = connection.prepareStatement(sqlDelProdutos);
+            preparedStatement0.execute();
+            preparedStatement0.close();
+            preparedStatement1.execute();
+            preparedStatement1.close();
+            preparedStatement2.execute();
+            preparedStatement2.close();
+            preparedStatement3.execute();
+            preparedStatement3.close();
+            preparedStatement4.execute();
+            preparedStatement4.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
