@@ -1,69 +1,81 @@
-//package java.com.femina.produto.Model;
-//
-//import java.com.femina.produto.Model.Endereco;
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//public class Funcionarios {
-//    private int id;
-//    private String nome, cargo;
-//    private Endereco endereco;
-//    private int idEmpresa;
-//
-//    public Funcionarios(int id, String nome, String cargo, Endereco endereco, int idEmpresa) {
-//        this.id = id;
-//        this.nome = nome;
-//        this.cargo = cargo;
-//        this.endereco = endereco;
-//        this.idEmpresa = idEmpresa;
+package java.com.femina.produto.Model;
+
+import java.com.femina.produto.Model.Cargo;
+import java.com.femina.produto.Model.Endereco;
+
+public class Funcionarios {
+    private int idFuncionario;
+    private String nome;
+    private Cargo cargo;
+    private Endereco endereco;
+    //private Loja loja;
+
+    public Funcionarios(int idFuncionario, String nome, Cargo cargo, Endereco endereco/*, Loja loja*/) {
+        this.idFuncionario = idFuncionario;
+        this.nome = nome;
+        this.cargo = cargo;
+        this.endereco = endereco;
+        //this.loja = loja;
+    }
+
+    public Funcionarios() {
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    public int getId() {
+        return idFuncionario;
+    }
+
+    public void setId(int id) {
+        this.idFuncionario = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public Cargo getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(Cargo cargo) {
+        this.cargo = cargo;
+    }
+
+    public int getIdFuncionario() {
+        return idFuncionario;
+    }
+
+    public void setIdFuncionario(int idFuncionario) {
+        this.idFuncionario = idFuncionario;
+    }
+
+//    public Loja getLoja() {
+//        return loja;
 //    }
 //
-//    public Funcionarios() {
+//    public void setLoja(Loja loja) {
+//        this.loja = loja;
 //    }
-//
-//    public Endereco getEndereco() {
-//        return endereco;
-//    }
-//
-//    public void setEndereco(Endereco endereco) {
-//        this.endereco = endereco;
-//    }
-//
-//    public long getId() {
-//        return id;
-//    }
-//
-//    public void setId(int id) {
-//        this.id = id;
-//    }
-//
-//    public String getNome() {
-//        return nome;
-//    }
-//
-//    public void setNome(String nome) {
-//        this.nome = nome;
-//    }
-//
-//    public String getCargo() {
-//        return cargo;
-//    }
-//
-//    public void setCargo(String cargo) {
-//        this.cargo = cargo;
-//    }
-//
-//    public int getIdEmpresa() {
-//        return idEmpresa;
-//    }
-//
-//    public void setIdEmpresa(int idEmpresa) {
-//        this.idEmpresa = idEmpresa;
-//    }
-//
-//
-//    @Override
-//    public String toString() {
-//        return id + ";" + nome + ";" + cargo + ";" + endereco + ";" +idEmpresa +";";
-//    }
-//}
+
+    @Override
+    public String toString() {
+        return "Funcionarios{" +
+                "idFuncionario=" + idFuncionario +
+                ", nome='" + nome + '\'' +
+                ", cargo='" + cargo + '\'' +
+                /*", idEmpresa=" + loja*/ +
+                '}';
+    }
+}
