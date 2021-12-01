@@ -8,14 +8,14 @@ public class Funcionarios {
     private String nome;
     private Cargo cargo;
     private Endereco endereco;
-    //private Loja loja;
+    private Lojas loja;
 
-    public Funcionarios(int idFuncionario, String nome, Cargo cargo, Endereco endereco/*, Loja loja*/) {
+    public Funcionarios(int idFuncionario, String nome, Cargo cargo, Endereco endereco, Lojas loja) {
         this.idFuncionario = idFuncionario;
         this.nome = nome;
         this.cargo = cargo;
         this.endereco = endereco;
-        //this.loja = loja;
+        this.loja = loja;
     }
 
     public Funcionarios() {
@@ -61,13 +61,13 @@ public class Funcionarios {
         this.idFuncionario = idFuncionario;
     }
 
-//    public Loja getLoja() {
-//        return loja;
-//    }
-//
-//    public void setLoja(Loja loja) {
-//        this.loja = loja;
-//    }
+    public Lojas getLoja() {
+        return loja;
+    }
+
+    public void setLoja(Lojas loja) {
+        this.loja = loja;
+    }
 
     @Override
     public String toString() {

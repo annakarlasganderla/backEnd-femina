@@ -3,6 +3,7 @@ package java.com.femina.produto.Dao;
 import java.com.femina.produto.Dao.CargoDAO;
 import java.com.femina.produto.Factory.ConectionFactory;
 import java.com.femina.produto.Model.Funcionarios;
+import java.com.femina.produto.Model.FuncionariosAux;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,7 +17,7 @@ public class FuncionariosDAO {
     Funcionarios funcionario = new Funcionarios();
     CargoDAO cargoDAO = new CargoDAO();
     EnderecoDao enderecoDao = new EnderecoDao();
-    LojaDAO lojaDAO = new LojaDAO();
+    LojasDAO lojaDAO = new LojasDAO();
 
     public FuncionariosDAO() {
         this.connection = ConectionFactory.getConection();
@@ -48,7 +49,7 @@ public class FuncionariosDAO {
             preparedStatement.setString(1, funcionario.getNome());
             preparedStatement.setInt(2, funcionario.getCargo().getIdCargo());
             preparedStatement.setInt(3, funcionario.getEndereco().getIdEndereco());
-//            preparedStatement.setInt(4, funcionario.getEmpresa().getId());
+            preparedStatement.setInt(4, funcionario.getLoja().getId());
             preparedStatement.execute();
             preparedStatement.close();
         } catch (SQLException e) {
@@ -85,7 +86,6 @@ public class FuncionariosDAO {
                 funcionario.setEndereco(enderecoDao.selectEnderecoById(resultSet.getInt("idCargo")));
                 funcionario.setLoja(lojaDAO.selectLojaById(resultSet.getInt("idLoja")));
             }
-            System.out.println(funcionario);
             return retornoBanco;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -93,8 +93,32 @@ public class FuncionariosDAO {
         return null;
     }
 
-    public List<Funcionarios> listFuncionariosId(int idTam){
-        String sqlSelect = "SELECT nome, cargo FROM funcionarios WHERE id = " + idTam;
+    public FuncionariosAux listarFuncionariosIdLoja(int idSelect){
+        String sqlSelect = "SELECT * FROM funcionarios WHERE idLoja = " + idSelect;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Funcionarios> retornoBanco = new ArrayList<>();
+            FuncionariosAux funcionariosAux = new FuncionariosAux();
+            Funcionarios funcionario = new Funcionarios();
+
+            while(resultSet.next()){
+                funcionario.setId(resultSet.getInt("idFuncionarios"));
+                funcionario.setNome(resultSet.getString("nome"));
+                funcionario.setCargo(cargoDAO.getCargoById(resultSet.getInt("idCargo")));
+                funcionario.setEndereco(enderecoDao.selectEnderecoById(resultSet.getInt("idCargo")));
+                funcionario.setLoja(lojaDAO.selectLojaById(resultSet.getInt("idLoja")));
+            }
+            funcionariosAux.setProdutosList(retornoBanco);
+            return funcionariosAux;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Funcionarios> listFuncionariosId(int idFunc){
+        String sqlSelect = "SELECT nome, cargo FROM funcionarios WHERE id = " + idFunc;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect);
             ResultSet resultSet = preparedStatement.executeQuery();

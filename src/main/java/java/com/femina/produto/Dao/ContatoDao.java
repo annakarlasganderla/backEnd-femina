@@ -102,21 +102,16 @@ public class ContatoDao {
             stmt.setInt(1, id);
 
             ResultSet resultSet = stmt.executeQuery();
-
+            Contatos contato = new Contatos();
             while (resultSet.next()){
-                Contatos contato = new Contatos();
                 contato.setId(resultSet.getInt("idContatos"));
                 contato.setTel(resultSet.getString("telefone"));
                 contato.setEmail(resultSet.getString("email"));
-
-                return contato;
             }
-
+            return  contato;
         } catch (SQLException e){
             throw new RuntimeException(e);
         }
-
-        return null;
     }
 
     public void editarContatoDoBanco(Contatos contatos){

@@ -5,19 +5,26 @@ import java.com.femina.produto.Controller.EnderecoController;
 import java.com.femina.produto.Controller.FuncionariosController;
 import java.com.femina.produto.Factory.ConectionFactory;
 import java.com.femina.produto.Model.Lojas;
+import java.com.femina.produto.Model.ProdutosAux;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LojasDAO {
 
+    EnderecoDao enderecoDao = new EnderecoDao();
+    ContatoDao contatoDao = new ContatoDao();
+    FuncionariosDAO funcionariosDAO = new FuncionariosDAO();
     private static Connection connection;
 
-    public LojasDAO(){
+    public LojasDAO() {
         this.connection = ConectionFactory.getConection();
     }
 
-    public void creatTable(){
+    public void creatTable() {
 
         String sqlCreat = "CREATE TABLE IF NOT EXISTS lojas (" +
                 "    idLoja INT PRIMARY KEY AUTO_INCREMENT," +
@@ -29,7 +36,7 @@ public class LojasDAO {
                 ");";
 
         try {
-            PreparedStatement  preparedStatement = connection.prepareStatement(sqlCreat);
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlCreat);
             preparedStatement.execute();
             preparedStatement.close();
         } catch (SQLException e) {
@@ -37,7 +44,7 @@ public class LojasDAO {
         }
     }
 
-    public void creatTableAuxFunc(){
+    public void creatTableAuxFunc() {
 
         String sqlCreatAux = "CREATE TABLE IF NOT EXISTS lojasXfuncionarios (" +
                 "    idLoja INT," +
@@ -46,7 +53,7 @@ public class LojasDAO {
                 "FOREIGN KEY (idFuncionarios) REFERENCES funcionarios(idFuncionarios)" +
                 ");";
         try {
-            PreparedStatement  preparedStatement = connection.prepareStatement(sqlCreatAux);
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlCreatAux);
             preparedStatement.execute();
             preparedStatement.close();
         } catch (SQLException e) {
@@ -54,7 +61,7 @@ public class LojasDAO {
         }
     }
 
-    public void creatTableAuxProd(){
+    public void creatTableAuxProd() {
 
         String sqlCreatAux = "CREATE TABLE IF NOT EXISTS lojasXprodutos (" +
                 "    idLoja INT," +
@@ -63,7 +70,7 @@ public class LojasDAO {
                 "FOREIGN KEY (idProduto) REFERENCES produtos(id)" +
                 ");";
         try {
-            PreparedStatement  preparedStatement = connection.prepareStatement(sqlCreatAux);
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlCreatAux);
             preparedStatement.execute();
             preparedStatement.close();
         } catch (SQLException e) {
@@ -71,7 +78,7 @@ public class LojasDAO {
         }
     }
 
-    public void cadastrarLoja(Lojas loja){
+    public void cadastrarLojas(Lojas loja) {
         String sqlInsert = "INSERT INTO lojas " +
                 "(nome, idEndereco, idContato) " +
                 "VALUES (?,?,?)";
@@ -87,7 +94,7 @@ public class LojasDAO {
         }
     }
 
-    public void cadastrarProdutosNaLOja(Lojas loja){
+    public void cadastrarProdutosNaLOja(Lojas loja) {
 
         String sqlInsert = "INSERT INTO lojasXprodutos (idLoja, " +
                 "idProduto) " +
@@ -95,7 +102,7 @@ public class LojasDAO {
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlInsert);
-            for(int i=0; i<loja.getProdutos().getProdutosList().size(); i++){
+            for (int i = 0; i < loja.getProdutos().getProdutosList().size(); i++) {
                 preparedStatement.setInt(1, loja.getId());
                 preparedStatement.setInt(2, loja.getProdutos().getProdutosList().get(i).getId());
             }
@@ -106,17 +113,16 @@ public class LojasDAO {
         }
     }
 
-    public void cadastrarFuncionariosNaLOja(Lojas loja){
+    public void cadastrarFuncionariosNaLOja(Lojas loja) {
 
         String sqlInsert = "INSERT INTO lojasXfuncionarios (idLoja, " +
                 "idProduto) " +
                 "VALUES (?,?)";
-
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlInsert);
-            for(int i=0; i<loja.getFuncionarios().getProdutosList().size(); i++){
+            for (int i = 0; i < loja.getFuncionarios().getFuncionariosList().size(); i++) {
                 preparedStatement.setInt(1, loja.getId());
-                preparedStatement.setInt(2, loja.getFuncionarios().getProdutosList().get(i).getId());
+                preparedStatement.setInt(2, loja.getFuncionarios().getFuncionariosList().get(i).getId());
             }
             preparedStatement.execute();
             preparedStatement.close();
@@ -125,8 +131,8 @@ public class LojasDAO {
         }
     }
 
-    public void deleteLoja(int idDelete){
-        String sqlDel = "DELETE FROM lojas WHERE idLoja = " + idDelete;
+    public void deleteLoja(int idDelete) {
+        String sqlDel = "DELETE * FROM lojas WHERE idLoja = " + idDelete;
         String sqlDelEndereco = "DELETE FROM enderecos WHERE idLoja = " + idDelete;
         String sqlDelContato = "DELETE FROM contatos WHERE idLoja = " + idDelete;
         String sqlDelFuncionarios = "DELETE FROM funcionarios WHERE idLoja = " + idDelete;
@@ -150,5 +156,59 @@ public class LojasDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void editarNomeLoja(Lojas loja, int idSelct){
+        String nomeNovo = loja.getNome();
+        String sqlUpdate = "UPDATE lojas SET nome = " + nomeNovo  +  " WHERE idLoja = "+ idSelct;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdate);
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Lojas selectLojaById(int idSelect) {
+        Lojas loja = new Lojas();
+        String sqlSelectById = "SELECT * FROM lojas WHERE idLoja = " + idSelect;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlSelectById);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                loja.setId(resultSet.getInt("idLoja"));
+                loja.setNome(resultSet.getString("nome"));
+                loja.setEndereco(enderecoDao.selectEnderecoById(resultSet.getInt("idEndereco")));
+                loja.setContatos(contatoDao.selecionaId(resultSet.getInt("idContato")));
+                loja.setFuncionarios(funcionariosDAO.listarFuncionariosIdLoja(resultSet.getInt("idLoja")));
+                loja.setProdutos(produtoDAO.listaProdutoByIdLoja());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return loja;
+    }
+
+    public List<Lojas> listarTodasAsLojas() {
+        Lojas loja = new Lojas();
+        String sqlSelectById = "SELECT * FROM lojas";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlSelectById);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Lojas> retornoBanco = new ArrayList<>();
+            while (resultSet.next()) {
+                loja.setId(resultSet.getInt("idLoja"));
+                loja.setNome(resultSet.getString("nome"));
+                loja.setEndereco(enderecoDao.selectEnderecoById(resultSet.getInt("idEndereco")));
+                loja.setContatos(contatoDao.selecionaId(resultSet.getInt("idContato")));
+                retornoBanco.add(loja);
+            }
+            return retornoBanco;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
