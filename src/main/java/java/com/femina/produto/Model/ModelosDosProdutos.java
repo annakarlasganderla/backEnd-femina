@@ -2,6 +2,7 @@ package java.com.femina.produto.Model;
 
 public class ModelosDosProdutos {
 
+
     private int id_modelo;
     private String nomeTipo;
 

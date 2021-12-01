@@ -2,8 +2,8 @@ package java.com.femina.produto.Controller;
 
 import java.com.femina.produto.Dao.ModeloDao;
 import java.com.femina.produto.Model.ModelosDosProdutos;
+import java.com.femina.produto.Model.Produto;
 import java.util.List;
-
 
 public class ModeloController {
 
@@ -24,6 +24,11 @@ public class ModeloController {
     public List<ModelosDosProdutos> listarModelos(){
         ModeloDao modeloDao = new ModeloDao();
         return modeloDao.listarModelos();
+    }
+
+    public List<ModelosDosProdutos> listarModelosProdutos(Produto produto){
+        ModeloDao modeloDao = new ModeloDao();
+        return modeloDao.listarModelosProdutos(produto);
     }
 
     public ModelosDosProdutos selecionaModeloById(int id){

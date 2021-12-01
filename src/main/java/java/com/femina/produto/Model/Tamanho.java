@@ -1,10 +1,9 @@
-package main.java.com.femina.produto.Model;
+package java.com.femina.produto.Model;
 
 public class Tamanho {
 
     private int id;
     private String tam;
-    private int idProduto;
 
     public Tamanho(String tam, int id) {
         this.tam = tam;
@@ -22,7 +21,7 @@ public class Tamanho {
         this.tam = tam;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -30,23 +29,8 @@ public class Tamanho {
         this.id = id;
     }
 
-    public int getIdProduto() {
-        return idProduto;
-    }
-
-    public void setIdProduto(int idProduto) {
-        this.idProduto = idProduto;
-    }
-
-    public String toMostra() {
-        return  "Tamanho: \n" +
-                "Id - " + id + "; " +
-                "Tamanho - " + tam +
-                "\n";
-    }
-
     @Override
     public String toString() {
-        return id + ";" + tam + ";" + idProduto;
+        return "TAMANHO: " + tam;
     }
 }

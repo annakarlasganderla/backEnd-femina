@@ -1,57 +1,83 @@
 package java.com.femina.produto.Model;
 
+import java.com.femina.produto.Model.Contatos;
+import java.com.femina.produto.Model.Endereco;
+
 public class Fornecedor {
 
-    private int idFornecedor;
-    private String nomeFornecedor, cnpjFornecedor;
-    private Contatos contatoFornecedor;
-    private Endereco enderecoFornecedor;
+    private int id;
+    private String nome;
+    private String cnpj;
+    private Endereco endereco; // OBJETO -> endereço
+    private Contatos contatos;
 
     public Fornecedor() {
     }
 
-    public int getIdFornecedor() {
-        return idFornecedor;
+    public Fornecedor(int id, String nome, String cnpj, Endereco endereco, Contatos contatos) {
+        this.id = id;
+        this.nome = nome;
+        this.cnpj = cnpj;
+        this.endereco = endereco;
+        this.contatos = contatos;
     }
 
-    public void setIdFornecedor(int idFornecedor) {
-        this.idFornecedor = idFornecedor;
+    public int getId() {
+        return id;
     }
 
-    public String getNomeFornecedor() {
-        return nomeFornecedor;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setNomeFornecedor(String nomeFornecedor) {
-        this.nomeFornecedor = nomeFornecedor;
+    public String getNome() {
+        return nome;
     }
 
-    public String getCnpjFornecedor() {
-        return cnpjFornecedor;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public void setCnpjFornecedor(String cnpjFornecedor) {
-        this.cnpjFornecedor = cnpjFornecedor;
+    public String getCnpj() {
+        return cnpj;
     }
 
-    public Contatos getContatoFornecedor() {
-        return contatoFornecedor;
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
     }
 
-    public void setContatoFornecedor(Contatos contatoFornecedor) {
-        this.contatoFornecedor = contatoFornecedor;
+    public Endereco getEndereco() {
+        return endereco;
     }
 
-    public Endereco getEnderecoFornecedor() {
-        return enderecoFornecedor;
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
     }
 
-    public void setEnderecoFornecedor(Endereco enderecoFornecedor) {
-        this.enderecoFornecedor = enderecoFornecedor;
+    public Contatos getContatos() {
+        return contatos;
+    }
+
+    public void setContatos(Contatos contatos) {
+        this.contatos = contatos;
+    }
+
+    public String toMostra() {
+        return  "Fornecedor: " +
+                "Id - " + id + "; " +
+                "Nome - " + nome + "; " +
+                "Cnpj - " + cnpj + "\n  [" +
+                "" + contatos.toMostra() +
+                " | " + endereco.toMostra() + "]" +
+                "\n";
     }
 
     @Override
     public String toString() {
-        return idFornecedor + nomeFornecedor + cnpjFornecedor + contatoFornecedor + enderecoFornecedor + "\n";
+        return "" + id + ';' +
+                nome + ';' +
+                cnpj + ';' +
+                contatos.getId() + ';' +
+                endereco.getIdEndereco();
     }
 }

@@ -1,7 +1,8 @@
 package java.com.femina.produto.Dao;
 
 import java.com.femina.produto.Factory.ConectionFactory;
-import main.java.com.femina.produto.Model.Tamanho;
+
+import java.com.femina.produto.Model.Tamanho;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,16 +15,15 @@ public class TamanhoDAO {
 
     private static Connection connection;
 
-    Tamanho tamanho = new Tamanho();
-
     public TamanhoDAO() {
         this.connection = ConectionFactory.getConection();
     }
 
     public void creatTable() {
         String sqlCreat = "CREATE TABLE IF NOT EXISTS tamanho(" +
-                "id INT PRIMARY KEY AUTO_INCREMENT, " +
-                "tam VARCHAR(264) UNIQUE," +
+                "id INT PRIMARY KEY AUTO_INCREMENT," +
+                "tam VARCHAR(10) NOT NULL," +
+                "CONSTRAINT uni_Tam UNIQUE (tam)" +
                 ");";
 
         try {
@@ -87,8 +87,8 @@ public class TamanhoDAO {
         return null;
     }
 
-    public void deletaTamanho(int idTam) {
-        String sqlDel = "DELETE FROM tamanho WHERE id=" + idTam;
+    public void deletaTamanho(Tamanho idTam) {
+        String sqlDel = "DELETE FROM tamanho WHERE id=" + idTam.getId();
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlDel);

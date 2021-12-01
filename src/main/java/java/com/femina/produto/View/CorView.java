@@ -2,6 +2,7 @@ package java.com.femina.produto.View;
 
 import java.com.femina.produto.Controller.CorController;
 import java.com.femina.produto.Model.Cor;
+import java.com.femina.produto.Model.Produto;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
@@ -84,12 +85,31 @@ public class CorView {
         switch (op) {
             case 1:
                 cc.deletaCor(cor);
+                System.out.println("Produto deletado com sucesso!");
                 break;
 
             default:
                 System.out.println("Opção invalida");
         }
 
-        System.out.println("Produto deletado com sucesso!");
+    }
+
+    public Cor selectCorProdutoId(Produto produto){
+
+        List<Cor> listCor = cc.listarCoresProduto(produto);
+
+        for(int i = 0; i < listCor.size();i++){
+            System.out.println(listCor.get(i).toString());
+        }
+
+        System.out.println("Selecione a Cor: ");
+        int corSelecionada = leitor.nextInt();
+
+        Cor cor = cc.selecionaCor(listCor.get(corSelecionada-1).getId());
+
+        System.out.println("A cor selecionada foi " + cor);
+
+        return cor;
+
     }
 }

@@ -1,43 +1,65 @@
-//package main.java.com.femina.produto.Controller;
-//
-//import main.java.com.femina.produto.Dao.ProdutoDao;
-//import main.java.com.femina.produto.Model.Produto;
-//
-//import java.util.List;
-//
-//public class ProdutoController {
-//
-//    public Produto cadastrarProduto(Produto prod){
-//        ProdutoDao pd = new ProdutoDao();
-//        return pd.gravaProduto(prod);
-//    }
-//
-//    public List<Produto> listarProdutos(){
-//        ProdutoDao pd = new ProdutoDao();
-//        List<Produto> lpd = pd.retornaProdutos();
-//        return lpd;
-//    }
-//
-//    public void editarProduto(List<Produto> lpd){
-//        ProdutoDao pd = new ProdutoDao();
-//        pd.updateProd(lpd);
-//
-//    }
-//
-//    public void removerProduto(List<Produto> lpd){
-//        ProdutoDao pd = new ProdutoDao();
-//        pd.delProd(lpd);
-//    }
-//
-//    public Produto pegaIdProduto(int index){
-//        ProdutoDao pd = new ProdutoDao();
-//        List<Produto> lpd = pd.retornaProdutos();
-//        return lpd.get(index);
-//    }
-//
-//    public List<Produto> listarProdutosPeloId(Long idLoja){
-//        ProdutoDao pd = new ProdutoDao();
-//        return pd.retornaProdutosPeloIdLoja(idLoja);
-//    }
-//
-//}
+package java.com.femina.produto.Controller;
+
+import java.com.femina.produto.Dao.ProdutoDao;
+import java.com.femina.produto.Model.Cor;
+import java.com.femina.produto.Model.ModelosDosProdutos;
+import java.com.femina.produto.Model.Produto;
+import java.util.List;
+
+public class ProdutoController {
+
+    public ProdutoController(){
+        this.criarTabelasProduto();
+    }
+
+    public void criarTabelasProduto(){
+        ProdutoDao pd = new ProdutoDao();
+        pd.criarTabelasProduto();
+    }
+
+    public void cadastrarProduto(Produto prod){
+        ProdutoDao pd = new ProdutoDao();
+        pd.cadastrarProduto(prod);
+    }
+
+    public ProdutosAux listarProdutos(int idLoja){
+        ProdutoDao pd = new ProdutoDao();
+        return pd.listarProdutos(idloja);
+    }
+
+    public Produto selectById(int idProduto){
+        ProdutoDao pd = new ProdutoDao();
+        return pd.selectById(idProduto);
+    }
+
+    public void editarProduto(Produto produto){
+        ProdutoDao pd = new ProdutoDao();
+        pd.editarProduto(produto);
+    }
+
+    public void updateModelo(Produto produto){
+        ProdutoDao pd = new ProdutoDao();
+        pd.updateModelo(produto);
+    }
+
+    public void updateCor(Produto produto){
+        ProdutoDao pd = new ProdutoDao();
+        pd.updateCor(produto);
+    }
+
+    public void deletarProduto(Produto produto){
+        ProdutoDao pd = new ProdutoDao();
+        pd.deletarProduto(produto);
+    }
+
+    public void deletarModeloProduto(ModelosDosProdutos modelo, Produto produto){
+        ProdutoDao pd = new ProdutoDao();
+        pd.deletarModeloProduto(modelo, produto);
+    }
+
+    public void deletarCorProduto(Cor cor, Produto produto){
+        ProdutoDao pd = new ProdutoDao();
+        pd.deletarCorProduto(cor, produto);
+    }
+
+}

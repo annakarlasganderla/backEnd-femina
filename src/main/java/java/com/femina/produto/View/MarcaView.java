@@ -12,6 +12,7 @@ public class MarcaView {
 
     Scanner leitor = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
 
+
     public void menu() {
 
         Scanner leitor = new Scanner(System.in).useDelimiter("\n");
@@ -82,12 +83,14 @@ public class MarcaView {
     public Marca retornaById() {
 
         Scanner entrada = new Scanner(System.in).useDelimiter("\n");
-        Marca marc = new Marca();
+
         MarcaController mc = new MarcaController();
+
+        this.mostraMarca();
 
         System.out.println("Qual o id você quer selecionar:");
 
-        marc = mc.seleionaById(entrada.nextInt());
+        Marca marc = mc.seleionaById(entrada.nextInt());
 
         System.out.println("A marca selecionado foi:");
         System.out.println(marc);

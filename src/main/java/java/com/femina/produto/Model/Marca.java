@@ -1,25 +1,25 @@
 package java.com.femina.produto.Model;
 
+import java.com.femina.produto.Model.Contatos;
+import java.com.femina.produto.Model.Endereco;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Marca {
 
-    private int id;
+    private long id;
     private String nome;
+    private Endereco enderecoMarca;
     private Contatos contatos;
 
     public Marca() {
     }
 
-    public Marca(String nome, Contatos contato) {
-        this.nome = nome;
-        this.contatos = contatos;
-    }
-
-
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -31,19 +31,36 @@ public class Marca {
         this.nome = nome;
     }
 
+    public Endereco getEnderecoMarca() {
+        return enderecoMarca;
+    }
+
+    public void setEnderecoMarca(Endereco enderecoMarca) {
+        this.enderecoMarca = enderecoMarca;
+    }
+
     public Contatos getContatos() {
         return contatos;
     }
 
-    public void setContatos(Contatos contatos) {this.contatos = contatos;}
+    public void setContatos(Contatos contatos) {
+        this.contatos = contatos;
+    }
+
+    public String toMostra() {
+        return  "Marca: " +
+                "Id - " + id + "; " +
+                "Nome - " + nome +  "\n  [" +
+                "" + contatos.toMostra() +
+                " | " + enderecoMarca.toMostra() + "]" +
+                "\n";
+    }
 
     @Override
     public String toString() {
-        return "Marca{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", contatos=" + contatos +
-                '}';
+        return "" + id + ';' +
+                nome + ';' +
+                contatos.getId()+ ';' +
+                enderecoMarca.getIdEndereco();
     }
-
 }
