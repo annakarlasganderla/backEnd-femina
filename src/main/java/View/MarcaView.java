@@ -14,7 +14,7 @@ public class MarcaView {
     Scanner leitor = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
 
 
-    public void menu() {
+    public void menuMarca() {
 
         Scanner leitor = new Scanner(System.in).useDelimiter("\n");
         MarcaView mv = new MarcaView();
@@ -33,16 +33,16 @@ public class MarcaView {
         switch (leitor.nextInt()) {
             case 1:
                 mv.cadastraMarca();
-                this.menu();
+                this.menuMarca();
                 break;
             case 2:
                 mv.mostraMarca();
-                this.menu();
+                this.menuMarca();
                 break;
             case 3:
                 mv.mostraMarca();
                 mv.deletarMarca(mv.retornaById());
-                this.menu();
+                this.menuMarca();
                 break;
             default:
                 System.out.println("Opção invalida");
@@ -116,7 +116,6 @@ public class MarcaView {
             default:
                 System.out.println("Opção invalida");
         }
-
-
     }
+
 }

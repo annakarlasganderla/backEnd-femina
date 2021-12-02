@@ -10,7 +10,7 @@ public class ContatoView {
     Scanner leitor = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
 
 
-    public void menu(){
+    public void menuContato(){
 
         Scanner leitor = new Scanner(System.in).useDelimiter("\n");
         ContatoView cv = new ContatoView();
@@ -28,21 +28,21 @@ public class ContatoView {
         switch (leitor.nextInt()){
             case 1:
                 cv.cadastraContato();
-                this.menu();
+                this.menuContato();
                 break;
             case 2:
                 cv.mostraContato();
-                this.menu();
+                this.menuContato();
                 break;
             case 3:
                 cv.mostraContato();
                 cv.editarContatos(cv.retornaById());
-                this.menu();
+                this.menuContato();
                 break;
             case 4:
                 cv.mostraContato();
                 cv.deletarProduto(cv.retornaById());
-                this.menu();
+                this.menuContato();
                 break;
             default:
                 System.out.println("Opção invalida");
