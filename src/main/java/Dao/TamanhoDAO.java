@@ -1,6 +1,7 @@
 package Dao;
 
 import Factory.ConectionFactory;
+import Model.Produto;
 import Model.Tamanho;
 
 import java.sql.Connection;
@@ -60,6 +61,7 @@ public class TamanhoDAO {
                 tamanho = new Tamanho();
                 tamanho.setId(resultSet.getInt("id"));
                 tamanho.setTam(resultSet.getString("tam"));
+                retornoBanco.add(tamanho);
             }
             return retornoBanco;
         } catch (SQLException e) {
@@ -80,6 +82,28 @@ public class TamanhoDAO {
                 tamanho.setTam(resultSet.getString("tam"));
             }
             return tamanho;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Tamanho> listarTamanhoProduto(Produto produto){
+        String sql = "SELECT * FROM tamanho t JOIN tamanhoproduto tp ON t.id = tp.idTamanho WHERE tp.idProduto = ?";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, produto.getId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Tamanho> retornoBanco = new ArrayList<>();
+            Tamanho tamanho;
+
+            while (resultSet.next()) {
+                tamanho = new Tamanho();
+                tamanho.setId(resultSet.getInt("id"));
+                tamanho.setTam(resultSet.getString("tam"));
+                retornoBanco.add(tamanho);
+            }
+            return retornoBanco;
         } catch (SQLException e) {
             e.printStackTrace();
         }

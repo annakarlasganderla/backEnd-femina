@@ -1,6 +1,7 @@
 package Controller;
 
 import Dao.TamanhoDAO;
+import Model.Produto;
 import Model.Tamanho;
 
 import java.io.IOException;
@@ -30,6 +31,12 @@ public class TamanhoController {
 
     }
 
+    public List<Tamanho> listarTamanhoProduto(Produto produto){
+
+        return tamanhoDAO.listarTamanhoProduto(produto);
+
+    }
+
     public Tamanho listarTamanhosPeloIdProd(int idProd) {
 
         return tamanhoDAO.listTamanhosId(idProd);
@@ -41,5 +48,7 @@ public class TamanhoController {
         tamanhoDAO.deletaTamanho(idDelete);
 
     }
+
+
 
 }

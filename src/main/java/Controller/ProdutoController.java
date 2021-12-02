@@ -47,6 +47,11 @@ public class ProdutoController {
         pd.updateCor(produto);
     }
 
+    public void updateTamanho(Produto produto){
+        ProdutoDao pd = new ProdutoDao();
+        pd.updateTamanho(produto);
+    }
+
     public void deletarProduto(Produto produto){
         ProdutoDao pd = new ProdutoDao();
         pd.deletarProduto(produto);
@@ -62,4 +67,8 @@ public class ProdutoController {
         pd.deletarCorProduto(cor, produto);
     }
 
+    public void deletarTamanhoProduto(Tamanho tamanho, Produto produto){
+        ProdutoDao pd = new ProdutoDao();
+        pd.deletarTamanhoProduto(tamanho, produto);
+    }
 }

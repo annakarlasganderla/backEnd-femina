@@ -3,6 +3,8 @@ package View;
 import Controller.TamanhoController;
 import Dao.TamanhoDAO;
 
+import Model.Cor;
+import Model.Produto;
 import Model.Tamanho;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,26 +27,47 @@ public class TamanhoView {
         tamanhoController.cadastrarTamanho(tamanho);
     }
 
-    public void mostrarTamanho(){
+    public List<Tamanho> mostrarTamanho(){
         List<Tamanho> listaTamanhos = tamanhoController.listarTamanho();
 
         for(int i = 0;i < listaTamanhos.size();i++){
             System.out.println(listaTamanhos.get(i).toString());
         }
+
+        return listaTamanhos;
+    }
+
+    public Tamanho selectTamanhoProdutoId(Produto produto){
+
+        List<Tamanho> listTamanho = tamanhoController.listarTamanhoProduto(produto);
+
+        for(int i = 0; i < listTamanho.size();i++){
+            System.out.println(listTamanho.get(i).toString());
+        }
+
+        System.out.println("Selecione o Tamanho: ");
+        int tamanhoSelecionado = entrada.nextInt();
+
+        Tamanho tamanho = tamanhoController.listarTamanhosPeloIdProd(listTamanho.get(tamanhoSelecionado-1).getId());
+
+        System.out.println("O Tamanho selecionado foi " + tamanho);
+
+        return tamanho;
+
     }
 
     public Tamanho listarTamanhosDoProduto() throws IOException {
 
         System.out.println("Selecione um tamanho:");
-        this.mostrarTamanho();
-        Tamanho tamanho = tamanhoController.listarTamanhosPeloIdProd(entrada.nextInt());
+        List<Tamanho> listaTamanho = this.mostrarTamanho();
+        Tamanho tamanho = tamanhoController.listarTamanhosPeloIdProd(listaTamanho.get(entrada.nextInt()-1).getId());
         System.out.println("O tamanho seleciona foi:");
         System.out.println(tamanho);
         return tamanho;
     }
 
-    public void deletarTamanho(Tamanho idProd) throws IOException {
-        this.listarTamanhosDoProduto();
+    public void deletarTamanho() throws IOException {
+        Tamanho idProd = this.listarTamanhosDoProduto();
         int op;
 
         System.out.println("Tem certeza que deseja deletar este Tamanho? 1 - Sim | 0 - Não");

@@ -179,6 +179,7 @@ public class ProdutoView {
         ProdutoController pc = new ProdutoController();
         CategoriaView categoriaView = new CategoriaView();
         ModeloView modeloView = new ModeloView();
+        TamanhoView tamanhoView = new TamanhoView();
         MarcaView mv = new MarcaView();
         CorView cv = new CorView();
         int op = 1;
@@ -270,13 +271,39 @@ public class ProdutoView {
                             System.out.println("1 - SIM;                          0 - NÃO;");
                             op = entrada.nextInt();
                         }
-
                         break;
                     default:
                         System.out.println("Opção Inválida");
                 }
                 break;
             case 8:
+                System.out.println("1-Adicionar Tamanho;2-Remover Tamanho");
+                switch (entrada.nextInt()){
+                    case 1:
+                        TamanhoProduto tamanhoProduto = new TamanhoProduto();
+                        while (op != 0) {
+                            Tamanho tamanho = tamanhoView.listarTamanhosDoProduto();
+                            tamanhoProduto.getTamanhos().add(tamanho);
+                            System.out.println("Deseja Selecionar mais um Tamanho para esse Produto?");
+                            System.out.println("1 - SIM;                                   0 - NÃO;");
+                            op = entrada.nextInt();
+                        }
+                        produto.setTamanhos(tamanhoProduto);
+                        pc.updateTamanho(produto);
+                        break;
+                    case 2:
+                        while (op != 0) {
+                            Tamanho tamanho = tamanhoView.selectTamanhoProdutoId(produto);
+                            pc.deletarTamanhoProduto(tamanho,produto);
+                            produto.getTamanhos().getTamanhos().remove(tamanho);
+                            System.out.println("Deseja Deletar mais um Tamanho desse Produto?");
+                            System.out.println("1 - SIM;                            0 - NÃO;");
+                            op = entrada.nextInt();
+                        }
+                        break;
+                    default:
+                        System.out.println("Opção Inválida");
+                }
                 break;
             case 9:
                 break;

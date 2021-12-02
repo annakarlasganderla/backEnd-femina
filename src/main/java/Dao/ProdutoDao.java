@@ -268,7 +268,7 @@ public class ProdutoDao {
 
     public Produto selectById(int idProduto, Lojas lojas){
 
-        String sql = "SELECT * FROM produtos p JOIN lojasxprodutos lp ON p.idProduto = lp.idProduto WHERE p.idProdutp = ? AND lp.idLoja = ?";
+        String sql = "SELECT * FROM produtos p JOIN lojasxprodutos lp ON p.idProduto = lp.idProduto WHERE p.idProduto = ? AND lp.idLoja = ?";
         String sqlCor = "SELECT idCor FROM corproduto cp JOIN cores c " +
                 "ON cp.idCor = c.id WHERE cp.idProduto = ?";
         String sqlModelo = "SELECT idModeloP FROM modeloproduto mp JOIN modelo m " +
@@ -428,6 +428,24 @@ public class ProdutoDao {
         }
     }
 
+    public void updateTamanho(Produto produto){
+        String sqlModelo = "INSERT INTO tamanhoproduto" +
+                "(idProduto, idTamanho)" +
+                "VALUES (?,?)";
+
+        try {
+            for(int i = 0; i < produto.getTamanhos().getTamanhos().size(); i++){
+                PreparedStatement stmt = connection.prepareStatement(sqlModelo);
+                stmt.setInt(1, produto.getId());
+                stmt.setInt(2, produto.getTamanhos().getTamanhos().get(i).getId());
+
+                stmt.execute();
+            }
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
     public void deletarModeloProduto(ModelosDosProdutos modelo, Produto produto){
         String sql = "DELETE FROM modeloproduto WHERE idModeloP = ? AND idProduto = ?";
 
@@ -460,4 +478,19 @@ public class ProdutoDao {
 
     }
 
+    public void deletarTamanhoProduto(Tamanho tamanho, Produto produto){
+        String sql = "DELETE FROM tamanhoproduto WHERE idTamanho = ? AND idProduto = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, tamanho.getId());
+            stmt.setInt(2, produto.getId());
+
+            stmt.execute();
+
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+
+    }
 }
