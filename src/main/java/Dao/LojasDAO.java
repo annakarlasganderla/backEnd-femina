@@ -12,14 +12,13 @@ import java.util.List;
 
 public class LojasDAO {
 
-    EnderecoDao enderecoDao = new EnderecoDao();
-    ContatoDao contatoDao = new ContatoDao();
-    FuncionariosDAO funcionariosDAO = new FuncionariosDAO();
-    ProdutoDao produtoDao = new ProdutoDao();
     private static Connection connection;
 
     public LojasDAO() {
         this.connection = ConectionFactory.getConection();
+        this.creatTable();
+        this.creatTableAuxProd();
+        this.creatTableAuxFunc();
     }
 
     public void creatTable() {
@@ -29,7 +28,7 @@ public class LojasDAO {
                 "    nome VARCHAR(244)," +
                 "    idEndereco INT," +
                 "    idContato INT," +
-                "FOREIGN KEY (idEndereco) REFERENCES endereco(id)," +
+                "FOREIGN KEY (idEndereco) REFERENCES endereco(idEndereco)," +
                 "FOREIGN KEY (idContato) REFERENCES contatos(idContatos)" +
                 ");";
 
@@ -65,7 +64,7 @@ public class LojasDAO {
                 "    idLoja INT," +
                 "    idProduto INT," +
                 "FOREIGN KEY (idLoja) REFERENCES lojas(idLoja)," +
-                "FOREIGN KEY (idProduto) REFERENCES produtos(id)" +
+                "FOREIGN KEY (idProduto) REFERENCES produtos(idProduto)" +
                 ");";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlCreatAux);
@@ -97,7 +96,6 @@ public class LojasDAO {
         String sqlInsert = "INSERT INTO lojasXprodutos (idLoja, " +
                 "idProduto) " +
                 "VALUES (?,?)";
-
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlInsert);
             for (int i = 0; i < loja.getProdutos().getProdutosList().size(); i++) {
@@ -169,6 +167,9 @@ public class LojasDAO {
     }
 
     public Lojas selectLojaById(int idSelect) {
+        EnderecoDao enderecoDao = new EnderecoDao();
+        ContatoDao contatoDao = new ContatoDao();
+        FuncionariosDAO funcionariosDAO = new FuncionariosDAO();
         Lojas loja = new Lojas();
         String sqlSelectById = "SELECT * FROM lojas WHERE idLoja = " + idSelect;
         try {
@@ -181,7 +182,7 @@ public class LojasDAO {
                 loja.setEndereco(enderecoDao.selectEnderecoById(resultSet.getInt("idEndereco")));
                 loja.setContatos(contatoDao.selecionaId(resultSet.getInt("idContato")));
                 loja.setFuncionarios(funcionariosDAO.listarFuncionariosIdLoja(resultSet.getInt("idLoja")));
-//                loja.setProdutos(produtoDao.listaProdutoByIdLoja());
+//                loja.setProdutos(produtoDAO.listaProdutoByIdLoja());
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -190,6 +191,8 @@ public class LojasDAO {
     }
 
     public List<Lojas> listarTodasAsLojas() {
+        EnderecoDao enderecoDao = new EnderecoDao();
+        ContatoDao contatoDao = new ContatoDao();
         Lojas loja = new Lojas();
         String sqlSelectById = "SELECT * FROM lojas";
         try {

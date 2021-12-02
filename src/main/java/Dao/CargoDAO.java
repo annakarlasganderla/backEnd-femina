@@ -15,7 +15,6 @@ public class CargoDAO {
 
     public CargoDAO() {
         this.connection = ConectionFactory.getConection();
-        this.createTable();
     }
 
     public void createTable(){

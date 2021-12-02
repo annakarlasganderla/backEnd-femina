@@ -1,6 +1,6 @@
 package View;
+
 import Controller.ContatoController;
-import Dao.ContatoDao;
 import Model.Contatos;
 
 import java.util.*;
@@ -70,6 +70,7 @@ public class ContatoView {
         contatoController.cadastraContato(contato);
 
         return contato;
+
     }
 
     public void mostraContato()  {
@@ -97,6 +98,48 @@ public class ContatoView {
         return cont;
     }
 
+    public Contatos editarContatos(){
+
+        Scanner entrada = new Scanner(System.in).useDelimiter("\n");
+        ContatoController cc = new ContatoController();
+
+        System.out.println("Escolha o que você quer editar: ");
+
+        Contatos cont = new Contatos();
+        ContatoController pc = new ContatoController();
+
+        System.out.println("Qual o id você quer selecionar:");
+
+        cont = pc.seleionaById(entrada.nextInt());
+
+        System.out.println("O produto selecionado foi:");
+        System.out.println(cont);
+
+        return cont;
+    }
+
+    public void editarContatoLoja(Contatos contatos){
+        Contatos contatos1 = new Contatos();
+        Scanner entrada = new Scanner(System.in).useDelimiter("\n");
+        ContatoController contatoController = new ContatoController();
+        System.out.println("O que deseja editar?");
+        System.out.println("1 - Telefone    2 - Email");
+        int oqueEditar = entrada.nextInt();
+        if(oqueEditar == 1){
+            System.out.println("Digite o novo telefone:");
+            String novoTelefone = entrada.next();
+            contatos1.setTel(novoTelefone);
+        }else if(oqueEditar == 2){
+            System.out.println("Digite o novo email:");
+            String novoEmail = entrada.next();
+            contatos1.setEmail(novoEmail);
+        }else{
+            System.out.println("Valor invalido");
+            editarContatoLoja(contatos);
+        }
+        contatoController.editarContato(contatos1);
+    }
+
     public void editarContatos(Contatos cont){
 
         Scanner entrada = new Scanner(System.in).useDelimiter("\n");
@@ -119,7 +162,11 @@ public class ContatoView {
 
         cc.editarContato(cont);
 
-        System.out.println("Produto Editado!");
+        System.out.println("Contato Editado!");
+        System.out.println("Deseja Continuar?");
+        System.out.println("1-Sim;2-Não;");
+
+        System.out.println("Contato Editado!");
         System.out.println("Deseja Continuar?");
         System.out.println("1-Sim;2-Não;");
 
@@ -141,7 +188,7 @@ public class ContatoView {
         ContatoController cc = new ContatoController();
         Scanner entrada = new Scanner(System.in).useDelimiter("\n");
 
-        System.out.println("Tem certeza que deseja deletar o produto?");
+        System.out.println("Tem certeza que deseja deletar o contato?");
         System.out.println("1-Sim;2-Não;");
 
         switch (entrada.nextInt()){

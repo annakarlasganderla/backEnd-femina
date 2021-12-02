@@ -29,7 +29,8 @@ public class FuncionariosDAO {
                 "    nome VARCHAR(244)," +
                 "    idCargo INT," +
                 "    idEndereco INT," +
-                "    idLoja INT UNIQUE);";
+                "    idLoja INT," +
+                "    UNIQUE(idLoja));";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlCreat);
             preparedStatement.execute();
