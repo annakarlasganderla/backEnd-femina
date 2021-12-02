@@ -2,7 +2,10 @@ package View;
 
 import Controller.CategoriaController;
 import Model.Categoria;
+import Model.Lojas;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -57,7 +60,10 @@ public class CategoriaView {
         System.out.println("Categoria deletada com sucesso!");
     }
 
-    public void menuCategoria() {
+    public void menuCategoria(Lojas loja) throws SQLException, IOException {
+
+        MenuView mv = new MenuView();
+
         int op = 0;
         char control = 's';
 
@@ -77,6 +83,7 @@ public class CategoriaView {
             switch (op) {
 
                 case 0:
+                    mv.menuDeLoja(loja);
                     break;
 
                 case 1:

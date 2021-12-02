@@ -1,10 +1,7 @@
 package Dao;
 
-import Dao.*;
 import Factory.ConectionFactory;
 import Model.*;
-
-import java.io.*;
 import java.sql.*;
 import java.util.*;
 
@@ -82,7 +79,7 @@ public class ProdutoDao {
         }
     }
 
-    public void cadastrarProduto(Produto prod){
+    public void cadastrarProduto(Produto prod, Lojas loja){
 
         String sql = "INSERT INTO produtos" +
                 "(codigo,nome,valor,quantidade,idMarca,idCategoria) " +
@@ -153,15 +150,35 @@ public class ProdutoDao {
                 stmt.execute();
             }
 
+            this.cadastrarProdutosNaLOja(loja, prod);
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
     }
 
-    public List<Produto> listaProdutoByIdLoja(){
-        String sql = "SELECT * FROM produtos";
-//        String sql = "SELECT * FROM produtos WHERE idLoja = " + idLoja;
+    public void cadastrarProdutosNaLOja(Lojas loja, Produto produto) {
+
+        String sqlInsert = "INSERT INTO lojasXprodutos (idLoja, " +
+                "idProduto) " +
+                "VALUES (?,?)";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlInsert);
+
+            preparedStatement.setInt(1, loja.getId());
+            preparedStatement.setInt(2, produto.getId());
+
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Produto> listaProdutoByIdLoja(Lojas loja){
+//        String sql = "SELECT * FROM produtos";
+        String sql = "SELECT * FROM produtos p JOIN lojasxprodutos lp ON p.idProduto = lp.idProduto WHERE lp.idLoja = " + loja.getId();
         String sqlCor = "SELECT idCor FROM corproduto cp JOIN cores c " +
                 "ON cp.idCor = c.id WHERE cp.idProduto = ?";
         String sqlModelo = "SELECT idModeloP FROM modeloproduto mp JOIN modelo m " +
@@ -249,9 +266,9 @@ public class ProdutoDao {
         }
     }
 
-    public Produto selectById(int idProduto){
+    public Produto selectById(int idProduto, Lojas lojas){
 
-        String sql = "SELECT * FROM produtos WHERE idProduto = ?";
+        String sql = "SELECT * FROM produtos p JOIN lojasxprodutos lp ON p.idProduto = lp.idProduto WHERE p.idProdutp = ? AND lp.idLoja = ?";
         String sqlCor = "SELECT idCor FROM corproduto cp JOIN cores c " +
                 "ON cp.idCor = c.id WHERE cp.idProduto = ?";
         String sqlModelo = "SELECT idModeloP FROM modeloproduto mp JOIN modelo m " +
@@ -265,6 +282,7 @@ public class ProdutoDao {
 
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, idProduto);
+            stmt.setInt(2, lojas.getId());
             ResultSet resultSet = stmt.executeQuery();
 
             while (resultSet.next()) {

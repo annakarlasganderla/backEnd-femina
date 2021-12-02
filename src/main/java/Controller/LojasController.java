@@ -21,10 +21,6 @@ public class LojasController {
         return lojasDAO.selectLojaById(idLoja);
     }
 
-    public void cadastrarProdutosNaLOja(Lojas loja){
-        lojasDAO.cadastrarProdutosNaLOja(loja);
-    }
-
     public void cadastrarFuncionariosNaLOja(Lojas loja){
         lojasDAO.cadastrarFuncionariosNaLOja(loja);
     }

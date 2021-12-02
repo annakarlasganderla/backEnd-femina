@@ -1,11 +1,8 @@
 package Controller;
 
-import Model.Cor;
-import Model.ModelosDosProdutos;
-import Model.Produto;
+import Model.*;
 
 import Dao.ProdutoDao;
-import Model.ProdutosAux;
 
 import java.util.List;
 
@@ -20,19 +17,19 @@ public class ProdutoController {
         pd.criarTabelasProduto();
     }
 
-    public void cadastrarProduto(Produto prod){
+    public void cadastrarProduto(Produto prod, Lojas lojas){
         ProdutoDao pd = new ProdutoDao();
-        pd.cadastrarProduto(prod);
+        pd.cadastrarProduto(prod,lojas);
     }
 
-    public List<Produto> listarProdutos(){
+    public List<Produto> listarProdutos(Lojas loja){
         ProdutoDao pd = new ProdutoDao();
-        return pd.listaProdutoByIdLoja();
+        return pd.listaProdutoByIdLoja(loja);
     }
 
-    public Produto selectById(int idProduto){
+    public Produto selectById(int idProduto, Lojas loja){
         ProdutoDao pd = new ProdutoDao();
-        return pd.selectById(idProduto);
+        return pd.selectById(idProduto, loja);
     }
 
     public void editarProduto(Produto produto){

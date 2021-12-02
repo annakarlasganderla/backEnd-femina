@@ -44,6 +44,7 @@ public class LojasDAO {
     public void creatTableAuxFunc() {
 
         String sqlCreatAux = "CREATE TABLE IF NOT EXISTS lojasXfuncionarios (" +
+                "    idLojasXFuncionarios INT PRIMARY KEY AUTO_INCREMENT," +
                 "    idLoja INT," +
                 "    idFuncionarios INT," +
                 "FOREIGN KEY (idLoja) REFERENCES lojas(idLoja)," +
@@ -61,6 +62,7 @@ public class LojasDAO {
     public void creatTableAuxProd() {
 
         String sqlCreatAux = "CREATE TABLE IF NOT EXISTS lojasXprodutos (" +
+                "    idLojasXProdutos INT PRIMARY KEY AUTO_INCREMENT," +
                 "    idLoja INT," +
                 "    idProduto INT," +
                 "FOREIGN KEY (idLoja) REFERENCES lojas(idLoja)," +
@@ -91,28 +93,10 @@ public class LojasDAO {
         }
     }
 
-    public void cadastrarProdutosNaLOja(Lojas loja) {
-
-        String sqlInsert = "INSERT INTO lojasXprodutos (idLoja, " +
-                "idProduto) " +
-                "VALUES (?,?)";
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sqlInsert);
-            for (int i = 0; i < loja.getProdutos().getProdutosList().size(); i++) {
-                preparedStatement.setInt(1, loja.getId());
-                preparedStatement.setInt(2, loja.getProdutos().getProdutosList().get(i).getId());
-            }
-            preparedStatement.execute();
-            preparedStatement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void cadastrarFuncionariosNaLOja(Lojas loja) {
 
         String sqlInsert = "INSERT INTO lojasXfuncionarios (idLoja, " +
-                "idProduto) " +
+                "idFuncionarios) " +
                 "VALUES (?,?)";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlInsert);
@@ -182,7 +166,6 @@ public class LojasDAO {
                 loja.setEndereco(enderecoDao.selectEnderecoById(resultSet.getInt("idEndereco")));
                 loja.setContatos(contatoDao.selecionaId(resultSet.getInt("idContato")));
                 loja.setFuncionarios(funcionariosDAO.listarFuncionariosIdLoja(resultSet.getInt("idLoja")));
-//                loja.setProdutos(produtoDAO.listaProdutoByIdLoja());
             }
         } catch (SQLException e) {
             e.printStackTrace();

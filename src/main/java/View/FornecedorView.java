@@ -4,6 +4,10 @@ import Controller.FornecedorController;
 import Model.Contatos;
 import Model.Endereco;
 import Model.Fornecedor;
+import Model.Lojas;
+
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
@@ -167,7 +171,10 @@ public class FornecedorView {
         }
     }
 
-    public void menuFornecedor() {
+    public void menuFornecedor(Lojas loja) throws SQLException, IOException {
+
+        MenuView mv = new MenuView();
+
         int op = 0;
         char control = 's';
 
@@ -188,6 +195,7 @@ public class FornecedorView {
             switch (op) {
 
                 case 0:
+                    mv.menuDeLoja(loja);
                     break;
 
                 case 1:

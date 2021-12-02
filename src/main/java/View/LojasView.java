@@ -4,6 +4,8 @@ import Controller.LojasController;
 import Dao.LojasDAO;
 import Model.Lojas;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -11,7 +13,6 @@ public class LojasView {
 
     Scanner entrada = new Scanner(System.in);
     Lojas lojas = new Lojas();
-    LojasDAO lojasDAO = new LojasDAO();
     EndereçoView endereçoView = new EndereçoView();
     LojasController lojasController = new LojasController();
     ContatoView contatoView = new ContatoView();
@@ -72,4 +73,24 @@ public class LojasView {
         lojasController.deleteLoja(listaDeLojas.get(lojaEscolhida).getId());
     }
 
+    public Lojas selectLojaById(){
+
+        this.verLojas();
+
+        System.out.println("Selecione uma Loja");
+        Lojas loja = lojasController.selectLojaById(entrada.nextInt());
+
+        System.out.println("A loja seleciona foi:");
+        System.out.println(loja.toString());
+
+        return loja;
+    }
+
+    public void acessarLoja() throws IOException, SQLException {
+
+        Lojas lojas = this.selectLojaById();
+        MenuView menuView = new MenuView();
+
+        menuView.menuDeLoja(lojas);
+    }
 }

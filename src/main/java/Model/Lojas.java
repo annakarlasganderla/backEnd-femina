@@ -6,7 +6,6 @@ public class Lojas {
     private Endereco endereco;
     private Contatos contatos;
     private FuncionariosAux funcionarios;
-    private ProdutosAux produtos;
 
     public Lojas() {
     }
@@ -65,13 +64,6 @@ public class Lojas {
         this.funcionarios = funcionarios;
     }
 
-    public ProdutosAux getProdutos() {
-        return produtos;
-    }
-
-    public void setProdutos(ProdutosAux produtos) {
-        this.produtos = produtos;
-    }
 
     @Override
     public String toString() {

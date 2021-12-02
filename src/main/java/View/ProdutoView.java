@@ -9,7 +9,7 @@ import java.util.*;
 
 public class ProdutoView {
 
-    public void cadastrarProdutos() throws SQLException, IOException {
+    public void cadastrarProdutos(Lojas loja) throws SQLException, IOException {
 
         ProdutoController pc = new ProdutoController();
         CategoriaView categoriaView = new CategoriaView();
@@ -90,16 +90,16 @@ public class ProdutoView {
         }
         prod.setFornecedor(fornecedorProduto);
 
-        pc.cadastrarProduto(prod);
+        pc.cadastrarProduto(prod, loja);
 
     }
 
-    public List<Produto> listarProdutos() throws SQLException, IOException {
+    public List<Produto> listarProdutos(Lojas loja) throws SQLException, IOException {
 
         Scanner entrada = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
 
         ProdutoController pc = new ProdutoController();
-        List<Produto> listaProdutos = pc.listarProdutos();
+        List<Produto> listaProdutos = pc.listarProdutos(loja);
 
         if(listaProdutos.isEmpty()){
             System.out.println("Nenhum Produto Cadastrado!");
@@ -108,7 +108,7 @@ public class ProdutoView {
 
             switch (entrada.nextInt()){
                 case 1:
-                    this.cadastrarProdutos();
+                    this.cadastrarProdutos(loja);
                     break;
                 case 2:
                     System.out.println("Voltando Para o Menu!");
@@ -125,39 +125,39 @@ public class ProdutoView {
         return listaProdutos;
     }
 
-    public Produto retornaById() throws SQLException, IOException {
+    public Produto retornaById(Lojas loja) throws SQLException, IOException {
 
         Scanner entrada = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
         ProdutoController pc = new ProdutoController();
 
         System.out.println("Selecione o Produto: ");
-        List<Produto> listaProduto = this.listarProdutos();
+        List<Produto> listaProduto = this.listarProdutos(loja);
 
         if(listaProduto.isEmpty()){
             System.out.println("Nenhum Produto Cadastrado!");
             System.out.println("Cadastre um!");
-            this.cadastrarProdutos();
+            this.cadastrarProdutos(loja);
         }
 
         System.out.println("Escolha o Produto");
 
-        Produto produto = pc.selectById(listaProduto.get(entrada.nextInt()-1).getId());
+        Produto produto = pc.selectById(listaProduto.get(entrada.nextInt()-1).getId(), loja);
 
-        System.out.println("----------------------");
-        System.out.println("Produto Selecionado: ");
+        System.out.println("--------------------------");
+        System.out.println("Produto Selecionado:      ");
         System.out.println(produto.toString());
 
         return produto;
     }
 
-    public void deletarProduto() throws SQLException, IOException {
+    public void deletarProduto(Lojas loja) throws SQLException, IOException {
 
         Scanner entrada = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
         ProdutoController pc = new ProdutoController();
 
         System.out.println("DELETAR PRODUTO");
 
-        Produto produto = this.retornaById();
+        Produto produto = this.retornaById(loja);
 
         System.out.println("Tem certeza que deseja deletar o Produto?");
         System.out.println("1-SIM;                             2-NÃO;");
@@ -174,7 +174,7 @@ public class ProdutoView {
         }
     }
 
-    public void editarProduto() throws IOException, SQLException {
+    public void editarProduto(Lojas loja) throws IOException, SQLException {
         Scanner entrada = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
         ProdutoController pc = new ProdutoController();
         CategoriaView categoriaView = new CategoriaView();
@@ -185,7 +185,7 @@ public class ProdutoView {
 
         System.out.println("EDITAR PRODUTO");
 
-        Produto produto = this.retornaById();
+        Produto produto = this.retornaById(loja);
 
         System.out.println("Selecione o que você quer editar!");
         System.out.println("0-Codigo;1-Nome;2-Preço;3-Quantidade;4-Categoria;5-Modelo;6-Marca;7-Cor;8-Tamanho;9-Fornecedor");
@@ -208,7 +208,7 @@ public class ProdutoView {
                 produto.setQtd(entrada.nextInt());
                 break;
             case 4:
-                System.out.println("CATEGORIA:");
+                System.out.println("CATEGORIA: ");
                 Categoria categoria = categoriaView.selectById();
                 produto.setCategoria(categoria);
                 break;
@@ -286,8 +286,9 @@ public class ProdutoView {
         pc.editarProduto(produto);
     }
 
-    public void menuProduto() throws SQLException, IOException {
+    public void menuProduto(Lojas loja) throws SQLException, IOException {
         Scanner leitor = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
+        MenuView mv = new MenuView();
 
         int op = 0;
         char control = 's';
@@ -309,11 +310,12 @@ public class ProdutoView {
             switch (op) {
 
                 case 0:
+                    mv.menuDeLoja(loja);
                     break;
 
                 case 1:
                     do {
-                        this.cadastrarProdutos();
+                        this.cadastrarProdutos(loja);
 
                         System.out.println("Deseja continuar cadastrando? digite s ou S para sim");
                         control = leitor.next().charAt(0);
@@ -325,19 +327,19 @@ public class ProdutoView {
                     break;
 
                 case 2:
-                    this.listarProdutos();
+                    this.listarProdutos(loja);
                     System.out.println("5 - Voltar");
                     op = leitor.nextInt();
                     break;
 
                 case 3:
-                    this.editarProduto();
+                    this.editarProduto(loja);
                     System.out.println("5 - Voltar");
                     op = leitor.nextInt();
                     break;
 
                 case 4:
-                    this.deletarProduto();
+                    this.deletarProduto(loja);
                     System.out.println("5 - Voltar");
                     op = leitor.nextInt();
                     break;

@@ -1,5 +1,6 @@
 import Dao.FuncionariosDAO;
 import View.LojasView;
+import View.MenuView;
 import View.ProdutoView;
 
 import java.io.IOException;
@@ -10,9 +11,8 @@ public class Main {
 
     public static void main(String[] args) throws SQLException, IOException {
 
-        LojasView lv = new LojasView();
-//        lv.cadastrarLoja();
-        lv.verLojas();
+        MenuView mv = new MenuView();
+        mv.menuPrincipal();
 
     }
 }
