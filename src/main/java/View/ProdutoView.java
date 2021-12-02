@@ -296,6 +296,8 @@ public class ProdutoView {
         do {
             do {
                 System.out.println("-------------------------------------");
+                System.out.println("|             PRODUTOS              |");
+                System.out.println("-------------------------------------");
                 System.out.println("|        0 - Sair                   |");
                 System.out.println("|        1 - Cadastrar              |");
                 System.out.println("|        2 - Visualizar             |");

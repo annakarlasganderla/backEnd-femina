@@ -42,10 +42,12 @@ public class MenuView {
     public void menuDeLoja(Lojas idLoja) throws IOException, SQLException {
         Scanner entrada = new Scanner(System.in);
         System.out.println("----------------------------");
+        System.out.println("        Loja: "+idLoja.getNome()+"       ");
+        System.out.println("----------------------------");
         System.out.println("1 - Acessar Funcionarios    ");
         System.out.println("2 - Acessar Categorias      ");
-        System.out.println("4 - Todos os Produtos       ");
-        System.out.println("5 - Fornecedores            ");
+        System.out.println("3 - Todos os Produtos       ");
+        System.out.println("4 - Fornecedores            ");
         System.out.println("0 - Sair                    ");
         System.out.println("----------------------------");
         int escolha = entrada.nextInt();
@@ -57,10 +59,10 @@ public class MenuView {
             case 2:
                 menuCategorias(idLoja);
                 break;
-            case 4:
+            case 3:
                 menuProdutos(idLoja);
                 break;
-            case 5:
+            case 4:
                 menuFornecedor(idLoja);
                 break;
             case 0:

@@ -52,6 +52,8 @@ public class Fornecedor {
 
     @Override
     public String toString() {
-        return idFornecedor + " " + nomeFornecedor + " " + cnpjFornecedor + " " + contatoFornecedor + " " + enderecoFornecedor;
+        return "| FORNECEDOR "+idFornecedor+":" + nomeFornecedor + " - CNPJ:" + cnpjFornecedor + " - " +
+                "\n     CONTATO:" + contatoFornecedor + " - " +
+                "\n     ENDEREÇO:" + enderecoFornecedor + " |\n" ;
     }
 }

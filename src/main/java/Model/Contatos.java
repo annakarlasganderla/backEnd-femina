@@ -45,7 +45,7 @@ public class Contatos {
 
     @Override
     public String toString() {
-        return id + ";" +  tel + ";" + email;
+        return "Telefone: " +  tel + " - Email: " + email;
     }
 
 }

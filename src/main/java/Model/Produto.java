@@ -84,6 +84,14 @@ public class Produto {
         return modelo;
     }
 
+    public String getFornecedorName(){
+        String str = "";
+        for(int i = 0;i<fornecedor.getFornecedores().size();i++){
+            str += " "+ this.fornecedor.getFornecedores().get(i).getNomeFornecedor() + "\n";
+        }
+        return str;
+    }
+
     public void setModelo(ModeloProduto modelo) {
         this.modelo = modelo;
     }
@@ -115,8 +123,8 @@ public class Produto {
                 "|  Categoria: " + categoria.getNome() + "\n" +
                 "|  Modelos: " + modelo + "\n" +
                 "|  Marca: " + marca.getNome() + "\n" +
-                "|  Tamanho: " + tamanhos + "\n" +
-                "|  Fornecedor: " + fornecedor + "\n" +
+                "|  Tamanhos: " + tamanhos + "\n" +
+                "|  Fornecedores: " + this.getFornecedorName() + "\n" +
                 "|-----------------------------------------------|";
     }
 }
