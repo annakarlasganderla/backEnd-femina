@@ -22,13 +22,13 @@ public class ClienteDao {
         String sql = "CREATE TABLE IF NOT EXISTS cliente (" +
         "idCliente INT PRIMARY KEY AUTO_INCREMENT,"+
         "nome VARCHAR(40) NOT NULL," +
-        "idade INTEGER(11),"+
+        "idade INTEGER(11) NOT NULL,"+
         "senha VARCHAR(32) NOT NULL,"+
         "idContatos INT,"+
         "idEndereco INT,"+
         "FOREIGN KEY (idContatos) REFERENCES contatos(idContatos),"+
-        "FOREIGN KEY (idEndereco) REFERENCES endereco(idEndereco)"+
-        ");";
+        "FOREIGN KEY (idEndereco) REFERENCES endereco(idEndereco),"+
+        "UNIQUE(nome));";
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);
 
@@ -62,6 +62,63 @@ public class ClienteDao {
                 cliente.setId(resultSet.getInt(1));
             }
 
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean userExist(String nome){
+
+        String sql = "SELECT * FROM cliente WHERE nome = ?";
+
+        try {
+
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, nome);
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()){
+                return true;
+            }
+
+            return false;
+
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Cliente logar(String nome, String senha){
+        String sql = "SELECT * FROM cliente WHERE nome = ? AND senha = ?";
+
+        try {
+
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, nome);
+            stmt.setString(2, senha);
+
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()){
+
+                Cliente cliente = new Cliente();
+
+                cliente.setId(resultSet.getInt("idCliente"));
+                cliente.setNome(resultSet.getString("nome"));
+                cliente.setIdade(resultSet.getInt("idade"));
+                cliente.setSenha(resultSet.getString("senha"));
+
+                ContatoDao contatoDao = new ContatoDao();
+                Contatos contato = contatoDao.selecionaId(resultSet.getInt("idContatos"));
+                cliente.setContatos(contato);
+
+                EnderecoDao enderecoDao = new EnderecoDao();
+                Endereco endereco = enderecoDao.selectEnderecoById(resultSet.getInt("idEndereco"));
+                cliente.setEndereco(endereco);
+
+                return cliente;
+            }
+            return null;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

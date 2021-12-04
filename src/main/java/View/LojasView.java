@@ -1,7 +1,6 @@
 package View;
 
 import Controller.LojasController;
-import Dao.LojasDAO;
 import Model.Lojas;
 
 import java.io.IOException;
@@ -86,11 +85,12 @@ public class LojasView {
         return loja;
     }
 
-    public void acessarLoja() throws IOException, SQLException {
+    public Lojas acessarLoja() throws IOException, SQLException {
 
         Lojas lojas = this.selectLojaById();
         MenuView menuView = new MenuView();
 
         menuView.menuDeLoja(lojas);
+        return lojas;
     }
 }

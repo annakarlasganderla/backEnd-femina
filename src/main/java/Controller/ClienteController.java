@@ -22,6 +22,16 @@ public class ClienteController {
         cd.cadastrarCliente(cliente);
     }
 
+    public boolean userExist(String nome){
+        ClienteDao cd = new ClienteDao();
+        return cd.userExist(nome);
+    }
+
+    public Cliente logar(String nome, String senha){
+        ClienteDao cd = new ClienteDao();
+        return cd.logar(nome,senha);
+    }
+
     public List<Cliente> listarClientes(){
         ClienteDao cd = new ClienteDao();
         return cd.listarClientes();

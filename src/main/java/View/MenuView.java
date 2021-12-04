@@ -1,5 +1,6 @@
 package View;
 
+import Model.Cliente;
 import Model.Lojas;
 
 import java.io.IOException;
@@ -7,6 +8,65 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 public class MenuView {
+
+    public void menuInicial() throws SQLException, IOException {
+        Scanner entrada = new Scanner(System.in);
+        int op = 1;
+        do{
+            System.out.println("----------------------");
+            System.out.println("|    FEMINA SYSTEM   |");
+            System.out.println("|--------------------|");
+            System.out.println("|  1 - Cliente       |");
+            System.out.println("|  2 - Funcionário   |");
+            System.out.println("----------------------");
+
+            switch (entrada.nextInt()){
+                case 1:
+                    menuLogin();
+                    break;
+                case 2:
+                    menuPrincipal();
+                    break;
+                default:
+                    System.out.println("Opção Inválida!");
+            }
+
+        } while (op!=0);
+    }
+
+    public void menuLogin() throws SQLException, IOException {
+        Scanner entrada = new Scanner(System.in);
+        ClienteView clienteView = new ClienteView();
+
+        System.out.println("---------------------------");
+        System.out.println("|       FEMINA SYSTEM     |");
+        System.out.println("|-------------------------|");
+        System.out.println("|     0 - Sair            |");
+        System.out.println("|     1 - Cadastrar-se    |");
+        System.out.println("|     2 - Logar           |");
+        System.out.println("---------------------------");
+
+        switch (entrada.nextInt()){
+            case 1:
+                System.out.println("---------------------------");
+                System.out.println("|         CADASTRO        |");
+                System.out.println("---------------------------");
+                clienteView.cadastrarCliente();
+                break;
+            case 2:
+                System.out.println("---------------------------");
+                System.out.println("|         LOGIN           |");
+                System.out.println("---------------------------");
+                Cliente cliente = clienteView.loginCliente();
+                if(cliente != null){
+                    menuViewCliente(cliente);
+                }
+                break;
+            case 0:
+                System.exit(0);
+                break;
+        }
+    }
 
     public void menuPrincipal() throws IOException, SQLException {
         Scanner entrada = new Scanner(System.in);
@@ -48,7 +108,8 @@ public class MenuView {
         System.out.println("2 - Acessar Categorias      ");
         System.out.println("3 - Todos os Produtos       ");
         System.out.println("4 - Fornecedores            ");
-        System.out.println("5 - Cor/Tamanho/Modelo      ");
+        System.out.println("5 - Clientes                ");
+        System.out.println("6 - Cor/Tamanho/Modelo      ");
         System.out.println("0 - Sair                    ");
         System.out.println("----------------------------");
         int escolha = entrada.nextInt();
@@ -67,6 +128,9 @@ public class MenuView {
                 menuFornecedor(idLoja);
                 break;
             case 5:
+                menuClientes();
+                break;
+            case 6:
                 menuOutros();
                 break;
             case 0:
@@ -125,6 +189,11 @@ public class MenuView {
         fv.menuFornecedor(loja);
     }
 
+    public void menuClientes() throws IOException, SQLException {
+        ClienteView clienteView = new ClienteView();
+        clienteView.clienteMenu();
+    }
+
     public void menuOutros() throws SQLException, IOException {
         Scanner entrada = new Scanner(System.in);
         System.out.println("----------------------------");
@@ -152,6 +221,44 @@ public class MenuView {
                 break;
             case 0:
                 menuPrincipal();
+                break;
+        }
+    }
+
+    public void menuViewCliente(Cliente cliente) throws SQLException, IOException {
+        Scanner entrada = new Scanner(System.in);
+        ProdutoView produtoView = new ProdutoView();
+        LojasView lojasView = new LojasView();
+
+        System.out.println("---------------------------");
+        System.out.println("|          FEMINA         |");
+        System.out.println("|-------------------------|");
+        System.out.println("|     0 - Sair            |");
+        System.out.println("|     1 - Ver Produtos    |");
+        System.out.println("|     2 - Ver Perfil      |");
+        System.out.println("|     3 - Ver Favoritos   |");
+        System.out.println("---------------------------");
+
+        switch (entrada.nextInt()){
+            case 0:
+                menuInicial();
+                break;
+            case 1:
+                produtoView.listarProdutos(lojasView.selectLojaById());
+                System.out.println("Deseja Favoritar Algum Produto?");
+                System.out.println("1-SIM                     2-NÃO");
+                switch (entrada.nextInt()){
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    default:
+                        System.out.println("Opção Inválida!");
+                }
+                break;
+            case 2:
+                break;
+            case 3:
                 break;
         }
     }
