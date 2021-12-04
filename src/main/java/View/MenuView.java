@@ -48,6 +48,7 @@ public class MenuView {
         System.out.println("2 - Acessar Categorias      ");
         System.out.println("3 - Todos os Produtos       ");
         System.out.println("4 - Fornecedores            ");
+        System.out.println("5 - Cor/Tamanho/Modelo      ");
         System.out.println("0 - Sair                    ");
         System.out.println("----------------------------");
         int escolha = entrada.nextInt();
@@ -64,6 +65,9 @@ public class MenuView {
                 break;
             case 4:
                 menuFornecedor(idLoja);
+                break;
+            case 5:
+                menuOutros();
                 break;
             case 0:
                 menuPrincipal();
@@ -119,5 +123,36 @@ public class MenuView {
     public void menuFornecedor(Lojas loja) throws IOException, SQLException {
         FornecedorView fv = new FornecedorView();
         fv.menuFornecedor(loja);
+    }
+
+    public void menuOutros() throws SQLException, IOException {
+        Scanner entrada = new Scanner(System.in);
+        System.out.println("----------------------------");
+        System.out.println("|          MENU            |");
+        System.out.println("----------------------------");
+        System.out.println("    1 - Cores               ");
+        System.out.println("    2 - Tamanhos            ");
+        System.out.println("    3 - Modelos             ");
+        System.out.println("    0 - Voltar              ");
+        System.out.println("----------------------------");
+        int escolha = entrada.nextInt();
+        switch (escolha){
+
+            case 1:
+                CorView corView = new CorView();
+                corView.menuCor();
+                break;
+            case 2:
+                TamanhoView tamanhoView= new TamanhoView();
+                tamanhoView.menuTamanho();
+                break;
+            case 3:
+                ModeloView modeloView = new ModeloView();
+                modeloView.menuModelo();
+                break;
+            case 0:
+                menuPrincipal();
+                break;
+        }
     }
 }

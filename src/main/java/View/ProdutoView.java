@@ -182,6 +182,7 @@ public class ProdutoView {
         TamanhoView tamanhoView = new TamanhoView();
         MarcaView mv = new MarcaView();
         CorView cv = new CorView();
+        FornecedorView fv = new FornecedorView();
         int op = 1;
 
         System.out.println("EDITAR PRODUTO");
@@ -297,7 +298,7 @@ public class ProdutoView {
                             pc.deletarTamanhoProduto(tamanho,produto);
                             produto.getTamanhos().getTamanhos().remove(tamanho);
                             System.out.println("Deseja Deletar mais um Tamanho desse Produto?");
-                            System.out.println("1 - SIM;                            0 - NÃO;");
+                            System.out.println("1 - SIM;                             0 - NÃO;");
                             op = entrada.nextInt();
                         }
                         break;
@@ -306,6 +307,33 @@ public class ProdutoView {
                 }
                 break;
             case 9:
+                System.out.println("1-Adicionar Fornecedor;2-Remover Fornecedor");
+                switch (entrada.nextInt()){
+                    case 1:
+                        FornecedorProduto fornecedorProduto = new FornecedorProduto();
+                        while (op != 0) {
+                            Fornecedor fornecedor = fv.selectFornecedorById();
+                            fornecedorProduto.getFornecedores().add(fornecedor);
+                            System.out.println("Deseja Selecionar mais um Fornecedor para esse Produto?");
+                            System.out.println("1 - SIM;                                       0 - NÃO;");
+                            op = entrada.nextInt();
+                        }
+                        produto.setFornecedor(fornecedorProduto);
+                        pc.updateFornecedor(produto);
+                        break;
+                    case 2:
+                        while (op != 0) {
+                            Fornecedor fornecedor = fv.selectFornecedorProdutoId(produto);
+                            pc.deletarFornecedorProduto(fornecedor,produto);
+                            produto.getFornecedor().getFornecedores().remove(fornecedor);
+                            System.out.println("Deseja Deletar mais um Fornecedor desse Produto?");
+                            System.out.println("1 - SIM;                                0 - NÃO;");
+                            op = entrada.nextInt();
+                        }
+                        break;
+                    default:
+                        System.out.println("Opção Inválida");
+                }
                 break;
             default:
                 System.out.println("Opção Inválida");
@@ -325,7 +353,7 @@ public class ProdutoView {
                 System.out.println("-------------------------------------");
                 System.out.println("|             PRODUTOS              |");
                 System.out.println("-------------------------------------");
-                System.out.println("|        0 - Sair                   |");
+                System.out.println("|        0 - Voltar                 |");
                 System.out.println("|        1 - Cadastrar              |");
                 System.out.println("|        2 - Visualizar             |");
                 System.out.println("|        3 - Editar                 |");

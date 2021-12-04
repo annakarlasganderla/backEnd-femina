@@ -411,13 +411,13 @@ public class ProdutoDao {
     }
 
     public void updateCor(Produto produto){
-        String sqlModelo = "INSERT INTO corproduto" +
+        String sqlCor = "INSERT INTO corproduto" +
                 "(idProduto, idCor)" +
                 "VALUES (?,?)";
 
         try {
             for(int i = 0; i < produto.getModelo().getModelos().size(); i++){
-                PreparedStatement stmt = connection.prepareStatement(sqlModelo);
+                PreparedStatement stmt = connection.prepareStatement(sqlCor);
                 stmt.setInt(1, produto.getId());
                 stmt.setInt(2, produto.getCores().getCores().get(i).getId());
 
@@ -429,15 +429,33 @@ public class ProdutoDao {
     }
 
     public void updateTamanho(Produto produto){
-        String sqlModelo = "INSERT INTO tamanhoproduto" +
+        String sqlTamanho = "INSERT INTO tamanhoproduto" +
                 "(idProduto, idTamanho)" +
                 "VALUES (?,?)";
 
         try {
             for(int i = 0; i < produto.getTamanhos().getTamanhos().size(); i++){
-                PreparedStatement stmt = connection.prepareStatement(sqlModelo);
+                PreparedStatement stmt = connection.prepareStatement(sqlTamanho);
                 stmt.setInt(1, produto.getId());
                 stmt.setInt(2, produto.getTamanhos().getTamanhos().get(i).getId());
+
+                stmt.execute();
+            }
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void updateFornecedor(Produto produto){
+        String sqlFornecedor = "INSERT INTO fornecedorproduto" +
+                "(idProduto, idFornecedor_fk)" +
+                "VALUES (?,?)";
+
+        try {
+            for(int i = 0; i < produto.getFornecedor().getFornecedores().size(); i++){
+                PreparedStatement stmt = connection.prepareStatement(sqlFornecedor);
+                stmt.setInt(1, produto.getId());
+                stmt.setInt(2, produto.getFornecedor().getFornecedores().get(i).getIdFornecedor());
 
                 stmt.execute();
             }
@@ -484,6 +502,22 @@ public class ProdutoDao {
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, tamanho.getId());
+            stmt.setInt(2, produto.getId());
+
+            stmt.execute();
+
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public void deletarFornecedorProduto(Fornecedor fornecedor, Produto produto){
+        String sql = "DELETE FROM fornecedorproduto WHERE idFornecedor_fk = ? AND idProduto = ?";
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, fornecedor.getIdFornecedor());
             stmt.setInt(2, produto.getId());
 
             stmt.execute();

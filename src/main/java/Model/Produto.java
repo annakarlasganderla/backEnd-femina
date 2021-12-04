@@ -87,7 +87,7 @@ public class Produto {
     public String getFornecedorName(){
         String str = "";
         for(int i = 0;i<fornecedor.getFornecedores().size();i++){
-            str += " "+ this.fornecedor.getFornecedores().get(i).getNomeFornecedor() + "\n";
+            str += " "+ this.fornecedor.getFornecedores().get(i).getNomeFornecedor() + ", ";
         }
         return str;
     }

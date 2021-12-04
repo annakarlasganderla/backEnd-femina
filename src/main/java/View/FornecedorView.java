@@ -1,10 +1,7 @@
 package View;
 
 import Controller.FornecedorController;
-import Model.Contatos;
-import Model.Endereco;
-import Model.Fornecedor;
-import Model.Lojas;
+import Model.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -102,6 +99,25 @@ public class FornecedorView {
         return fornecedor;
     }
 
+    public Fornecedor selectFornecedorProdutoId(Produto produto){
+
+        List<Fornecedor> listFornecedor = fornecedorController.listarFornecedorProduto(produto);
+
+        for(int i = 0; i < listFornecedor.size();i++){
+            System.out.println(listFornecedor.get(i).toString());
+        }
+
+        System.out.println("Selecione o Fornecedor: ");
+        int fornecedorSelecionado = leitor.nextInt();
+
+        Fornecedor fornecedor = fornecedorController.selectFornecedorById(listFornecedor.get(fornecedorSelecionado-1).getIdFornecedor());
+
+        System.out.println("O Fornecedor selecionado foi " + fornecedor);
+
+        return fornecedor;
+
+    }
+
     public void editarFornecedor(Fornecedor fornecedor) {
 
         System.out.println("Selecione o que você quer editar: ");
@@ -183,7 +199,7 @@ public class FornecedorView {
                 System.out.println("-------------------------------------");
                 System.out.println("|           FORNECEDORES            |");
                 System.out.println("-------------------------------------");
-                System.out.println("|        0 - Sair                   |");
+                System.out.println("|        0 - Voltar                 |");
                 System.out.println("|        1 - Cadastrar              |");
                 System.out.println("|        2 - Visualizar             |");
                 System.out.println("|        3 - Editar                 |");
