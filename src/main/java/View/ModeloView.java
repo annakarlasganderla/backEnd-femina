@@ -11,6 +11,7 @@ import java.util.Scanner;
 public class ModeloView {
 
     Scanner leitor = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
+    ModeloController modeloController = new ModeloController();
 
     public void cadastrarModelos() {
 
@@ -140,6 +141,7 @@ public class ModeloView {
     public void menuModelo() {
         int op = 0;
         char control = 's';
+        modeloController.criarTabela();
 
         do {
             do {

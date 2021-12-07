@@ -87,6 +87,8 @@ public class TamanhoView {
     public void menuTamanho() throws IOException {
         int op = 0;
         char control = 's';
+        TamanhoController tamanhoController = new TamanhoController();
+        tamanhoController.criarTabelaTamanho();
 
         do {
             do {
