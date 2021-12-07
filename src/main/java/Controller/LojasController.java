@@ -9,6 +9,10 @@ public class LojasController {
 
     LojasDAO lojasDAO = new LojasDAO();
 
+    public void criaTabelaLoja() {
+        lojasDAO.creatTable();
+    }
+
     public void cadastrarLojas(Lojas loja){
         lojasDAO.cadastrarLojas(loja);
     }

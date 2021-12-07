@@ -344,6 +344,8 @@ public class ProdutoView {
     public void menuProduto(Lojas loja) throws SQLException, IOException {
         Scanner leitor = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
         MenuView mv = new MenuView();
+        ProdutoController produtoController = new ProdutoController();
+        produtoController.criarTabelasProduto();
 
         int op = 0;
         char control = 's';

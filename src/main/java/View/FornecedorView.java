@@ -33,7 +33,6 @@ public class FornecedorView {
         Endereco endereco = endereçoView.cadastraEndereco();
         fornecedor.setEnderecoFornecedor(endereco);
 
-        fornecedorController.criarTabela();
         fornecedorController.cadastrarFornecedor(fornecedor);
     }
 
@@ -190,7 +189,7 @@ public class FornecedorView {
     public void menuFornecedor(Lojas loja) throws SQLException, IOException {
 
         MenuView mv = new MenuView();
-
+        fornecedorController.criarTabela();
         int op = 0;
         char control = 's';
 

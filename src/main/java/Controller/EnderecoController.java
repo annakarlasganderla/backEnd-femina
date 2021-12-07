@@ -13,7 +13,7 @@ public class EnderecoController {
         enderecoDao.criaTabelaEndereco();
     }
 
-    public void cadastraProduto(Endereco endereco) {
+    public void cadastraEndereco(Endereco endereco) {
         enderecoDao.cadastraEndereco(endereco);
     }
 

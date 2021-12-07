@@ -30,8 +30,7 @@ public class EndereçoView {
         System.out.println("Informe o número da casa:");
         endereco.setNumCasa(leitor.nextInt());
 
-        enderecoController.criaTabelaEndereco();
-        enderecoController.cadastraProduto(endereco);
+        enderecoController.cadastraEndereco(endereco);
         return endereco;
     }
 
@@ -131,6 +130,7 @@ public class EndereçoView {
     public void menuEndereco() {
         int op = 0;
         char control = 's';
+        enderecoController.criaTabelaEndereco();
 
         do {
             do {
