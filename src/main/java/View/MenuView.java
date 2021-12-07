@@ -269,7 +269,7 @@ public class MenuView {
         System.out.println("|     0 - Sair            |");
         System.out.println("|     1 - Ver Produtos    |");
         System.out.println("|     2 - Ver Perfil      |");
-        System.out.println("|     3 - Ver Favoritos   |");
+//        System.out.println("|     3 - Ver Favoritos   |");
         System.out.println("|     4 - Ver Destaques   |");
         System.out.println("---------------------------");
 
@@ -283,6 +283,7 @@ public class MenuView {
                 System.out.println("1-SIM                     2-NÃO");
                 switch (entrada.nextInt()){
                     case 1:
+
                         break;
                     case 2:
                         menuViewCliente(cliente);
