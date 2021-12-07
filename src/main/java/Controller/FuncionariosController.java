@@ -9,8 +9,8 @@ public class FuncionariosController {
 
     FuncionariosDAO funcionariosDAO = new FuncionariosDAO();
 
-    public void cadastrarFuncionario(Funcionarios funcionarios){
-        funcionariosDAO.cadastrarFuncionario(funcionarios);
+    public void cadastrarFuncionario(Funcionarios funcionario){
+        funcionariosDAO.cadastrarFuncionario(funcionario);
     }
 
     public List<Funcionarios> listarFuncionarios(){

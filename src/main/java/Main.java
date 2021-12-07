@@ -1,3 +1,11 @@
+<<<<<<< HEAD
+=======
+
+import Dao.ClienteDao;
+import Dao.FuncionariosDAO;
+import View.LojasView;
+
+>>>>>>> 319c25b3dfd3278b692ab5c07475674ac7373575
 import View.MenuView;
 import java.io.IOException;
 import java.sql.SQLException;
