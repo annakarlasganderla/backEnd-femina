@@ -125,6 +125,38 @@ public class ClienteView {
 
     }
 
+    public void perfilCliente(Cliente cliente){
+
+        Scanner entrada = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
+
+        int op = 1;
+
+        System.out.println("----------------------------------");
+        System.out.println("|             PERFIL             |");
+        System.out.println("----------------------------------");
+        System.out.println("  NOME:  " + cliente.getNome()     );
+        System.out.println("  IDADE:  " +cliente.getIdade()    );
+        System.out.println("  ENDEREÇO:  " + cliente.getEndereco());
+        System.out.println("  CONTATOS:  " + cliente.getContatos());
+        System.out.println("----------------------------------");
+
+        while (op != 0) {
+            System.out.println("Deseja editar?");
+            System.out.println("1-SIM    2-NÃO");
+            op = entrada.nextInt();
+            switch (op){
+                case 1:
+                    this.editarClientes(cliente);
+                    break;
+                case 2:
+                    op = 0;
+                    break;
+                case 0:
+                    break;
+            }
+        }
+    }
+
     public void editarClientes(Cliente cliente) {
 
         Scanner entrada = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);

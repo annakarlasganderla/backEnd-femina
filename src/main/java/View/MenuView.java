@@ -110,6 +110,7 @@ public class MenuView {
         System.out.println("4 - Fornecedores            ");
         System.out.println("5 - Clientes                ");
         System.out.println("6 - Cor/Tamanho/Modelo      ");
+        System.out.println("7 - Destaques               ");
         System.out.println("0 - Sair                    ");
         System.out.println("----------------------------");
         int escolha = entrada.nextInt();
@@ -132,6 +133,9 @@ public class MenuView {
                 break;
             case 6:
                 menuOutros();
+                break;
+            case 7:
+                menuDestaques(idLoja);
                 break;
             case 0:
                 menuPrincipal();
@@ -194,6 +198,33 @@ public class MenuView {
         clienteView.clienteMenu();
     }
 
+    public void menuDestaques(Lojas lojas) throws SQLException, IOException {
+        Scanner entrada = new Scanner(System.in);
+        DestaquesView dv = new DestaquesView();
+
+        System.out.println("----------------------------");
+        System.out.println("|         DESTAQUES        |");
+        System.out.println("----------------------------");
+        System.out.println("    1 - Cadastrar           ");
+        System.out.println("    2 - Mostrar             ");
+        System.out.println("    0 - Voltar              ");
+        System.out.println("----------------------------");
+
+        switch (entrada.nextInt()){
+            case 1:
+                dv.cadastroDeDestaque(lojas);
+                menuDestaques(lojas);
+                break;
+            case 2:
+                dv.listarDestaques(lojas);
+                menuDestaques(lojas);
+                break;
+            case 0:
+                menuInicial();
+                break;
+        }
+    }
+
     public void menuOutros() throws SQLException, IOException {
         Scanner entrada = new Scanner(System.in);
         System.out.println("----------------------------");
@@ -229,6 +260,8 @@ public class MenuView {
         Scanner entrada = new Scanner(System.in);
         ProdutoView produtoView = new ProdutoView();
         LojasView lojasView = new LojasView();
+        ClienteView cv = new ClienteView();
+        DestaquesView dv = new DestaquesView();
 
         System.out.println("---------------------------");
         System.out.println("|          FEMINA         |");
@@ -237,6 +270,7 @@ public class MenuView {
         System.out.println("|     1 - Ver Produtos    |");
         System.out.println("|     2 - Ver Perfil      |");
         System.out.println("|     3 - Ver Favoritos   |");
+        System.out.println("|     4 - Ver Destaques   |");
         System.out.println("---------------------------");
 
         switch (entrada.nextInt()){
@@ -251,14 +285,22 @@ public class MenuView {
                     case 1:
                         break;
                     case 2:
+                        menuViewCliente(cliente);
                         break;
                     default:
                         System.out.println("Opção Inválida!");
                 }
                 break;
             case 2:
+                cv.perfilCliente(cliente);
+                menuViewCliente(cliente);
                 break;
             case 3:
+                break;
+            case 4:
+                Lojas idLoja = lojasView.selectLojaById();
+                dv.listarDestaques(idLoja);
+                menuViewCliente(cliente);
                 break;
         }
     }
