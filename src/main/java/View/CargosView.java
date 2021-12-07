@@ -31,6 +31,14 @@ public class CargosView {
         }
     }
 
+    public Cargo selectCargo(){
+        Cargo cargoSelecionado;
+        listarCargos();
+        System.out.println("Selecione o Cargo do funcionario:");
+        int idCargoSelecionado = entrada.nextInt();
+        return cargoSelecionado = cargoController.listarCargos().get(idCargoSelecionado);
+    }
+
     public void menuCargo() {
         int op = 0;
         char control = 's';
