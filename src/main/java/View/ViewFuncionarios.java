@@ -1,6 +1,8 @@
 package View;
 
+import Controller.EnderecoController;
 import Controller.FuncionariosController;
+import Model.Endereco;
 import Model.Funcionarios;
 
 import java.io.IOException;
@@ -10,6 +12,8 @@ import java.util.Scanner;
 public class ViewFuncionarios {
     CargosView cargosView = new CargosView();
     LojasView lojasView = new LojasView();
+    EndereçoView endereçoView = new EndereçoView();
+    EnderecoController enderecoController = new EnderecoController();
     public void mostrarFuncionarios() throws IOException {
 
         FuncionariosController funcionariosController = new FuncionariosController();
@@ -72,8 +76,8 @@ public class ViewFuncionarios {
                         listaFuncionarios.get(editFunc-1).setCargo(cargosView.selectCargo());
                         break;
                     case 3:
-                        //FUNCAO QUE EDITA O ENDEREÇO
-                        //viewEndereço
+                        Endereco endereco = enderecoController.selectById(listaFuncionarios.get(editFunc-1).getEndereco().getIdEndereco());
+                        endereçoView.editarEndereco(endereco);
                         break;
                     case 4:
                         System.out.println("Digite a nova empresa:");
