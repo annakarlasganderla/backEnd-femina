@@ -8,6 +8,10 @@ public class CargoController {
 
     CargoDAO cargoDAO = new CargoDAO();
 
+    public void criaTabelaCargos() {
+        cargoDAO.createTable();
+    }
+
     public void cadastrarCargo(Cargo cargo){
         cargoDAO.cadastrarCargo(cargo);
     }

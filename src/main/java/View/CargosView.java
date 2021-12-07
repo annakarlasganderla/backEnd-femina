@@ -42,6 +42,7 @@ public class CargosView {
     public void menuCargo() {
         int op = 0;
         char control = 's';
+        cargoController.criaTabelaCargos();
 
         do {
             do {

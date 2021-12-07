@@ -15,12 +15,9 @@ public class DestaquesView {
 
     Scanner leitor = new Scanner(System.in).useDelimiter("\n");
     ProdutoView pv = new ProdutoView();
+    DestaquesController destaquesController = new DestaquesController();
 
     public void cadastroDeDestaque(Lojas loja) throws SQLException, IOException {
-
-        DestaquesController dc = new DestaquesController();
-        dc.criaTabelaDestaque();
-
         int op = 1;
 
         ProdutoDestaque produtoDestaque = new ProdutoDestaque();
@@ -41,7 +38,7 @@ public class DestaquesView {
 
         destaques.setProdutoDestaque(produtoDestaque);
 
-        dc.cadastraDestaque(destaques);
+        destaquesController.cadastraDestaque(destaques);
 
     }
 
@@ -54,4 +51,10 @@ public class DestaquesView {
             System.out.println(listarDestaques.get(i));
         }
     }
+
+    public void menuDestaque() {
+        destaquesController.criaTabelaDestaque();
+    }
+
+
 }

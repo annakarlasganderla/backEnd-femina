@@ -1,12 +1,11 @@
+
 import Dao.ClienteDao;
 import Dao.FuncionariosDAO;
 import View.LojasView;
-import View.MenuView;
-import View.ProdutoView;
 
+import View.MenuView;
 import java.io.IOException;
 import java.sql.SQLException;
-
 
 public class Main {
 

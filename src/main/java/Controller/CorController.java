@@ -13,8 +13,8 @@ public class CorController {
 
     CorDao corDao = new CorDao();
 
-    public void criaCor (Cor cor)throws IOException, SQLException{
-        corDao.criaTabelaCor(cor);
+    public void criaCor ()throws IOException, SQLException{
+        corDao.criaTabelaCor();
     }
     public void cadastraCor(Cor cor)throws IOException,SQLException{
         corDao.cadastraCor(cor);
@@ -35,6 +35,6 @@ public class CorController {
         corDao.editarCor(cor);
     }
     public void deletaCor(Cor cor){
-        corDao.deletaProduto(cor);
+        corDao.deletaCor(cor);
     }
 }
