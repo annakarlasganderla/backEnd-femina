@@ -21,8 +21,6 @@ public class CorView {
 
         System.out.println("Informe o Hexadecimal:");
         cor.setHexadecimal(leitor.next());
-
-        cc.criaCor(cor);
         cc.cadastraCor(cor);
     }
     public void mostrarCores() throws SQLException, IOException {
@@ -77,7 +75,6 @@ public class CorView {
     }
 
     public void deletarCor(Cor cor) {
-
         int op;
 
         System.out.println("Tem certeza que deseja deletar está Cor? 1 - Sim | 0 - Não");
@@ -92,7 +89,6 @@ public class CorView {
             default:
                 System.out.println("Opção invalida");
         }
-
     }
 
     public Cor selectCorProdutoId(Produto produto){
@@ -117,6 +113,7 @@ public class CorView {
     public void menuCor() throws SQLException, IOException {
         int op = 0;
         char control = 's';
+        cc.criaCor();
 
         do {
             do {

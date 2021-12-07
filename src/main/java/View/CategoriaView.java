@@ -20,7 +20,6 @@ public class CategoriaView {
         System.out.println("Informe o nome da categoria: ");
         categoria.setNome(leitor.next());
 
-        categoriaController.criaTabelaCategoria();
         categoriaController.cadastraCategoria(categoria);
         return categoria;
     }
@@ -63,7 +62,7 @@ public class CategoriaView {
     public void menuCategoria(Lojas loja) throws SQLException, IOException {
 
         MenuView mv = new MenuView();
-
+        categoriaController.criaTabelaCategoria();
         int op = 0;
         char control = 's';
 

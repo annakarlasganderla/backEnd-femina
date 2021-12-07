@@ -9,6 +9,9 @@ import Model.Endereco;
 import java.util.*;
 
 public class ClienteView {
+
+    ClienteController clienteController = new ClienteController();
+
     public void cadastrarCliente() {
 
         ClienteController cc = new ClienteController();
@@ -177,6 +180,7 @@ public class ClienteView {
 
         Scanner leitor = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
 
+        clienteController.criarTabela();
         int op = 0;
         char control = 's';
 

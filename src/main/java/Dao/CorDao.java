@@ -15,7 +15,7 @@ public class CorDao {
     public CorDao(){
         this.conection = new ConectionFactory().getConection();
     }
-    public void criaTabelaCor(Cor cor)throws IOException, SQLException{
+    public void criaTabelaCor()throws IOException, SQLException{
         String sql =  "CREATE TABLE IF NOT EXISTS cores (" +
                 "id INT PRIMARY KEY AUTO_INCREMENT," +
                 "nome VARCHAR(50) NOT NULL," +
@@ -130,7 +130,7 @@ public class CorDao {
         }
     }
 
-    public void deletaProduto(Cor cor) {
+    public void deletaCor(Cor cor) {
         String sql = "DELETE FROM cores WHERE id = ?";
 
         try {
