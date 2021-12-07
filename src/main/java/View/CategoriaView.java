@@ -71,7 +71,7 @@ public class CategoriaView {
                 System.out.println("-------------------------------------");
                 System.out.println("|            CATEGORIAS             |");
                 System.out.println("-------------------------------------");
-                System.out.println("|        0 - Sair                   |");
+                System.out.println("|        0 - Voltar                 |");
                 System.out.println("|        1 - Cadastrar              |");
                 System.out.println("|        2 - Visualizar             |");
                 System.out.println("|        3 - Deletar                |");

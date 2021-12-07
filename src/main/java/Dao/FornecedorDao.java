@@ -1,9 +1,8 @@
 package Dao;
 
 import Factory.ConectionFactory;
-import Model.Contatos;
-import Model.Endereco;
-import Model.Fornecedor;
+import Model.*;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -97,6 +96,42 @@ public class FornecedorDao {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public List<Fornecedor> listarFornecedoresDoProduto(Produto produto){
+
+        String sql = "SELECT * FROM fornecedores f JOIN fornecedorproduto fp ON f.idFornecedor = fp.idFornecedor_fk WHERE fp.idProduto = ?";
+
+        try {
+
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, produto.getId());
+            ResultSet resultSet = stmt.executeQuery();
+
+            List<Fornecedor> listaDeFornecedores = new ArrayList<>();
+
+            while(resultSet.next()) {
+                Fornecedor fornecedor = new Fornecedor();
+
+                fornecedor.setIdFornecedor(resultSet.getInt("idFornecedor"));
+                fornecedor.setNomeFornecedor(resultSet.getString("nomeFornecedor"));
+                fornecedor.setCnpjFornecedor(resultSet.getString("cnpjFornecedor"));
+
+                ContatoDao contatoDao = new ContatoDao();
+                Contatos contatos = contatoDao.selecionaId(resultSet.getInt("idContato"));
+                fornecedor.setContatoFornecedor(contatos);
+
+                EnderecoDao enderecoDao = new EnderecoDao();
+                Endereco enderecos = enderecoDao.selectEnderecoById(resultSet.getInt("idEndereco"));
+                fornecedor.setEnderecoFornecedor(enderecos);
+
+                listaDeFornecedores.add(fornecedor);
+            }
+            return listaDeFornecedores;
+
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
     }
 
     public Fornecedor selectFornecedorById (int idFornecedor) {

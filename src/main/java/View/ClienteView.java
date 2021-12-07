@@ -1,5 +1,6 @@
 package View;
 
+import Controller.ProdutoController;
 import Model.Contatos;
 
 
@@ -39,6 +40,35 @@ public class ClienteView {
 //        System.out.println("Confirme sua senha");
 
         cc.cadastrarCliente(cliente);
+        System.out.println("Cadastrado com Sucesso!");
+    }
+
+    public Cliente loginCliente(){
+
+        ClienteController cc = new ClienteController();
+        Scanner entrada = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
+
+        while(true) {
+            System.out.print("NOME: ");
+            String nome = entrada.next();
+
+            System.out.print("SENHA: ");
+            String senha = entrada.next();
+
+            if(cc.userExist(nome) == false){
+                System.out.println("Usuário Não Existe!");
+            } else {
+                if(cc.logar(nome,senha) != null){
+                    Cliente cliente = cc.logar(nome,senha);
+                    System.out.println("Logado Com sucesso!");
+                    System.out.println("Seja Bem Vindo!");
+                    return cliente;
+                } else {
+                    System.out.println("Login Inválido!");
+                }
+            }
+        }
+
     }
 
     public List<Cliente> listarClientes(){
@@ -96,6 +126,38 @@ public class ClienteView {
 
         return cliente;
 
+    }
+
+    public void perfilCliente(Cliente cliente){
+
+        Scanner entrada = new Scanner(System.in).useDelimiter("\n").useLocale(Locale.US);
+
+        int op = 1;
+
+        System.out.println("----------------------------------");
+        System.out.println("|             PERFIL             |");
+        System.out.println("----------------------------------");
+        System.out.println("  NOME:  " + cliente.getNome()     );
+        System.out.println("  IDADE:  " +cliente.getIdade()    );
+        System.out.println("  ENDEREÇO:  " + cliente.getEndereco());
+        System.out.println("  CONTATOS:  " + cliente.getContatos());
+        System.out.println("----------------------------------");
+
+        while (op != 0) {
+            System.out.println("Deseja editar?");
+            System.out.println("1-SIM    2-NÃO");
+            op = entrada.nextInt();
+            switch (op){
+                case 1:
+                    this.editarClientes(cliente);
+                    break;
+                case 2:
+                    op = 0;
+                    break;
+                case 0:
+                    break;
+            }
+        }
     }
 
     public void editarClientes(Cliente cliente) {

@@ -3,6 +3,8 @@ package Controller;
 
 import Dao.FornecedorDao;
 import Model.Fornecedor;
+import Model.Produto;
+
 import java.util.List;
 
 public class FornecedorController {
@@ -19,6 +21,10 @@ public class FornecedorController {
 
     public List<Fornecedor> listarFornecedores() {
         return fornecedorDao.listarFornecedores();
+    }
+
+    public List<Fornecedor> listarFornecedorProduto(Produto produto){
+        return fornecedorDao.listarFornecedoresDoProduto(produto);
     }
 
     public Fornecedor selectFornecedorById(int idFornecedor) {
