@@ -11,6 +11,8 @@ public class LojasController {
 
     public void criaTabelaLoja() {
         lojasDAO.creatTable();
+        lojasDAO.creatTableAuxProd();
+        lojasDAO.creatTableAuxFunc();
     }
 
     public void cadastrarLojas(Lojas loja){

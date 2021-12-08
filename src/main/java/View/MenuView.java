@@ -1,5 +1,6 @@
 package View;
 
+import Controller.*;
 import Model.Cliente;
 import Model.Lojas;
 
@@ -32,6 +33,38 @@ public class MenuView {
             }
 
         } while (op!=0);
+    }
+
+    public void criarTabelas() throws SQLException, IOException {
+        ContatoController contatoController = new ContatoController();
+        EnderecoController ec = new EnderecoController();
+        CategoriaController categoriaController = new CategoriaController();
+        CorController corController = new CorController();
+        TamanhoController tamanhoController = new TamanhoController();
+        ModeloController modeloController = new ModeloController();
+        MarcaController marcaController = new MarcaController();
+        CargoController cargoController = new CargoController();
+        FornecedorController fornecedorController = new FornecedorController();
+        FuncionariosController funcionariosController = new FuncionariosController();
+        ProdutoController pc = new ProdutoController();
+        ClienteController cc = new ClienteController();
+        LojasController lojasController = new LojasController();
+        DestaquesController destaquesController = new DestaquesController();
+
+        contatoController.criaTabela();
+        ec.criaTabelaEndereco();
+        categoriaController.criaTabelaCategoria();
+        corController.criaCor();
+        tamanhoController.criarTabelaTamanho();
+        modeloController.criarTabela();
+        marcaController.criaTabela();
+        fornecedorController.criarTabela();
+        cargoController.criaTabelaCargos();
+        funcionariosController.criaTabelaFuncionarios();
+        pc.criarTabelasProduto();
+        cc.criarTabela();
+        lojasController.criaTabelaLoja();
+        destaquesController.criaTabelaDestaque();
     }
 
     public void menuLogin() throws SQLException, IOException {
@@ -117,7 +150,7 @@ public class MenuView {
         switch (escolha){
 
             case 1:
-//                menuFuncionarios(idLoja);
+                menuFuncionarios(idLoja);
                 break;
             case 2:
                 menuCategorias(idLoja);
@@ -143,35 +176,35 @@ public class MenuView {
         }
     }
 
-//    public void menuFuncionarios(long idLoja) throws IOException {
-//        ViewFuncionarios viewFuncionarios = new ViewFuncionarios();
-//        Scanner entrada = new Scanner(System.in);
-//        System.out.println("-------------------------");
-//        System.out.println("1 - Cadastrar Funcionario");
-//        System.out.println("2 - Listar Funcionarios  ");
-//        System.out.println("3 - Editar Funcionarios  ");
-//        System.out.println("0 - Sair                 ");
-//        System.out.println("-------------------------");
-//        int escolha = entrada.nextInt();
-//        switch (escolha){
-//            case 1:
-//                viewFuncionarios.cadastrarFuncionarios();
-//                menuFuncionarios(idLoja);
-//                break;
-//            case 2:
-//                viewFuncionarios.mostrarFuncionarios();
-//                menuFuncionarios(idLoja);
-//                break;
-//            case 3:
-//                System.out.println("Com um bug na hora de salvar o funcionario editado");
-//                viewFuncionarios.editFuncionarios();
-//                menuFuncionarios(idLoja);
-//                break;
-//            case 0:
-//                menuDeLoja(idLoja);
-//                break;
-//        }
-//    }
+    public void menuFuncionarios(Lojas idLoja) throws IOException, SQLException {
+        ViewFuncionarios viewFuncionarios = new ViewFuncionarios();
+        Scanner entrada = new Scanner(System.in);
+        System.out.println("-------------------------");
+        System.out.println("1 - Cadastrar Funcionario");
+        System.out.println("2 - Listar Funcionarios  ");
+        System.out.println("3 - Editar Funcionarios  ");
+        System.out.println("0 - Sair                 ");
+        System.out.println("-------------------------");
+        int escolha = entrada.nextInt();
+        switch (escolha){
+            case 1:
+                viewFuncionarios.cadastrarFuncionarios();
+                menuFuncionarios(idLoja);
+                break;
+            case 2:
+                viewFuncionarios.mostrarFuncionarios();
+                menuFuncionarios(idLoja);
+                break;
+            case 3:
+                System.out.println("Com um bug na hora de salvar o funcionario editado");
+                viewFuncionarios.editFuncionarios();
+                menuFuncionarios(idLoja);
+                break;
+            case 0:
+                menuDeLoja(idLoja);
+                break;
+        }
+    }
 
     public void menuCategorias(Lojas loja) throws IOException, SQLException {
 
@@ -270,7 +303,7 @@ public class MenuView {
         System.out.println("|     1 - Ver Produtos    |");
         System.out.println("|     2 - Ver Perfil      |");
 //        System.out.println("|     3 - Ver Favoritos   |");
-        System.out.println("|     4 - Ver Destaques   |");
+        System.out.println("|     3 - Ver Destaques   |");
         System.out.println("---------------------------");
 
         switch (entrada.nextInt()){
@@ -279,26 +312,25 @@ public class MenuView {
                 break;
             case 1:
                 produtoView.listarProdutos(lojasView.selectLojaById());
-                System.out.println("Deseja Favoritar Algum Produto?");
-                System.out.println("1-SIM                     2-NÃO");
-                switch (entrada.nextInt()){
-                    case 1:
-
-                        break;
-                    case 2:
-                        menuViewCliente(cliente);
-                        break;
-                    default:
-                        System.out.println("Opção Inválida!");
-                }
+//                System.out.println("Deseja Favoritar Algum Produto?");
+//                System.out.println("1-SIM                     2-NÃO");
+//                switch (entrada.nextInt()){
+//                    case 1:
+//
+//                        break;
+//                    case 2:
+//                        menuViewCliente(cliente);
+//                        break;
+//                    default:
+//                        System.out.println("Opção Inválida!");
+//                }
+                menuViewCliente(cliente);
                 break;
             case 2:
                 cv.perfilCliente(cliente);
                 menuViewCliente(cliente);
                 break;
             case 3:
-                break;
-            case 4:
                 Lojas idLoja = lojasView.selectLojaById();
                 dv.listarDestaques(idLoja);
                 menuViewCliente(cliente);

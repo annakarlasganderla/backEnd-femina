@@ -37,13 +37,19 @@ public class Destaques {
         this.produtoDestaque = produtoDestaque;
     }
 
+    public String getProdutoName(){
+        String str = "";
+        for(int i = 0;i<produtoDestaque.getProdutos().size();i++){
+            str += " "+ this.produtoDestaque.getProdutos().get(i).getNome() + ", ";
+        }
+        return str;
+    }
+
     @Override
     public String toString() {
-        return "Destaques{" +
-                "idDestaque=" + idDestaque +
-                ", nome='" + nome + '\'' +
-                ", produtoDestaque=" + produtoDestaque +
-                '}';
+        return "DESTAQUES: \n" +
+                "Nome: " + nome + " - " +
+                "Produtos: " + this.getProdutoName();
     }
 
 

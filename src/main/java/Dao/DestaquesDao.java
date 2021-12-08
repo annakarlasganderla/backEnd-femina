@@ -90,8 +90,8 @@ public class DestaquesDao {
     public List<Destaques> listarDestaques(Lojas lojas) {
         String sql = "SELECT * FROM destaques";
 
-        String sqlDestaque = "SELECT idDestaqueProduto FROM produtodestaque pd JOIN destaques d " +
-                "ON pd.idDestaque_fk = d.idDestaque WHERE pd.idProduto = ?";
+        String sqlDestaque = "SELECT * FROM produtodestaque pd JOIN produtos p " +
+                "ON pd.idProduto = p.idProduto WHERE pd.idDestaque_fk = ?";
 
         try {
 
@@ -103,21 +103,19 @@ public class DestaquesDao {
             while (resultSet.next()) {
 
                 Destaques destaques = new Destaques();
+                destaques.setIdDestaque(resultSet.getInt("idDestaque"));
                 destaques.setNome(resultSet.getString("nome"));
 
                 ProdutoDestaque produtoDes = new  ProdutoDestaque();
                 stmt = connection.prepareStatement(sqlDestaque);
-
                 stmt.setInt(1, destaques.getIdDestaque());
                 ResultSet resultSet1 = stmt.executeQuery();
 
                 while(resultSet1.next()) {
-
                     ProdutoDao prodDao = new ProdutoDao();
                     Produto produtos = prodDao.selectById(resultSet1.getInt("idProduto"),lojas);
                     produtoDes.getProdutos().add(produtos);
                 }
-
                 destaques.setProdutoDestaque(produtoDes);
                 listaDestaques.add(destaques);
             }
