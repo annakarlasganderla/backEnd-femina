@@ -8,8 +8,9 @@ public class ConectionFactory {
 
     public static Connection getConection() {
         try {
-            return DriverManager.getConnection("jdbc:mysql://localhost/femina", "root", "femina123");
-        } catch (SQLException e) {
+            Class.forName("org.postgresql.Driver");
+            return DriverManager.getConnection("jdbc:postgresql://localhost:5432/femina","postgres","anna0105");
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
